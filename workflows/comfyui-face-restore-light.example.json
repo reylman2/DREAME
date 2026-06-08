@@ -1,0 +1,14 @@
+{
+  "1": {
+    "class_type": "DreameHubVideoFaceRestore",
+    "inputs": {
+      "video": "{{VIDEO_NAME}}",
+      "prompt": "{{PROMPT}}",
+      "strength": "{{STRENGTH}}",
+      "fidelity": "{{FIDELITY}}",
+      "quality": "{{QUALITY}}",
+      "scale": "{{SCALE}}",
+      "padding": "{{PADDING}}"
+    }
+  }
+}
