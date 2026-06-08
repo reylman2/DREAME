@@ -804,6 +804,17 @@
   cursor: pointer;
 }
 
+.studio-reference-token-action {
+  max-width: 230px;
+  color: inherit;
+}
+
+.studio-reference-token-action .studio-reference-token {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
 .studio-reference-menu {
   position: absolute;
   left: 0;
@@ -1022,6 +1033,22 @@
   margin-top: 12px;
 }
 
+.jianying-toolbar {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.jianying-toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+.studio-toolbar-select {
+  flex: 0 0 auto;
+  border-radius: 10px;
+}
+
 .studio-native-select {
   display: inline-flex;
   align-items: center;
@@ -1077,6 +1104,79 @@
   padding: 12px;
 }
 
+.studio-param-menu.jianying-param-menu {
+  width: min(500px, 90vw);
+  max-height: min(560px, 72vh);
+  overflow-y: auto;
+  gap: 12px;
+}
+
+.studio-param-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.035);
+  padding: 10px;
+}
+
+.studio-param-section.full {
+  grid-column: 1 / -1;
+}
+
+.studio-param-section > strong {
+  grid-column: 1 / -1;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.studio-style-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.studio-style-grid button {
+  display: grid;
+  min-height: 54px;
+  align-content: center;
+  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.86);
+  cursor: pointer;
+  padding: 8px 9px;
+  text-align: left;
+}
+
+.studio-style-grid button:hover,
+.studio-style-grid button.active {
+  border-color: rgba(143, 220, 255, 0.58);
+  background: rgba(143, 220, 255, 0.12);
+}
+
+.studio-style-grid span,
+.studio-style-grid small {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-style-grid span {
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.studio-style-grid small {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+}
+
 .studio-param-field {
   display: grid;
   min-height: 58px;
@@ -1114,6 +1214,106 @@
 
 .studio-composer-spacer {
   flex: 1;
+}
+
+.studio-slash-command-wrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.studio-slash-menu {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  z-index: 130;
+  display: grid;
+  width: min(380px, 84vw);
+  max-height: min(360px, 72vh);
+  gap: 8px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  background: rgba(25, 26, 29, 0.96);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  padding: 10px;
+  backdrop-filter: blur(18px);
+}
+
+.studio-slash-menu header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 12px;
+}
+
+.studio-slash-menu header em,
+.studio-slash-menu-list button > em {
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 11px;
+  font-style: normal;
+}
+
+.studio-slash-menu-list {
+  display: grid;
+  max-height: 280px;
+  overflow-y: auto;
+  gap: 6px;
+}
+
+.studio-slash-menu-list button {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.84);
+  cursor: pointer;
+  padding: 7px;
+  text-align: left;
+}
+
+.studio-slash-menu-list button:hover {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.studio-slash-menu-list button > i {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(143, 220, 255, 0.12);
+  color: rgba(235, 249, 255, 0.88);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.studio-slash-menu-list span {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.studio-slash-menu-list strong,
+.studio-slash-menu-list small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-slash-menu-list strong {
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.studio-slash-menu-list small {
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 11px;
 }
 
 .studio-text-tool,

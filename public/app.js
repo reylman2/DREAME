@@ -71,6 +71,11 @@ const state = {
 
 const appView = document.querySelector("#appView");
 const toastHost = document.querySelector("#toastHost");
+const STUDIO_REACT_ASSET_VERSION = "20260704-jianying-restore-v1";
+
+let studioReactAssetsPromise = null;
+let studioReactBridge = null;
+const studioReactSubscribers = new Set();
 
 const prompts = [
   "银色运动耳机广告，水花飞溅，硬光，黑色背景",
@@ -439,6 +444,14 @@ async function api(path, options = {}) {
   }
   if (!response.ok) throw new Error(payload.error || "请求失败");
   return payload;
+}
+
+function parseJsonField(value, fallback = null) {
+  try {
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 function canvasNodeId() {
@@ -1039,6 +1052,10 @@ function updateCanvasWorkflow(updater, { history = true, save = true } = {}) {
 }
 
 function refreshCanvasWorkflow() {
+  if (document.querySelector("[data-studio-react-host]")) {
+    notifyStudioReact();
+    return;
+  }
   renderStudio().catch((error) => toast(error.message));
 }
 
@@ -1803,6 +1820,263 @@ function renderAuthArea() {
   document.querySelector("#logoutBtn").addEventListener("click", logout);
 }
 
+function loadStudioReactAssets() {
+  if (studioReactAssetsPromise) return studioReactAssetsPromise;
+  studioReactAssetsPromise = new Promise((resolve, reject) => {
+    const existingStyle = document.querySelector("link[data-studio-react]");
+    if (!existingStyle) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = `/studio-react/studio-react.css?v=${STUDIO_REACT_ASSET_VERSION}`;
+      link.dataset.studioReact = STUDIO_REACT_ASSET_VERSION;
+      document.head.appendChild(link);
+    }
+
+    if (globalThis.DreameStudioReact) {
+      resolve(globalThis.DreameStudioReact);
+      return;
+    }
+
+    const existingScript = document.querySelector("script[data-studio-react]");
+    if (existingScript) {
+      existingScript.addEventListener("load", () => resolve(globalThis.DreameStudioReact));
+      existingScript.addEventListener("error", reject);
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = `/studio-react/studio-react.js?v=${STUDIO_REACT_ASSET_VERSION}`;
+    script.defer = true;
+    script.dataset.studioReact = STUDIO_REACT_ASSET_VERSION;
+    script.onload = () => resolve(globalThis.DreameStudioReact);
+    script.onerror = () => reject(new Error("React 画板资源加载失败"));
+    document.body.appendChild(script);
+  });
+  return studioReactAssetsPromise;
+}
+
+function studioReactSnapshot() {
+  const workflow = selectedCanvasWorkflow();
+  const selectedNode = selectedCanvasNode(workflow);
+  return {
+    activeComposerTab: state.activeComposerTab,
+    assets: canvasReferenceAssets(workflow),
+    credits: state.user?.credits ?? 0,
+    drawer: state.canvasDrawer,
+    generationHistory: state.generationHistory || [],
+    historyOpen: state.canvasHistoryOpen,
+    imageModels: state.imageModels || [],
+    prompt: selectedNode
+      ? nodeComposerPrompt(selectedNode, "")
+      : sessionStorage.getItem("DreameHub_prompt") || workflow?.prompt || "",
+    selectedImageModelId: state.selectedImageModelId,
+    selectedNodeId: state.selectedNodeId,
+    selectedWorkflowId: state.selectedWorkflowId,
+    user: state.user,
+    videoTabs: supportedVideoComposerTabs(selectedNode, workflow),
+    workflow,
+    workflows: canvasWorkflowList().map((item) => ({
+      id: item.id,
+      nodeCount: item.nodes?.length || item.nodeCount || 0,
+      title: item.title || "未命名画板",
+    })),
+  };
+}
+
+function notifyStudioReact() {
+  if (!studioReactSubscribers.size) return;
+  const snapshot = studioReactSnapshot();
+  studioReactSubscribers.forEach((subscriber) => subscriber(snapshot));
+}
+
+function updateStudioNode(nodeId, updater, options = {}) {
+  const workflow = updateCanvasWorkflow(
+    (workflow) => {
+      const node = workflow.nodes.find((item) => item.id === nodeId);
+      if (node) updater(node, workflow);
+    },
+    options,
+  );
+  notifyStudioReact();
+  return workflow;
+}
+
+function createStudioReactBridge() {
+  return {
+    addAssetNode(asset) {
+      if (!asset) return;
+      const node = {
+        ...asset,
+        id: canvasNodeId(),
+        label: asset.label || asset.title || asset.displayName || "素材",
+        title: asset.title || asset.displayName || asset.label || "素材",
+        type: asset.type || "image",
+        x: 260,
+        y: 260,
+      };
+      updateCanvasWorkflow((workflow) => {
+        workflow.nodes.push(node);
+        state.selectedNodeId = node.id;
+      });
+      notifyStudioReact();
+    },
+    addHistoryItem(item) {
+      if (!item) return;
+      state.generationHistory = [item, ...(state.generationHistory || [])].slice(0, 18);
+      notifyStudioReact();
+    },
+    addNode(type = "text") {
+      addCanvasNode(currentCanvasWorkflow()?.nodes?.length || 0, "", type);
+      notifyStudioReact();
+    },
+    connectNodes(from, to) {
+      connectCanvasNodes(from, to);
+      notifyStudioReact();
+    },
+    createWorkflow() {
+      createUserCanvasWorkflow().then(() => notifyStudioReact()).catch((error) => toast(error.message));
+    },
+    deleteEdge(edge) {
+      updateCanvasWorkflow((workflow) => {
+        workflow.links = (workflow.links || []).filter((link, index) => {
+          if (typeof edge?.index === "number" && index === edge.index) return false;
+          return !(link.from === edge?.from && link.to === edge?.to);
+        });
+      });
+      notifyStudioReact();
+    },
+    deleteNode(nodeId) {
+      deleteCanvasNode(nodeId);
+      notifyStudioReact();
+    },
+    deleteWorkflow(workflowId) {
+      deleteCanvasWorkflow(workflowId).then(() => notifyStudioReact()).catch((error) => toast(error.message));
+    },
+    downloadNode(nodeId) {
+      downloadCanvasNodeMedia(nodeId);
+    },
+    duplicateNode(nodeId) {
+      duplicateCanvasNode(nodeId);
+      notifyStudioReact();
+    },
+    getSnapshot: studioReactSnapshot,
+    handleComposerAction,
+    handleUpload(event) {
+      handleCanvasUpload(event);
+      notifyStudioReact();
+    },
+    moveNode(nodeId, position) {
+      updateStudioNode(
+        nodeId,
+        (node) => {
+          node.x = Math.round(Number(position?.x || 0));
+          node.y = Math.round(Number(position?.y || 0));
+        },
+        { history: false },
+      );
+    },
+    openDrawer(name) {
+      state.canvasDrawer = name || "";
+      notifyStudioReact();
+    },
+    referenceAsset(nodeId, assetId) {
+      connectCanvasNodes(assetId, nodeId);
+      notifyStudioReact();
+    },
+    reload() {
+      renderStudio().catch((error) => toast(error.message));
+    },
+    renameNode(nodeId, title) {
+      updateStudioNode(nodeId, (node) => {
+        node.title = title;
+        node.label = title;
+      });
+    },
+    renameWorkflow(title) {
+      renameCurrentCanvasWorkflowTitle(title, { refresh: false });
+      notifyStudioReact();
+    },
+    selectNode(nodeId) {
+      state.selectedNodeId = nodeId || "";
+      notifyStudioReact();
+    },
+    setComposerTab(tab, nodeId = state.selectedNodeId) {
+      state.activeComposerTab = tab;
+      sessionStorage.setItem("DreameHub_composerTab", tab);
+      if (nodeId) {
+        updateStudioNode(
+          nodeId,
+          (node) => {
+            node.generationSettings = { ...(node.generationSettings || {}), activeTab: tab };
+          },
+          { history: false },
+        );
+      } else {
+        notifyStudioReact();
+      }
+    },
+    setViewport(viewport = {}) {
+      if (Number.isFinite(Number(viewport.zoom))) state.canvasZoom = Number(viewport.zoom);
+      if (Number.isFinite(Number(viewport.x))) state.canvasPanX = Number(viewport.x);
+      if (Number.isFinite(Number(viewport.y))) state.canvasPanY = Number(viewport.y);
+      persistCanvasTransform();
+    },
+    submitGeneration() {
+      submitGeneration({ preventDefault() {} });
+    },
+    subscribe(callback) {
+      studioReactSubscribers.add(callback);
+      return () => studioReactSubscribers.delete(callback);
+    },
+    switchWorkflow(workflowId) {
+      switchCanvasWorkflow(workflowId).then(() => notifyStudioReact()).catch((error) => toast(error.message));
+    },
+    toast,
+    toggleHistory() {
+      state.canvasHistoryOpen = !state.canvasHistoryOpen;
+      notifyStudioReact();
+    },
+    updateNodePrompt(nodeId, prompt, options = {}) {
+      updateStudioNode(
+        nodeId,
+        (node) => {
+          node.promptDraft = prompt;
+          if (node.type === "text" || node.type === "script") node.content = prompt;
+        },
+        { history: !options.silent },
+      );
+    },
+    updateNodeSettings(nodeId, patch) {
+      updateStudioNode(
+        nodeId,
+        (node) => {
+          node.generationSettings = { ...(node.generationSettings || {}), ...patch };
+        },
+        { history: false },
+      );
+    },
+    uploadNode(nodeId) {
+      pendingUploadNodeId = nodeId || "";
+      document.querySelector("#canvasFileInput")?.click();
+    },
+  };
+}
+
+async function renderStudioReact() {
+  appView.innerHTML = `
+    <section class="canvas-workbench react-canvas-workbench" aria-label="创作画布工作台">
+      <div data-studio-react-host class="studio-react-host"></div>
+    </section>
+  `;
+  const host = appView.querySelector("[data-studio-react-host]");
+  studioReactBridge ||= createStudioReactBridge();
+  const studio = await loadStudioReactAssets();
+  if (!studio?.mount) throw new Error("React 画板模块未正确加载");
+  studio.mount(host, studioReactBridge);
+  notifyStudioReact();
+  return true;
+}
+
 function shellHeading(eyebrow, title, copy = "") {
   return `
     <div class="page-heading">
@@ -2032,6 +2306,7 @@ async function renderStudio() {
     state.imageModels.find((item) => item.id === "openai:gpt-image-1") ||
     state.imageModels.find((item) => item.id === "pollinations:flux") ||
     state.imageModels[0];
+  if (await renderStudioReact()) return;
   appView.innerHTML = `
     <section class="canvas-workbench" aria-label="创作画布工作台">
       ${canvasTopbar()}
@@ -5508,9 +5783,28 @@ function generationRequestBody({
       document.querySelector("#videoReturnLastFrame")?.checked,
     ),
     cameraFixed: Boolean(document.querySelector("#videoCameraFixed")?.checked),
+    cameraMotion: document.querySelector("#videoCameraMotion")?.value || "",
     draft: Boolean(document.querySelector("#videoDraft")?.checked),
     webSearch: Boolean(document.querySelector("#videoWebSearch")?.checked),
     seed: document.querySelector("#videoSeed")?.value || "",
+    modelKey:
+      document.querySelector("#videoModelKey")?.value ||
+      document.querySelector("#workflowEngine")?.value ||
+      "",
+    videoModeType: document.querySelector("#videoModeType")?.value || "",
+    durationMs:
+      Math.max(
+        SEEDANCE_DURATION_MIN,
+        Math.min(
+          SEEDANCE_DURATION_MAX,
+          Number(document.querySelector("#videoDuration")?.value || 5),
+        ),
+      ) * 1000,
+    styleSnapshotId: document.querySelector("#videoStyleSnapshotId")?.value || "",
+    styleSnapshot: parseJsonField(
+      document.querySelector("#videoStyleSnapshot")?.value || "{}",
+      {},
+    ),
     draftTaskId: document.querySelector("#videoDraftTaskId")?.value || "",
     serviceTier: document.querySelector("#videoServiceTier")?.value || "",
 	  };

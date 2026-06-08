@@ -826,7 +826,6 @@ const API_CAPABILITIES = {
                   "camera_fixed",
                   "seed",
                   "service_tier",
-                  "draft",
                   "draft_task",
                   "callback_url",
                   "execution_expires_after",
@@ -1891,7 +1890,8 @@ function profitableCreditsFromCost(upstreamCostCny, minimumCredits = 1) {
 
 function generationBillingQuote(body, imageModel = null) {
   const mode = String(body?.mode || "image");
-  const count = Math.max(1, Math.min(4, Number(body?.count || 1)));
+  const count =
+    mode === "video" ? 1 : Math.max(1, Math.min(4, Number(body?.count || 1)));
   if (mode === "video") {
     const duration = normalizeSeedanceDuration(body?.duration);
     const resolution = normalizeSeedanceResolution(body?.resolution);
@@ -5767,6 +5767,14 @@ function buildGenerationRecord({
             ratio: normalizeSeedanceRatio(body.aspectRatio),
             resolution: normalizeSeedanceResolution(body.resolution),
             duration: normalizeSeedanceDuration(body.duration),
+            durationMs: Number(body.durationMs || normalizeSeedanceDuration(body.duration) * 1000),
+            modelKey: String(body.seedanceModelKey || ""),
+            generationMode: String(body.seedanceMode || ""),
+            cameraMotion: String(body.cameraMotion || ""),
+            cameraMotionLabel: String(body.cameraMotionLabel || ""),
+            styleSnapshot: normalizeJianyingStyleSnapshot(body.styleSnapshot),
+            styleSnapshotPinnedAt: Number(body.styleSnapshotPinnedAt || 0),
+            negativePrompt: String(body.negativePrompt || ""),
             generateAudio: optionalBoolean(body.generateAudio),
             watermark: optionalBoolean(body.watermark),
             returnLastFrame:
@@ -5779,7 +5787,6 @@ function buildGenerationRecord({
                 ? Number(body.seed)
                 : null,
             serviceTier: String(body.serviceTier || ""),
-            draft: optionalBoolean(body.draft),
             draftTaskId: String(body.draftTaskId || ""),
             webSearch: optionalBoolean(body.webSearch),
             callbackUrl: String(body.callbackUrl || ""),
@@ -6153,9 +6160,38 @@ function normalizeSeedanceReferenceRole(asset) {
   return "";
 }
 
+function seedanceWorkflowModeText(body) {
+  return [
+    body?.workflowMode,
+    body?.modeType,
+    body?.node?.modeType,
+    body?.node?.settings?.videoModeType,
+    body?.node?.settings?.modeType,
+    body?.model,
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function isSeedanceFirstLastModeText(value) {
+  return /首尾帧|frames2video|first-last|first_last/i.test(String(value || ""));
+}
+
+function isSeedanceImageToVideoModeText(value) {
+  return /图生视频|singleImage2video|image2video|image-to-video|首帧/i.test(
+    String(value || ""),
+  );
+}
+
+function isSeedanceReferenceModeText(value) {
+  return /全能参考|mixed2video|video2video|audio2video|reference-to-video|all-reference/i.test(
+    String(value || ""),
+  );
+}
+
 function arkSeedanceImageAssets(body, fallbackImageReference = null) {
   const imageAssets = seedanceReferenceAssets(body, "image");
-  const workflowMode = String(body?.workflowMode || body?.model || "").trim();
+  const workflowMode = seedanceWorkflowModeText(body);
   const roleAssets = imageAssets
     .map((asset) => ({
       ...asset,
@@ -6190,13 +6226,13 @@ function arkSeedanceImageAssets(body, fallbackImageReference = null) {
     (asset) => asset.seedanceRole === "reference_image",
   );
   if (referenceAssets.length) return referenceAssets;
-  if (/全能参考|reference-to-video|all-reference/i.test(workflowMode)) {
+  if (isSeedanceReferenceModeText(workflowMode)) {
     return imageAssets.map((asset) => ({
       ...asset,
       seedanceRole: "reference_image",
     }));
   }
-  if (/首尾帧|first-last|first_last/i.test(workflowMode)) {
+  if (isSeedanceFirstLastModeText(workflowMode)) {
     const first = imageAssets[0]
       ? { ...imageAssets[0], seedanceRole: "first_frame" }
       : null;
@@ -6205,7 +6241,7 @@ function arkSeedanceImageAssets(body, fallbackImageReference = null) {
       : null;
     return [first, last].filter(Boolean);
   }
-  if (/图生视频|image-to-video|首帧/i.test(workflowMode) && imageAssets[0]) {
+  if (isSeedanceImageToVideoModeText(workflowMode) && imageAssets[0]) {
     return [{ ...imageAssets[0], seedanceRole: "first_frame" }];
   }
   return fallbackImageReference ? [fallbackImageReference] : [];
@@ -6242,7 +6278,7 @@ function seedanceImageReferenceScore(asset) {
 function selectSeedanceImageReference(body, audioReferences = []) {
   const imageReferences = seedanceReferenceAssets(body, "image");
   if (!imageReferences.length) return null;
-  const workflowMode = String(body?.workflowMode || body?.model || "").trim();
+  const workflowMode = seedanceWorkflowModeText(body);
   const scored = imageReferences
     .map((asset, index) => ({
       asset,
@@ -6251,7 +6287,7 @@ function selectSeedanceImageReference(body, audioReferences = []) {
     }))
     .sort((a, b) => b.score - a.score || a.index - b.index);
 
-  if (/图生视频|image-to-video|首帧/u.test(workflowMode))
+  if (isSeedanceImageToVideoModeText(workflowMode))
     return scored[0]?.asset || imageReferences[0];
 
   const sceneReference = scored.find((item) => item.score > 0)?.asset || null;
@@ -6268,7 +6304,7 @@ function selectSeedanceImageReference(body, audioReferences = []) {
 }
 
 function validateSeedanceOfficialRequest(body) {
-  const workflowMode = String(body?.workflowMode || body?.model || "").trim();
+  const workflowMode = seedanceWorkflowModeText(body);
   const references = Array.isArray(body?.referenceAssets)
     ? body.referenceAssets
     : [];
@@ -6279,12 +6315,12 @@ function validateSeedanceOfficialRequest(body) {
   const hasFirstFrameRole = roles.includes("first_frame");
   const hasLastFrameRole = roles.includes("last_frame");
   const isFirstLastMode =
-    /首尾帧|first-last|first_last/i.test(workflowMode) || hasLastFrameRole;
-  const isImageToVideoMode = /图生视频|image-to-video|首帧/i.test(workflowMode);
+    isSeedanceFirstLastModeText(workflowMode) || hasLastFrameRole;
+  const isImageToVideoMode = isSeedanceImageToVideoModeText(workflowMode);
   const isFirstFrameMode =
     isImageToVideoMode || (hasFirstFrameRole && !hasLastFrameRole);
   const isReferenceMode =
-    /全能参考|reference-to-video|all-reference/i.test(workflowMode) ||
+    isSeedanceReferenceModeText(workflowMode) ||
     roles.some((role) =>
       ["reference_image", "reference_video", "reference_audio"].includes(role),
     ) ||
@@ -6299,6 +6335,13 @@ function validateSeedanceOfficialRequest(body) {
     return `Seedance 2.0 参考音频最多 ${SEEDANCE_REFERENCE_AUDIO_LIMIT} 个。`;
   if (audioReferences.length && !imageReferences.length && !videoReferences.length)
     return "Seedance 2.0 参考音频不能单独输入，需要同时连接至少一张图片或一个视频参考。";
+  if (
+    isReferenceMode &&
+    !imageReferences.length &&
+    !videoReferences.length &&
+    !audioReferences.length
+  )
+    return "Seedance 2.0 多模态参考模式需要至少一个图片、视频或音频参考素材。";
 
   if (isFirstLastMode) {
     if (imageReferences.length < 2)
@@ -6342,6 +6385,20 @@ function normalizeSeedanceResolution(value) {
   const resolution = String(value || "720p").trim().toLowerCase();
   const supported = new Set(SEEDANCE_SUPPORTED_RESOLUTIONS);
   return supported.has(resolution) ? resolution : "720p";
+}
+
+function normalizeJianyingStyleSnapshot(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
+  return {
+    styleId: String(value.styleId || "").slice(0, 128),
+    title: String(value.title || "").slice(0, 160),
+    category: String(value.category || "").slice(0, 80),
+    modelKey: String(value.modelKey || "").slice(0, 120),
+    stylePeBefore: String(value.stylePeBefore || "").slice(0, 2000),
+    stylePeAfter: String(value.stylePeAfter || "").slice(0, 4000),
+    stylePosition: String(value.stylePosition || "both").slice(0, 32),
+    version: String(value.version || "").slice(0, 80),
+  };
 }
 
 async function buildArkSeedanceRequestBody(
@@ -6408,8 +6465,10 @@ async function buildArkSeedanceRequestBody(
   };
   const ratio = normalizeSeedanceRatio(body.aspectRatio, { autoValue: "adaptive" });
   if (ratio) requestBody.ratio = ratio;
-  if (body.seed !== undefined && body.seed !== "")
-    requestBody.seed = Number(body.seed);
+  if (body.seed !== undefined && body.seed !== "") {
+    const seed = Number(body.seed);
+    if (Number.isFinite(seed)) requestBody.seed = seed;
+  }
   const generateAudio = optionalBoolean(body.generateAudio);
   if (generateAudio !== undefined) requestBody.generate_audio = generateAudio;
   const watermark = optionalBoolean(body.watermark);
@@ -6419,10 +6478,9 @@ async function buildArkSeedanceRequestBody(
     returnLastFrame === undefined ? true : returnLastFrame;
   const cameraFixed = optionalBoolean(body.cameraFixed);
   if (cameraFixed !== undefined) requestBody.camera_fixed = cameraFixed;
-  if (body.serviceTier)
-    requestBody.service_tier = String(body.serviceTier).trim();
-  const draft = optionalBoolean(body.draft);
-  if (draft !== undefined) requestBody.draft = draft;
+  const serviceTier = String(body.serviceTier || "").trim();
+  if (serviceTier && serviceTier !== "auto")
+    requestBody.service_tier = serviceTier;
   if (body.callbackUrl)
     requestBody.callback_url = String(body.callbackUrl).trim();
   if (body.executionExpiresAfter)
@@ -6840,6 +6898,14 @@ async function createGeneration(body, db, user) {
             ratio: normalizeSeedanceRatio(body.aspectRatio),
             resolution: normalizeSeedanceResolution(body.resolution),
             duration: normalizeSeedanceDuration(body.duration),
+            durationMs: Number(body.durationMs || normalizeSeedanceDuration(body.duration) * 1000),
+            modelKey: String(body.seedanceModelKey || ""),
+            generationMode: String(body.seedanceMode || ""),
+            cameraMotion: String(body.cameraMotion || ""),
+            cameraMotionLabel: String(body.cameraMotionLabel || ""),
+            styleSnapshot: normalizeJianyingStyleSnapshot(body.styleSnapshot),
+            styleSnapshotPinnedAt: Number(body.styleSnapshotPinnedAt || 0),
+            negativePrompt: String(body.negativePrompt || ""),
             generateAudio: optionalBoolean(body.generateAudio),
             watermark: optionalBoolean(body.watermark),
             returnLastFrame:
@@ -6852,7 +6918,6 @@ async function createGeneration(body, db, user) {
                 ? Number(body.seed)
                 : null,
             serviceTier: String(body.serviceTier || ""),
-            draft: optionalBoolean(body.draft),
             draftTaskId: String(body.draftTaskId || ""),
             webSearch: optionalBoolean(body.webSearch),
             callbackUrl: String(body.callbackUrl || ""),

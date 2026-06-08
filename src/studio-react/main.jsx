@@ -36,8 +36,105 @@ const DEFAULT_VIDEO_TABS = [
 ];
 
 const DEFAULT_IMAGE_SIZES = ["auto", "1:1", "16:9", "9:16", "4:3", "3:4"];
-const DEFAULT_VIDEO_RATIOS = ["16:9", "9:16", "1:1", "4:3", "3:4", "auto"];
-const DEFAULT_VIDEO_RESOLUTIONS = ["720p", "1080p"];
+const DEFAULT_VIDEO_RATIOS = ["9:16", "16:9", "1:1", "4:3", "3:4", "auto"];
+const DEFAULT_VIDEO_RESOLUTIONS = ["480p", "720p", "1080p"];
+const JIANYING_VIDEO_MODEL_OPTIONS = [
+  { value: "seedance2.0_vision", label: "Seedance 2.0 质量" },
+  { value: "seedance2.0_fast_vision", label: "Seedance 2.0 快速" },
+];
+const JIANYING_STYLE_SNAPSHOTS = [
+  {
+    category: "真人",
+    modelKey: "AnyDream_2.0",
+    styleId: "1780651424491_style",
+    stylePeAfter:
+      "真人写实风格，摄影作品，画面具有60年代复古科幻质感，色调以复古暖橙、海盐蓝、高对比低饱和胶片色彩为主，带明显胶片颗粒、轻微复古胶片柔光和自然日光光晕。光影上使用自然日光、强直射日光和清晰投影，画面明暗对比强烈，高光不过曝，暗部保留完整细节，明暗过渡自然，整体呈现自然立体、怀旧、精致的原子朋克电影感。",
+    stylePeBefore: "60年代复古科幻原子朋克美学，复古未来主义影像风格",
+    stylePosition: "both",
+    title: "复古科幻原子朋克",
+    version: "1780651831",
+  },
+  {
+    category: "真人",
+    modelKey: "AnyDream_2.0",
+    styleId: "1779094923778_style",
+    stylePeAfter:
+      "真人写实风格，摄影作品，整体风格包含紧张、粗粝，色调以去饱和、低饱和柔和色调、低调为主，光影上使用环境光、柔和阴影。",
+    stylePeBefore: "参考电影为《MemoriesMurder》，",
+    stylePosition: "both",
+    title: "韩国冷淡风电影风格",
+    version: "1779703621",
+  },
+  {
+    category: "真人",
+    modelKey: "AnyDream_2.0",
+    styleId: "1779094923776_style",
+    stylePeAfter:
+      "真人写实风格，摄影作品，整体风格包含复古、工业感，色调以低调、微弱amber辉光为主。",
+    stylePeBefore: "参考电影为《NineteenEighty-Four》，",
+    stylePosition: "both",
+    title: "老式工业影视风格",
+    version: "1779703621",
+  },
+];
+const JIANYING_CAMERA_MOTIONS = [
+  { value: "", label: "不指定", tokenLabel: "" },
+  { value: "static_shot", label: "固定镜头", tokenLabel: "运镜·固定镜头" },
+  { value: "profile_tracking", label: "侧面跟拍", tokenLabel: "运镜·侧面跟拍" },
+  { value: "push_in", label: "缓慢推近", tokenLabel: "运镜·缓慢推近" },
+  { value: "orbit", label: "环绕运镜", tokenLabel: "运镜·环绕运镜" },
+];
+const VIDEO_MODE_TYPES = [
+  { value: "text2video", label: "文生视频" },
+  { value: "singleImage2video", label: "单图首帧" },
+  { value: "frames2video", label: "首尾帧" },
+  { value: "image2video", label: "图生视频" },
+  { value: "video2video", label: "视频参考" },
+  { value: "videoEdit2video", label: "视频编辑" },
+  { value: "audio2video", label: "音频驱动" },
+  { value: "mixed2video", label: "全能参考" },
+];
+const IMAGE_MODE_TYPES = [
+  { value: "text2image", label: "文生图" },
+  { value: "image2image", label: "参考生图" },
+];
+const SLASH_COMMANDS = [
+  {
+    id: "cinematic",
+    label: "电影感",
+    category: "风格",
+    icon: "C",
+    insertText: "电影感光影，真实镜头质感，细腻构图，高级色彩",
+  },
+  {
+    id: "product",
+    label: "产品展示",
+    category: "商业",
+    icon: "P",
+    insertText: "产品主体清晰突出，商业广告构图，干净背景，高级布光",
+  },
+  {
+    id: "character",
+    label: "角色一致",
+    category: "人物",
+    icon: "R",
+    insertText: "保持角色五官、发型、服饰和气质一致，表情自然",
+  },
+  {
+    id: "camera-push",
+    label: "镜头推进",
+    category: "运镜",
+    icon: "→",
+    insertText: "镜头缓慢向主体推进，运动平滑，焦点稳定",
+  },
+  {
+    id: "negative",
+    label: "负面词",
+    category: "修正",
+    icon: "!",
+    insertText: "避免低清晰度、畸形、错手、文字乱码、水印、过曝、模糊",
+  },
+];
 const REFERENCE_MIME = "application/x-liblib-reference";
 const MENTION_MIME = "application/x-liblib-mention";
 
@@ -979,6 +1076,19 @@ function NodeComposer({ node, snapshot, references, bridge }) {
             />
           ) : null}
         </div>
+        {references.map((asset) => (
+          <button
+            type="button"
+            className="studio-reference-token-action"
+            key={asset.id || asset.source || asset.title}
+            draggable
+            onDragStart={(event) => writeReferenceDragData(event, asset)}
+            onClick={() => pickReference(asset)}
+            title="插入到提示词"
+          >
+            <ReferenceToken asset={asset} />
+          </button>
+        ))}
       </div>
 
       <PromptEditor
@@ -993,7 +1103,7 @@ function NodeComposer({ node, snapshot, references, bridge }) {
         onUploadReference={() => bridge.uploadNode(node.id)}
       />
 
-      <div className="studio-composer-footer">
+      <div className="studio-composer-footer jianying-toolbar">
         <EngineControl
           kind={kind}
           snapshot={snapshot}
@@ -1005,6 +1115,9 @@ function NodeComposer({ node, snapshot, references, bridge }) {
           snapshot={snapshot}
           settings={settings}
           updateSetting={updateSetting}
+        />
+        <SlashCommandButton
+          onPick={(command) => updatePrompt(appendPromptText(prompt, command.insertText), { commit: true })}
         />
         <span className="studio-composer-spacer" />
         <button
@@ -1503,6 +1616,60 @@ function ReferenceMenu({ assets, emptyText, onPick, onUpload, query = "" }) {
   );
 }
 
+function appendPromptText(prompt, text) {
+  const current = String(prompt || "").trimEnd();
+  const next = String(text || "").trim();
+  if (!next) return current;
+  return current ? `${current}，${next}` : next;
+}
+
+function SlashCommandButton({ onPick }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="studio-slash-command-wrap nodrag nopan nowheel">
+      <button
+        type="button"
+        className="studio-text-tool"
+        title="提示词指令"
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          setOpen((value) => !value);
+        }}
+      >
+        /
+      </button>
+      {open ? (
+        <div className="studio-slash-menu">
+          <header>
+            <span>指令</span>
+            <em>点击写入提示词</em>
+          </header>
+          <div className="studio-slash-menu-list">
+            {SLASH_COMMANDS.map((command) => (
+              <button
+                type="button"
+                key={command.id}
+                onClick={() => {
+                  onPick(command);
+                  setOpen(false);
+                }}
+              >
+                <i>{command.icon}</i>
+                <span>
+                  <strong>{command.label}</strong>
+                  <small>{command.insertText}</small>
+                </span>
+                <em>{command.category}</em>
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function EngineControl({ kind, snapshot, settings, updateSetting }) {
   if (kind === "image") {
     const models = snapshot.imageModels || [];
@@ -1524,6 +1691,25 @@ function EngineControl({ kind, snapshot, settings, updateSetting }) {
       </label>
     );
   }
+  if (kind === "video") {
+    return (
+      <label className="studio-native-select studio-toolbar-select">
+        <span>模型</span>
+        <select
+          id="videoModelKey"
+          value={settings.engine || JIANYING_VIDEO_MODEL_OPTIONS[0].value}
+          onChange={(event) => updateSetting("engine", event.target.value)}
+        >
+          {JIANYING_VIDEO_MODEL_OPTIONS.map((model) => (
+            <option key={model.value} value={model.value}>
+              {model.label}
+            </option>
+          ))}
+        </select>
+      </label>
+    );
+  }
+
   return (
     <label className="studio-native-select">
       <span>{kind === "text" ? "文本" : "Seedance"}</span>
@@ -1568,7 +1754,7 @@ function ParameterMenu({ kind, settings, updateSetting }) {
       </button>
       {open ? (
         <div
-          className="studio-param-menu"
+          className="studio-param-menu jianying-param-menu"
           onPointerDown={(event) => event.stopPropagation()}
           onMouseDown={(event) => event.stopPropagation()}
           onClick={(event) => event.stopPropagation()}
@@ -1576,6 +1762,13 @@ function ParameterMenu({ kind, settings, updateSetting }) {
         >
           {kind === "image" ? (
             <>
+              <NativeSelect
+                id="imageModeType"
+                label="模式"
+                value={settings.imageModeType || "text2image"}
+                options={IMAGE_MODE_TYPES}
+                onChange={(value) => updateSetting("imageModeType", value)}
+              />
               <NativeSelect
                 id="imageSize"
                 label="比例"
@@ -1596,9 +1789,16 @@ function ParameterMenu({ kind, settings, updateSetting }) {
           {kind === "video" ? (
             <>
               <NativeSelect
+                id="videoModeType"
+                label="模式"
+                value={settings.videoModeType || "mixed2video"}
+                options={VIDEO_MODE_TYPES}
+                onChange={(value) => updateSetting("videoModeType", value)}
+              />
+              <NativeSelect
                 id="videoAspectRatio"
                 label="比例"
-                value={settings.videoAspectRatio || "16:9"}
+                value={settings.videoAspectRatio || "9:16"}
                 options={DEFAULT_VIDEO_RATIOS}
                 onChange={(value) => updateSetting("videoAspectRatio", value)}
               />
@@ -1649,6 +1849,14 @@ function ParameterMenu({ kind, settings, updateSetting }) {
                 checked={settings.videoCameraFixed ?? false}
                 onChange={(value) => updateSetting("videoCameraFixed", value)}
               />
+              <NativeSelect
+                id="videoCameraMotion"
+                label="运镜"
+                value={settings.videoCameraMotion || ""}
+                options={JIANYING_CAMERA_MOTIONS}
+                onChange={(value) => updateSetting("videoCameraMotion", value)}
+              />
+              <StyleSnapshotPicker settings={settings} updateSetting={updateSetting} />
               <NativeSwitch
                 id="videoDraft"
                 label="草稿"
@@ -1695,16 +1903,52 @@ function ParameterMenu({ kind, settings, updateSetting }) {
   );
 }
 
+function StyleSnapshotPicker({ settings, updateSetting }) {
+  const selectedId = settings.styleSnapshotId || JIANYING_STYLE_SNAPSHOTS[0]?.styleId || "";
+  const selected =
+    JIANYING_STYLE_SNAPSHOTS.find((style) => style.styleId === selectedId) ||
+    JIANYING_STYLE_SNAPSHOTS[0];
+  return (
+    <section className="studio-param-section studio-style-section full">
+      <strong>风格</strong>
+      <div className="studio-style-grid">
+        {JIANYING_STYLE_SNAPSHOTS.map((style) => (
+          <button
+            type="button"
+            key={style.styleId}
+            className={style.styleId === selectedId ? "active" : ""}
+            onClick={() => {
+              updateSetting("styleSnapshotId", style.styleId);
+              updateSetting("styleSnapshot", style);
+            }}
+          >
+            <span>{style.title}</span>
+            <small>{style.category}</small>
+          </button>
+        ))}
+      </div>
+      <input id="videoStyleSnapshotId" type="hidden" value={selected?.styleId || ""} readOnly />
+      <input id="videoStyleSnapshot" type="hidden" value={JSON.stringify(selected || {})} readOnly />
+    </section>
+  );
+}
+
 function NativeSelect({ id, label, value, options, onChange }) {
   return (
     <label className="studio-param-field">
       <span>{label}</span>
       <select id={id} value={value} onChange={(event) => onChange(event.target.value)}>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
+        {options.map((option) => {
+          const optionValue =
+            typeof option === "object" && option !== null ? option.value : option;
+          const optionLabel =
+            typeof option === "object" && option !== null ? option.label : option;
+          return (
+          <option key={optionValue} value={optionValue}>
+            {optionLabel}
           </option>
-        ))}
+          );
+        })}
       </select>
     </label>
   );
@@ -2082,7 +2326,7 @@ function defaultNodeWidth(node) {
 function defaultEngineForKind(kind) {
   if (kind === "text") return "qwen3:14b";
   if (kind === "image") return "pollinations:flux";
-  return "seedance:all-reference";
+  return JIANYING_VIDEO_MODEL_OPTIONS[0].value;
 }
 
 function defaultModeForKind(kind, activeTab) {
