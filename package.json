@@ -1,0 +1,45 @@
+{
+  "name": "DreameHub-fullstack",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A full-stack AI creation marketplace prototype inspired by model and workflow communities.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build:studio": "vite build --config vite.studio.config.js",
+    "check": "node --check server.js && node --check public/components.js && node --check public/app.js && node --check scripts/configure-r2-cors.js && node --check scripts/migrate-r2-objects.js && node --check scripts/gc-r2-objects.js && node --check scripts/test-openai-proxy.js && node --check scripts/test-free-apis.js && node --check scripts/test-image-models.js && node --check scripts/test-payment-amount.js && node --check scripts/migrate-postgres.js",
+    "migrate:postgres": "node scripts/migrate-postgres.js",
+    "configure:r2-cors": "node scripts/configure-r2-cors.js",
+    "migrate:r2-objects": "node scripts/migrate-r2-objects.js",
+    "gc:r2-objects": "node scripts/gc-r2-objects.js",
+    "test:openai-proxy": "node scripts/test-openai-proxy.js",
+    "test:free-apis": "node scripts/test-free-apis.js",
+    "test:image-models": "node scripts/test-image-models.js",
+    "test:payment-amount": "node scripts/test-payment-amount.js"
+  },
+  "keywords": [
+    "ai",
+    "creator-platform",
+    "fullstack",
+    "marketplace"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1071.0",
+    "@aws-sdk/s3-request-presigner": "^3.1071.0",
+    "@mantine/core": "^9.4.1",
+    "@mantine/hooks": "^9.4.1",
+    "@tabler/icons-react": "^3.44.0",
+    "@vitejs/plugin-react": "^6.0.3",
+    "@xyflow/react": "^12.11.1",
+    "https-proxy-agent": "^9.1.0",
+    "nodemailer": "^8.0.8",
+    "pg": "^8.21.0",
+    "qrcode": "^1.5.4",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "vite": "^8.1.3"
+  }
+}

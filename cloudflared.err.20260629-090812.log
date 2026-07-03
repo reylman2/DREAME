@@ -1,0 +1,179 @@
+2026-06-17T04:33:04Z INF Starting tunnel tunnelID=dce02756-6cb0-41c6-bba1-51330d704f16
+2026-06-17T04:33:04Z INF Version 2026.5.2 (Checksum 20b9638f685333d623798e733effbad2487093f15ba592f6c7752360ff3b7ab7)
+2026-06-17T04:33:04Z INF GOOS: windows, GOVersion: go1.26.3, GoArch: amd64
+2026-06-17T04:33:04Z INF Settings: map[edge-ip-version:4 no-autoupdate:true p:http2 protocol:http2 token:***** url:http://127.0.0.1:3000]
+2026-06-17T04:33:04Z INF cloudflared will not automatically update on Windows systems.
+2026-06-17T04:33:04Z INF Generated Connector ID: 08ef1a8c-1dbb-498f-9a5f-d95a7003548b
+2026-06-17T04:33:04Z INF Initial protocol http2
+2026-06-17T04:33:04Z INF ICMP proxy will use 172.31.70.159 as source for IPv4
+2026-06-17T04:33:04Z INF ICMP proxy will use fe80::1fc0:c434:6f46:bb43 in zone WLAN as source for IPv6
+2026-06-17T04:33:04Z INF cloudflared does not support loading the system root certificate pool on Windows. Please use --origin-ca-pool <PATH> to specify the path to the certificate pool
+2026-06-17T04:33:04Z INF ICMP proxy will use 172.31.70.159 as source for IPv4
+2026-06-17T04:33:04Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.73
+2026-06-17T04:33:04Z INF ICMP proxy will use fe80::1fc0:c434:6f46:bb43 in zone WLAN as source for IPv6
+2026-06-17T04:33:04Z INF Starting metrics server on 127.0.0.1:20241/metrics
+2026-06-17T04:33:04Z INF +-------------------------------------------------------------------------------------+
+2026-06-17T04:33:04Z INF |                               CONNECTIVITY PRE-CHECKS                               |
+2026-06-17T04:33:04Z INF +-------------------------------------------------------------------------------------+
+2026-06-17T04:33:04Z INF |  COMPONENT         TARGET                     STATUS  DETAILS                       |
+2026-06-17T04:33:04Z INF |  DNS Resolution    region1.v2.argotunnel.com  PASS    DNS Resolved successfully     |
+2026-06-17T04:33:04Z INF |  DNS Resolution    region2.v2.argotunnel.com  PASS    DNS Resolved successfully     |
+2026-06-17T04:33:04Z INF |  UDP Connectivity  region1.v2.argotunnel.com  PASS    QUIC connection successful    |
+2026-06-17T04:33:04Z INF |  UDP Connectivity  region2.v2.argotunnel.com  PASS    QUIC connection successful    |
+2026-06-17T04:33:04Z INF |  TCP Connectivity  region1.v2.argotunnel.com  PASS    HTTP/2 connection successful  |
+2026-06-17T04:33:04Z INF |  TCP Connectivity  region2.v2.argotunnel.com  PASS    HTTP/2 connection successful  |
+2026-06-17T04:33:04Z INF |  Cloudflare API    api.cloudflare.com:443     PASS    API is reachable              |
+2026-06-17T04:33:04Z INF |                                                                                     |
+2026-06-17T04:33:04Z INF |  SUMMARY: Environment is healthy. cloudflared will use 'quic' as primary protocol.  |
+2026-06-17T04:33:04Z INF +-------------------------------------------------------------------------------------+
+2026-06-17T04:33:04Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" run_id=f686349d-2a77-4013-8966-1c6563ae9df9 status=pass target=region1.v2.argotunnel.com
+2026-06-17T04:33:04Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" run_id=f686349d-2a77-4013-8966-1c6563ae9df9 status=pass target=region2.v2.argotunnel.com
+2026-06-17T04:33:04Z INF precheck component="UDP Connectivity" details="QUIC connection successful" run_id=f686349d-2a77-4013-8966-1c6563ae9df9 status=pass target=region1.v2.argotunnel.com
+2026-06-17T04:33:04Z INF precheck component="UDP Connectivity" details="QUIC connection successful" run_id=f686349d-2a77-4013-8966-1c6563ae9df9 status=pass target=region2.v2.argotunnel.com
+2026-06-17T04:33:04Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" run_id=f686349d-2a77-4013-8966-1c6563ae9df9 status=pass target=region1.v2.argotunnel.com
+2026-06-17T04:33:04Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" run_id=f686349d-2a77-4013-8966-1c6563ae9df9 status=pass target=region2.v2.argotunnel.com
+2026-06-17T04:33:04Z INF precheck component="Cloudflare API" details="API is reachable" run_id=f686349d-2a77-4013-8966-1c6563ae9df9 status=pass target=api.cloudflare.com:443
+2026-06-17T04:33:04Z INF precheck complete hard_fail=false run_id=f686349d-2a77-4013-8966-1c6563ae9df9 suggested_protocol=quic
+2026-06-17T04:33:05Z INF Registered tunnel connection connIndex=0 connection=51cfb17e-4c0e-4c5f-8bcb-c87220695284 event=0 ip=198.41.200.73 location=sjc07 protocol=http2
+2026-06-17T04:33:05Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.192.77
+2026-06-17T04:33:06Z INF Registered tunnel connection connIndex=1 connection=832ff80e-d0d2-4e12-93c1-3d7637a064fb event=0 ip=198.41.192.77 location=sjc01 protocol=http2
+2026-06-17T04:33:06Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.63
+2026-06-17T04:33:07Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.67
+2026-06-17T04:33:07Z INF Registered tunnel connection connIndex=2 connection=825b471c-5f28-4c64-826b-f153253d79b3 event=0 ip=198.41.200.63 location=sjc11 protocol=http2
+2026-06-17T04:33:08Z INF Registered tunnel connection connIndex=3 connection=ec7a3921-40c9-4d8a-bca0-9f88b1d618e0 event=0 ip=198.41.192.67 location=sjc01 protocol=http2
+2026-06-17T06:13:44Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-17T06:13:44Z ERR failed to serve incoming request error="Failed to proxy HTTP: Incoming request ended abruptly: context canceled"
+2026-06-17T06:26:44Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: EOF" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-17T06:26:44Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: EOF"
+2026-06-17T14:12:01Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-17T14:12:01Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=3 event=0 ip=198.41.192.67
+2026-06-17T14:12:01Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.67
+2026-06-17T14:12:02Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=3
+2026-06-17T14:12:17Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.67
+2026-06-17T14:12:18Z INF Registered tunnel connection connIndex=3 connection=89233692-fd2b-404c-aaf2-9703bf9c5278 event=0 ip=198.41.192.67 location=sjc06 protocol=http2
+2026-06-18T02:45:04Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-18T02:45:04Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-18T03:24:27Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-18T03:24:27Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-18T03:24:54Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-18T03:24:54Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-18T03:25:33Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-18T03:25:33Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=1 event=0 ip=198.41.192.77
+2026-06-18T03:25:33Z ERR  error="client disconnected" connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-18T03:25:33Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.192.77
+2026-06-18T03:25:33Z ERR failed to serve incoming request error="Failed to proxy HTTP: client disconnected"
+2026-06-18T03:25:34Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=1
+2026-06-18T03:25:46Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.192.77
+2026-06-18T03:25:47Z INF Registered tunnel connection connIndex=1 connection=77035265-8191-4fc1-8a3c-50d5f652ca80 event=0 ip=198.41.192.77 location=sjc06 protocol=http2
+2026-06-18T03:28:05Z ERR  error="read tcp 127.0.0.1:60800->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-18T03:28:05Z ERR failed to serve incoming request error="Failed to proxy HTTP: read tcp 127.0.0.1:60800->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-06-18T03:28:05Z ERR  error="read tcp 127.0.0.1:60802->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-18T03:28:05Z ERR failed to serve incoming request error="Failed to proxy HTTP: read tcp 127.0.0.1:60802->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-06-18T03:28:05Z ERR  error="read tcp 127.0.0.1:60972->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host." connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-18T03:28:05Z ERR failed to serve incoming request error="Failed to proxy HTTP: read tcp 127.0.0.1:60972->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-06-18T03:33:47Z ERR  error="client disconnected" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-18T03:33:47Z ERR failed to serve incoming request error="Failed to proxy HTTP: client disconnected"
+2026-06-18T03:33:47Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T03:33:47Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T03:33:47Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-18T03:33:49Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=3
+2026-06-18T03:33:56Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T03:33:57Z INF Registered tunnel connection connIndex=3 connection=9c8d2fe5-224d-4df1-9b1e-19d70539e704 event=0 ip=198.41.192.67 location=sjc01 protocol=http2
+2026-06-18T04:33:06Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.0
+2026-06-18T06:26:15Z ERR  error="context canceled" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-18T06:26:15Z ERR failed to serve incoming request error="Failed to proxy HTTP: context canceled"
+2026-06-18T07:57:52Z INF Lost connection with the edge connIndex=3
+2026-06-18T07:57:52Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-18T07:57:52Z WRN Serve tunnel error error="connection with edge closed" connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T07:57:52Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T07:57:53Z WRN Connection terminated error="connection with edge closed" connIndex=3
+2026-06-18T07:58:13Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T07:58:14Z INF Registered tunnel connection connIndex=3 connection=7d7b3368-4880-4323-a288-b2a6e303c90e event=0 ip=198.41.192.67 location=sjc01 protocol=http2
+2026-06-18T12:57:39Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-18T12:57:39Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T12:57:39Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T12:57:39Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=3
+2026-06-18T12:57:50Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T12:57:51Z INF Registered tunnel connection connIndex=3 connection=9c1ad061-41e8-4782-9997-2261a91c1335 event=0 ip=198.41.192.67 location=sjc06 protocol=http2
+2026-06-18T13:43:42Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-18T13:43:42Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T13:43:42Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T13:43:44Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=3
+2026-06-18T13:43:51Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.67
+2026-06-18T13:43:53Z INF Registered tunnel connection connIndex=3 connection=bdd475db-6235-4c3a-b7a3-0de5978ef5ec event=0 ip=198.41.192.67 location=sjc06 protocol=http2
+2026-06-18T14:16:00Z INF Lost connection with the edge connIndex=1
+2026-06-18T14:16:00Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-18T14:16:00Z WRN Serve tunnel error error="connection with edge closed" connIndex=1 event=0 ip=198.41.192.77
+2026-06-18T14:16:00Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.192.77
+2026-06-18T14:16:00Z WRN Connection terminated error="connection with edge closed" connIndex=1
+2026-06-18T14:16:01Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.192.77
+2026-06-18T14:16:03Z INF Registered tunnel connection connIndex=1 connection=d3a6eaea-98ea-4190-a1d9-d8a47b52baeb event=0 ip=198.41.192.77 location=sjc01 protocol=http2
+2026-06-19T04:33:06Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.1
+2026-06-19T05:51:38Z INF Lost connection with the edge connIndex=1
+2026-06-19T05:51:38Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-19T05:51:38Z WRN Serve tunnel error error="connection with edge closed" connIndex=1 event=0 ip=198.41.192.77
+2026-06-19T05:51:38Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.192.77
+2026-06-19T05:51:39Z WRN Connection terminated error="connection with edge closed" connIndex=1
+2026-06-19T05:51:44Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.192.77
+2026-06-19T05:51:45Z INF Registered tunnel connection connIndex=1 connection=e90c62ce-4133-4e3b-b018-6ec59792529c event=0 ip=198.41.192.77 location=sjc01 protocol=http2
+2026-06-19T14:46:41Z INF Lost connection with the edge connIndex=1
+2026-06-19T14:46:41Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-19T14:46:41Z WRN Serve tunnel error error="connection with edge closed" connIndex=1 event=0 ip=198.41.192.77
+2026-06-19T14:46:41Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.192.77
+2026-06-19T14:46:42Z WRN Connection terminated error="connection with edge closed" connIndex=1
+2026-06-19T14:46:44Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.192.77
+2026-06-19T14:46:47Z INF Registered tunnel connection connIndex=1 connection=5d033e3c-15f0-44d4-854a-5c1395adc70c event=0 ip=198.41.192.77 location=sjc06 protocol=http2
+2026-06-20T04:33:08Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.1
+2026-06-20T17:15:24Z INF Lost connection with the edge connIndex=3
+2026-06-20T17:15:24Z WRN Serve tunnel error error="connection with edge closed" connIndex=3 event=0 ip=198.41.192.67
+2026-06-20T17:15:24Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.67
+2026-06-20T17:15:24Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-20T17:15:24Z WRN Connection terminated error="connection with edge closed" connIndex=3
+2026-06-20T17:15:40Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.67
+2026-06-20T17:15:41Z INF Registered tunnel connection connIndex=3 connection=0b757568-cd33-4c6a-89a2-ba91e32c60a7 event=0 ip=198.41.192.67 location=sjc01 protocol=http2
+2026-06-21T04:33:08Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.1
+2026-06-21T05:48:53Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=0 event=0 ip=198.41.200.73
+2026-06-21T05:48:53Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.200.73
+2026-06-21T05:48:53Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-21T05:48:55Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=0
+2026-06-21T05:49:11Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.73
+2026-06-21T05:49:13Z INF Registered tunnel connection connIndex=0 connection=8e29204b-7dbf-4ac9-a6a9-6dc10d9e47f4 event=0 ip=198.41.200.73 location=sjc07 protocol=http2
+2026-06-22T03:11:13Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-22T03:11:13Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-22T03:11:14Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-22T03:11:14Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-22T04:33:11Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.1
+2026-06-22T04:43:35Z INF Lost connection with the edge connIndex=3
+2026-06-22T04:43:35Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-22T04:43:35Z WRN Serve tunnel error error="connection with edge closed" connIndex=3 event=0 ip=198.41.192.67
+2026-06-22T04:43:35Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.67
+2026-06-22T04:43:37Z WRN Connection terminated error="connection with edge closed" connIndex=3
+2026-06-22T04:43:46Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.67
+2026-06-22T04:43:48Z INF Registered tunnel connection connIndex=3 connection=f72bd59f-4e4f-4617-8ac8-6b69a7dbc958 event=0 ip=198.41.192.67 location=sjc06 protocol=http2
+2026-06-22T08:36:32Z INF Lost connection with the edge connIndex=0
+2026-06-22T08:36:32Z ERR  error="client disconnected" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-22T08:36:32Z ERR  error="client disconnected" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-22T08:36:32Z ERR failed to serve incoming request error="Failed to proxy HTTP: client disconnected"
+2026-06-22T08:36:32Z ERR  error="client disconnected" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-22T08:36:32Z ERR failed to serve incoming request error="Failed to proxy HTTP: client disconnected"
+2026-06-22T08:36:32Z ERR  error="client disconnected" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-22T08:36:32Z WRN Serve tunnel error error="connection with edge closed" connIndex=0 event=0 ip=198.41.200.73
+2026-06-22T08:36:32Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.200.73
+2026-06-22T08:36:32Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-22T08:36:32Z ERR  error="client disconnected" connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-22T08:36:32Z ERR failed to serve incoming request error="Failed to proxy HTTP: client disconnected"
+2026-06-22T08:36:32Z ERR failed to serve incoming request error="Failed to proxy HTTP: client disconnected"
+2026-06-22T08:36:32Z ERR failed to serve incoming request error="Failed to proxy HTTP: client disconnected"
+2026-06-22T08:36:33Z WRN Connection terminated error="connection with edge closed" connIndex=0
+2026-06-22T08:36:35Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.200.73
+2026-06-22T08:36:36Z INF Registered tunnel connection connIndex=0 connection=4267ad84-403a-4646-bbd6-1619e4cca5f1 event=0 ip=198.41.200.73 location=sjc11 protocol=http2
+2026-06-22T09:36:07Z INF Initiating graceful shutdown due to signal terminated ...
+2026-06-22T09:36:07Z INF Unregistered tunnel connection connIndex=3 event=0 ip=198.41.192.67
+2026-06-22T09:36:07Z INF Unregistered tunnel connection connIndex=0 event=0 ip=198.41.200.73
+2026-06-22T09:36:07Z INF Unregistered tunnel connection connIndex=2 event=0 ip=198.41.200.63
+2026-06-22T09:36:07Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.200.73
+2026-06-22T09:36:07Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.67
+2026-06-22T09:36:07Z ERR Connection terminated connIndex=0
+2026-06-22T09:36:07Z ERR Connection terminated connIndex=3
+2026-06-22T09:36:07Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.63
+2026-06-22T09:36:07Z ERR Connection terminated connIndex=2

@@ -1,0 +1,171 @@
+[
+  {
+    "id": "free-canvas",
+    "cost": 0,
+    "icon": "＋",
+    "mode": "free",
+    "links": [],
+    "nodes": [],
+    "title": "自由画布",
+    "accent": "cyan",
+    "prompt": "",
+    "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+    "subtitle": "自由添加文本、图片、视频与音频节点，通过连线决定生成上下文。",
+    "createdAt": "2026-06-08T06:39:32.748Z",
+    "updatedAt": "2026-06-17T01:23:12.874Z",
+    "modelLabel": "自由节点",
+    "batchOutputs": [],
+    "composerKind": "free"
+  },
+  {
+    "id": "c56bf005-6906-4fb8-a861-934a027f0eb1",
+    "cost": 0,
+    "icon": "＋",
+    "mode": "free",
+    "links": [],
+    "nodes": [
+      {
+        "x": 300,
+        "y": 280,
+        "id": "node-1781659159917-b5cfe30c8e7118",
+        "type": "text",
+        "label": "文本",
+        "title": "文本",
+        "content": "双击节点或点击编辑按钮，可直接修改这里的内容。"
+      }
+    ],
+    "title": "商业视频方案",
+    "accent": "cyan",
+    "prompt": "",
+    "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+    "subtitle": "由对话式生成工作流导入",
+    "createdAt": "2026-06-16T02:43:37.929Z",
+    "updatedAt": "2026-06-17T01:19:19.917Z",
+    "modelLabel": "自由节点",
+    "batchOutputs": [],
+    "composerKind": "free"
+  },
+  {
+    "id": "577c0d08-3734-472c-b6ca-4b7e7adacc5a",
+    "cost": 0,
+    "icon": "＋",
+    "mode": "free",
+    "links": [
+      {
+        "to": "node-1781582302235-fe156bcac95e4",
+        "from": "node-1781582302235-44fe3839af8cc8"
+      },
+      {
+        "to": "node-1781582302235-f6e6497b5dfb3",
+        "from": "node-1781582302235-fe156bcac95e4"
+      },
+      {
+        "to": "node-1781582302235-3431f36cbe2eb",
+        "from": "node-1781582302235-f6e6497b5dfb3"
+      },
+      {
+        "to": "node-1781582302235-b85f98fa4116f",
+        "from": "node-1781582302235-3431f36cbe2eb"
+      },
+      {
+        "to": "node-1781582302235-fe156bcac95e4",
+        "from": "node-1781582302235-192436f60cc35"
+      },
+      {
+        "to": "node-1781582302235-b85f98fa4116f",
+        "from": "node-1781582302235-192436f60cc35"
+      },
+      {
+        "to": "node-1781582302235-fe156bcac95e4",
+        "from": "node-1781582302235-a14e677f1c84a"
+      },
+      {
+        "to": "node-1781582302235-b85f98fa4116f",
+        "from": "node-1781582302235-a14e677f1c84a"
+      }
+    ],
+    "nodes": [
+      {
+        "x": 180,
+        "y": 220,
+        "id": "node-1781582302235-44fe3839af8cc8",
+        "type": "text",
+        "label": "营销简报",
+        "title": "营销简报",
+        "content": "商业视频对话式生成方案\n品牌：Dreame\n产品：追觅3P天花机\n受众：消费者\n核心卖点：澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\n行动号召：立即购买\n品牌色：黑金\n参考素材：ChatGPT Image 2026年6月8日 17_08_10.png、天花机.png\n\n脚本\n1. 产品全景展示\n欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\n\n2. 核心卖点展示\n澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\n\n3. CTA结尾\n立即购买，享受Dreame带来的极致体验。\n\n镜头清单\nshot-01：展示产品外观和整体设计。\n运镜：全景镜头\n画面意图：突出产品外观和品牌标识\n\nshot-02：展示产品功能和性能特点。\n运镜：特写镜头\n画面意图：突出产品功能和性能特点\n\nshot-03：展示产品使用场景和购买信息。\n运镜：中景镜头\n画面意图：突出产品使用场景和购买信息\n\n分镜提示词\nshot-01 start\n展示产品外观和整体设计，突出品牌标识。\n\nshot-02 mid\n展示产品功能和性能特点，突出技术优势。\n\nshot-03 end\n展示产品使用场景和购买信息，引导用户立即购买。\n\n生成模式建议\nstoryboard-01：i2v，用户已确认使用图像到视频模式，符合当前工作流需求。"
+      },
+      {
+        "x": 180,
+        "y": 520,
+        "id": "node-1781582302235-192436f60cc35",
+        "type": "image",
+        "image": "/generated/cd24b739-f421-47a5-8d9c-3181625a364f.png",
+        "label": "参考图 1",
+        "title": "ChatGPT Image 2026年6月8日 17_08_10.png",
+        "source": "/generated/cd24b739-f421-47a5-8d9c-3181625a364f.png",
+        "content": "从对话式生成页面上传的参考素材。",
+        "mimeType": "image/png",
+        "aspectRatio": 1.3333
+      },
+      {
+        "x": 205,
+        "y": 964.0625,
+        "id": "node-1781582302235-a14e677f1c84a",
+        "type": "image",
+        "image": "/generated/749dffba-fb78-4fb1-aeda-47a78c2b1c9f.png",
+        "label": "参考图 2",
+        "title": "天花机.png",
+        "source": "/generated/749dffba-fb78-4fb1-aeda-47a78c2b1c9f.png",
+        "content": "从对话式生成页面上传的参考素材。",
+        "mimeType": "image/png",
+        "aspectRatio": 1
+      },
+      {
+        "x": 560,
+        "y": 220,
+        "id": "node-1781582302235-fe156bcac95e4",
+        "type": "script",
+        "label": "脚本",
+        "title": "脚本",
+        "content": "1. 产品全景展示\n欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\n\n2. 核心卖点展示\n澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\n\n3. CTA结尾\n立即购买，享受Dreame带来的极致体验。"
+      },
+      {
+        "x": 940,
+        "y": 220,
+        "id": "node-1781582302235-f6e6497b5dfb3",
+        "type": "text",
+        "label": "镜头清单",
+        "title": "镜头清单",
+        "content": "shot-01：展示产品外观和整体设计。\n运镜：全景镜头\n画面意图：突出产品外观和品牌标识\n\nshot-02：展示产品功能和性能特点。\n运镜：特写镜头\n画面意图：突出产品功能和性能特点\n\nshot-03：展示产品使用场景和购买信息。\n运镜：中景镜头\n画面意图：突出产品使用场景和购买信息"
+      },
+      {
+        "x": 1320,
+        "y": 220,
+        "id": "node-1781582302235-3431f36cbe2eb",
+        "type": "text",
+        "label": "分镜提示词",
+        "title": "分镜提示词",
+        "content": "shot-01 start\n展示产品外观和整体设计，突出品牌标识。\n\nshot-02 mid\n展示产品功能和性能特点，突出技术优势。\n\nshot-03 end\n展示产品使用场景和购买信息，引导用户立即购买。"
+      },
+      {
+        "x": 1700,
+        "y": 220,
+        "id": "node-1781582302235-b85f98fa4116f",
+        "type": "video",
+        "label": "视频输出",
+        "title": "视频输出",
+        "content": "shot-01 start\n展示产品外观和整体设计，突出品牌标识。\n\nshot-02 mid\n展示产品功能和性能特点，突出技术优势。\n\nshot-03 end\n展示产品使用场景和购买信息，引导用户立即购买。\n\n生成模式确认\nstoryboard-01：i2v，用户已确认使用图像到视频模式，符合当前工作流需求。，状态：待确认"
+      }
+    ],
+    "title": "商业视频方案",
+    "accent": "cyan",
+    "prompt": "",
+    "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+    "subtitle": "由对话式生成工作流导入",
+    "createdAt": "2026-06-16T03:58:22.235Z",
+    "updatedAt": "2026-06-16T04:13:44.581Z",
+    "modelLabel": "自由节点",
+    "batchOutputs": [],
+    "composerKind": "free"
+  }
+]

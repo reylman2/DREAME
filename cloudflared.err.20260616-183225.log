@@ -1,0 +1,536 @@
+2026-06-08T10:17:25Z INF Starting tunnel tunnelID=dce02756-6cb0-41c6-bba1-51330d704f16
+2026-06-08T10:17:25Z INF Version 2026.5.2 (Checksum 20b9638f685333d623798e733effbad2487093f15ba592f6c7752360ff3b7ab7)
+2026-06-08T10:17:25Z INF GOOS: windows, GOVersion: go1.26.3, GoArch: amd64
+2026-06-08T10:17:25Z INF Settings: map[no-autoupdate:true p:http2 protocol:http2 token:***** url:http://127.0.0.1:3000]
+2026-06-08T10:17:25Z INF cloudflared will not automatically update on Windows systems.
+2026-06-08T10:17:25Z INF Generated Connector ID: 8ff96284-cc86-4dc5-b9cf-a8d810e971f8
+2026-06-08T10:17:25Z INF Initial protocol http2
+2026-06-08T10:17:25Z INF ICMP proxy will use 172.31.70.159 as source for IPv4
+2026-06-08T10:17:25Z INF ICMP proxy will use fe80::1fc0:c434:6f46:bb43 in zone WLAN as source for IPv6
+2026-06-08T10:17:25Z INF cloudflared does not support loading the system root certificate pool on Windows. Please use --origin-ca-pool <PATH> to specify the path to the certificate pool
+2026-06-08T10:17:25Z INF ICMP proxy will use 172.31.70.159 as source for IPv4
+2026-06-08T10:17:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-08T10:17:25Z INF ICMP proxy will use fe80::1fc0:c434:6f46:bb43 in zone WLAN as source for IPv6
+2026-06-08T10:17:25Z INF Starting metrics server on 127.0.0.1:20241/metrics
+2026-06-08T10:17:26Z INF +-------------------------------------------------------------------------------------+
+2026-06-08T10:17:26Z INF |                               CONNECTIVITY PRE-CHECKS                               |
+2026-06-08T10:17:26Z INF +-------------------------------------------------------------------------------------+
+2026-06-08T10:17:26Z INF |  COMPONENT         TARGET                     STATUS  DETAILS                       |
+2026-06-08T10:17:26Z INF |  DNS Resolution    region1.v2.argotunnel.com  PASS    DNS Resolved successfully     |
+2026-06-08T10:17:26Z INF |  DNS Resolution    region2.v2.argotunnel.com  PASS    DNS Resolved successfully     |
+2026-06-08T10:17:26Z INF |  UDP Connectivity  region1.v2.argotunnel.com  PASS    QUIC connection successful    |
+2026-06-08T10:17:26Z INF |  UDP Connectivity  region2.v2.argotunnel.com  PASS    QUIC connection successful    |
+2026-06-08T10:17:26Z INF |  TCP Connectivity  region1.v2.argotunnel.com  PASS    HTTP/2 connection successful  |
+2026-06-08T10:17:26Z INF |  TCP Connectivity  region2.v2.argotunnel.com  PASS    HTTP/2 connection successful  |
+2026-06-08T10:17:26Z INF |  Cloudflare API    api.cloudflare.com:443     PASS    API is reachable              |
+2026-06-08T10:17:26Z INF |                                                                                     |
+2026-06-08T10:17:26Z INF |  SUMMARY: Environment is healthy. cloudflared will use 'quic' as primary protocol.  |
+2026-06-08T10:17:26Z INF +-------------------------------------------------------------------------------------+
+2026-06-08T10:17:26Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" run_id=c8a07b7a-55bb-4489-a20d-0f9361bb73fa status=pass target=region1.v2.argotunnel.com
+2026-06-08T10:17:26Z INF precheck component="DNS Resolution" details="DNS Resolved successfully" run_id=c8a07b7a-55bb-4489-a20d-0f9361bb73fa status=pass target=region2.v2.argotunnel.com
+2026-06-08T10:17:26Z INF precheck component="UDP Connectivity" details="QUIC connection successful" run_id=c8a07b7a-55bb-4489-a20d-0f9361bb73fa status=pass target=region1.v2.argotunnel.com
+2026-06-08T10:17:26Z INF precheck component="UDP Connectivity" details="QUIC connection successful" run_id=c8a07b7a-55bb-4489-a20d-0f9361bb73fa status=pass target=region2.v2.argotunnel.com
+2026-06-08T10:17:26Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" run_id=c8a07b7a-55bb-4489-a20d-0f9361bb73fa status=pass target=region1.v2.argotunnel.com
+2026-06-08T10:17:26Z INF precheck component="TCP Connectivity" details="HTTP/2 connection successful" run_id=c8a07b7a-55bb-4489-a20d-0f9361bb73fa status=pass target=region2.v2.argotunnel.com
+2026-06-08T10:17:26Z INF precheck component="Cloudflare API" details="API is reachable" run_id=c8a07b7a-55bb-4489-a20d-0f9361bb73fa status=pass target=api.cloudflare.com:443
+2026-06-08T10:17:26Z INF precheck complete hard_fail=false run_id=c8a07b7a-55bb-4489-a20d-0f9361bb73fa suggested_protocol=quic
+2026-06-08T10:17:26Z INF Registered tunnel connection connIndex=0 connection=5b563dba-6bc9-42e8-b2cc-3c1d267e6dc2 event=0 ip=198.41.192.7 location=sjc06 protocol=http2
+2026-06-08T10:17:26Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-08T10:17:27Z INF Registered tunnel connection connIndex=1 connection=bca52056-2845-4482-9e1e-63a8b7705400 event=0 ip=198.41.200.233 location=sjc07 protocol=http2
+2026-06-08T10:17:27Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-08T10:17:28Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-08T10:17:29Z INF Registered tunnel connection connIndex=3 connection=328a4074-8226-419b-9123-20ad9369009d event=0 ip=198.41.192.37 location=sjc06 protocol=http2
+2026-06-08T10:17:29Z INF Registered tunnel connection connIndex=2 connection=826e7cff-9c15-4a65-b497-7ad7c5d65b41 event=0 ip=198.41.200.23 location=sjc07 protocol=http2
+2026-06-09T08:14:54Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-09T08:14:54Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T08:14:54Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T08:14:56Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=2
+2026-06-09T08:15:05Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T08:15:06Z INF Registered tunnel connection connIndex=2 connection=cb83d64e-171c-4139-a5ad-8fc691f3b857 event=0 ip=198.41.200.23 location=sjc08 protocol=http2
+2026-06-09T10:17:26Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.0
+2026-06-09T11:36:34Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-09T11:36:34Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T11:36:34Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T11:36:36Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=2
+2026-06-09T11:36:56Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T11:36:57Z INF Registered tunnel connection connIndex=2 connection=6e38e4fc-76d3-40d4-ab60-2c815ceaf348 event=0 ip=198.41.200.23 location=sjc08 protocol=http2
+2026-06-09T16:31:42Z INF Lost connection with the edge connIndex=2
+2026-06-09T16:31:42Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-09T16:31:42Z WRN Serve tunnel error error="connection with edge closed" connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T16:31:42Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T16:31:42Z WRN Connection terminated error="connection with edge closed" connIndex=2
+2026-06-09T16:32:01Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T16:32:02Z INF Registered tunnel connection connIndex=2 connection=b6ec2f60-33c4-446e-a30b-f1615d0084b3 event=0 ip=198.41.200.23 location=sjc05 protocol=http2
+2026-06-09T16:35:13Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-09T16:35:13Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T16:35:13Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T16:35:13Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=2
+2026-06-09T16:35:20Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-09T16:35:22Z INF Registered tunnel connection connIndex=2 connection=71187f9a-0faf-48da-8f8d-41677ba7b24b event=0 ip=198.41.200.23 location=sjc08 protocol=http2
+2026-06-10T02:53:49Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-10T02:53:49Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T02:53:49Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T02:53:49Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=1
+2026-06-10T02:53:50Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-10T02:53:50Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=0 event=0 ip=198.41.192.7
+2026-06-10T02:53:50Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-10T02:53:50Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=0
+2026-06-10T02:53:52Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-10T02:53:52Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T02:53:52Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T02:53:53Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=3
+2026-06-10T02:54:04Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T02:54:04Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T02:54:04Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-10T02:54:05Z INF Registered tunnel connection connIndex=3 connection=c061ee75-df8b-42dc-88ec-a0a9fbc57979 event=0 ip=198.41.192.37 location=sjc06 protocol=http2
+2026-06-10T02:54:05Z INF Registered tunnel connection connIndex=0 connection=8c307ca7-ad47-4432-a89a-705b6c493f71 event=0 ip=198.41.192.7 location=sjc01 protocol=http2
+2026-06-10T02:54:06Z INF Registered tunnel connection connIndex=1 connection=1fb74270-0fa1-43f4-bcac-00aab0de5526 event=0 ip=198.41.200.233 location=sjc07 protocol=http2
+2026-06-10T05:16:40Z INF Lost connection with the edge connIndex=3
+2026-06-10T05:16:40Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-10T05:16:40Z WRN Serve tunnel error error="connection with edge closed" connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T05:16:40Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T05:16:40Z WRN Connection terminated error="connection with edge closed" connIndex=3
+2026-06-10T05:16:51Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T05:16:54Z INF Registered tunnel connection connIndex=3 connection=927bc5b0-647e-4fa9-87fe-6cf61ef792eb event=0 ip=198.41.192.37 location=sjc06 protocol=http2
+2026-06-10T05:31:55Z INF Lost connection with the edge connIndex=1
+2026-06-10T05:31:55Z WRN Serve tunnel error error="connection with edge closed" connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T05:31:55Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T05:31:55Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-10T05:31:57Z WRN Connection terminated error="connection with edge closed" connIndex=1
+2026-06-10T05:32:01Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T05:32:05Z INF Registered tunnel connection connIndex=1 connection=770b4f4e-df63-43ca-92c0-9a0b60d9696f event=0 ip=198.41.200.233 location=sjc08 protocol=http2
+2026-06-10T05:40:40Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-10T05:40:40Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T05:40:40Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T05:40:42Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=1
+2026-06-10T05:40:57Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T05:40:58Z INF Registered tunnel connection connIndex=1 connection=9cf24ad5-6001-4662-8f94-d2733b66ff7f event=0 ip=198.41.200.233 location=sjc10 protocol=http2
+2026-06-10T07:46:16Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T07:46:16Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T07:46:16Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-10T07:46:16Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=3
+2026-06-10T07:46:21Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T07:46:25Z INF Registered tunnel connection connIndex=3 connection=6c343538-b162-441d-8ca3-05022cb2fe81 event=0 ip=198.41.192.37 location=sjc06 protocol=http2
+2026-06-10T09:20:25Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-10T09:20:25Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=2 event=0 ip=198.41.200.23
+2026-06-10T09:20:25Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-10T09:20:26Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=2
+2026-06-10T09:20:39Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-10T09:20:41Z INF Registered tunnel connection connIndex=2 connection=80accae2-115b-4e3c-af13-165a5f9bc701 event=0 ip=198.41.200.23 location=sjc07 protocol=http2
+2026-06-10T09:34:16Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T09:34:16Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-10T09:34:16Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T09:34:16Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=1
+2026-06-10T09:34:28Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-10T09:34:29Z INF Registered tunnel connection connIndex=1 connection=a7277696-2ab4-48a7-b663-b206c35313b9 event=0 ip=198.41.200.233 location=sjc07 protocol=http2
+2026-06-10T10:17:27Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.0
+2026-06-10T11:40:07Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-10T11:40:07Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=2 event=0 ip=198.41.200.23
+2026-06-10T11:40:07Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-10T11:40:09Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=2
+2026-06-10T11:40:26Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-10T11:40:28Z INF Registered tunnel connection connIndex=2 connection=8230d2eb-66b0-43e3-b735-72ff08406ee3 event=0 ip=198.41.200.23 location=sjc11 protocol=http2
+2026-06-10T13:47:51Z INF Lost connection with the edge connIndex=3
+2026-06-10T13:47:51Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-10T13:47:51Z WRN Serve tunnel error error="connection with edge closed" connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T13:47:51Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T13:47:53Z WRN Connection terminated error="connection with edge closed" connIndex=3
+2026-06-10T13:48:01Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-10T13:48:03Z INF Registered tunnel connection connIndex=3 connection=7a65e332-b85a-4901-b242-43747c949efa event=0 ip=198.41.192.37 location=sjc06 protocol=http2
+2026-06-11T06:36:57Z INF Lost connection with the edge connIndex=2
+2026-06-11T06:36:57Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-11T06:36:57Z WRN Serve tunnel error error="connection with edge closed" connIndex=2 event=0 ip=198.41.200.23
+2026-06-11T06:36:57Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-11T06:36:58Z WRN Connection terminated error="connection with edge closed" connIndex=2
+2026-06-11T06:37:00Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-11T06:37:02Z INF Registered tunnel connection connIndex=2 connection=0bb1b7b5-8259-4423-88cb-a912afecff7f event=0 ip=198.41.200.23 location=sjc10 protocol=http2
+2026-06-11T07:14:46Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-11T07:14:46Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=2 event=0 ip=198.41.200.23
+2026-06-11T07:14:46Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-11T07:14:48Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=2
+2026-06-11T07:15:05Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-11T07:15:06Z INF Registered tunnel connection connIndex=2 connection=60f25e28-b70b-4a63-962c-56488245127c event=0 ip=198.41.200.23 location=sjc08 protocol=http2
+2026-06-11T07:18:24Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-11T07:18:24Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=1 event=0 ip=198.41.200.233
+2026-06-11T07:18:24Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.200.233
+2026-06-11T07:18:26Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=1
+2026-06-11T07:18:34Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-11T07:18:35Z INF Registered tunnel connection connIndex=1 connection=f28f6091-bf3a-46e9-9eb1-61d79ebc3b97 event=0 ip=198.41.200.233 location=sjc07 protocol=http2
+2026-06-11T10:17:26Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.0
+2026-06-11T11:23:13Z INF Lost connection with the edge connIndex=0
+2026-06-11T11:23:13Z WRN Serve tunnel error error="connection with edge closed" connIndex=0 event=0 ip=198.41.192.7
+2026-06-11T11:23:13Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-11T11:23:13Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-11T11:23:15Z WRN Connection terminated error="connection with edge closed" connIndex=0
+2026-06-11T11:23:17Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-11T11:23:27Z INF Registered tunnel connection connIndex=0 connection=6beb5122-0da8-44a1-8932-43f7abfcab33 event=0 ip=198.41.192.7 location=sjc06 protocol=http2
+2026-06-11T11:24:37Z INF Lost connection with the edge connIndex=3
+2026-06-11T11:24:37Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-11T11:24:37Z WRN Serve tunnel error error="connection with edge closed" connIndex=3 event=0 ip=198.41.192.37
+2026-06-11T11:24:37Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.37
+2026-06-11T11:24:38Z WRN Connection terminated error="connection with edge closed" connIndex=3
+2026-06-11T11:24:42Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-11T11:24:45Z INF Registered tunnel connection connIndex=3 connection=c16174f3-6921-4ac0-9eba-832fa0e0f41e event=0 ip=198.41.192.37 location=sjc06 protocol=http2
+2026-06-11T11:44:47Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-11T11:44:47Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=0 event=0 ip=198.41.192.7
+2026-06-11T11:44:47Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-11T11:44:48Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=0
+2026-06-11T11:44:53Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-11T11:44:55Z INF Registered tunnel connection connIndex=0 connection=69219e48-7b80-4813-bedb-374b3e596874 event=0 ip=198.41.192.7 location=sjc01 protocol=http2
+2026-06-12T03:25:11Z ERR  error="http2: stream closed" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-12T03:25:11Z ERR failed to serve incoming request error="Failed to proxy HTTP: http2: stream closed"
+2026-06-12T08:17:26Z INF Lost connection with the edge connIndex=3
+2026-06-12T08:17:26Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-12T08:17:26Z ERR  error="Incoming request ended abruptly: context canceled" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-12T08:17:26Z WRN Serve tunnel error error="connection with edge closed" connIndex=3 event=0 ip=198.41.192.37
+2026-06-12T08:17:26Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-12T08:17:26Z ERR failed to serve incoming request error="Failed to proxy HTTP: Incoming request ended abruptly: context canceled"
+2026-06-12T08:17:26Z ERR failed to serve incoming request error="Failed to proxy HTTP: Incoming request ended abruptly: context canceled"
+2026-06-12T08:17:26Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.37
+2026-06-12T08:17:27Z WRN Connection terminated error="connection with edge closed" connIndex=3
+2026-06-12T08:17:39Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-12T08:17:40Z INF Registered tunnel connection connIndex=3 connection=af88017f-76ab-46c9-af5d-ca5532f1a1ae event=0 ip=198.41.192.37 location=sjc06 protocol=http2
+2026-06-12T10:17:20Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.0
+2026-06-13T02:56:22Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-13T02:56:22Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=0 event=0 ip=198.41.192.7
+2026-06-13T02:56:22Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-13T02:56:24Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=0
+2026-06-13T02:56:32Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-13T02:56:35Z INF Registered tunnel connection connIndex=0 connection=bfff994f-cdae-41d2-9151-f399349590b4 event=0 ip=198.41.192.7 location=sjc01 protocol=http2
+2026-06-13T10:17:20Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.0
+2026-06-14T07:03:13Z INF Lost connection with the edge connIndex=0
+2026-06-14T07:03:13Z WRN Serve tunnel error error="connection with edge closed" connIndex=0 event=0 ip=198.41.192.7
+2026-06-14T07:03:13Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-14T07:03:13Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-14T07:03:13Z WRN Connection terminated error="connection with edge closed" connIndex=0
+2026-06-14T07:03:16Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-14T07:03:17Z INF Registered tunnel connection connIndex=0 connection=517ac945-775c-4d11-b931-00b1c3e39e9b event=0 ip=198.41.192.7 location=sjc06 protocol=http2
+2026-06-14T10:17:21Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.0
+2026-06-14T10:28:51Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-14T10:28:51Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=0 event=0 ip=198.41.192.7
+2026-06-14T10:28:51Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-14T10:28:53Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=0
+2026-06-14T10:29:04Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-14T10:29:05Z INF Registered tunnel connection connIndex=0 connection=66829a1e-48d3-41b6-8586-b31f58ff75ea event=0 ip=198.41.192.7 location=sjc06 protocol=http2
+2026-06-14T11:36:42Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-14T11:36:42Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=0 event=0 ip=198.41.192.7
+2026-06-14T11:36:42Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-14T11:36:43Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=0
+2026-06-14T11:37:00Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-14T11:37:02Z INF Registered tunnel connection connIndex=0 connection=8c89a276-04ed-4523-bae1-a6e76aba1f41 event=0 ip=198.41.192.7 location=sjc01 protocol=http2
+2026-06-15T10:17:23Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.0
+2026-06-15T12:15:35Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-15T12:15:35Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=0 event=0 ip=198.41.192.7
+2026-06-15T12:15:35Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-15T12:15:36Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=0
+2026-06-15T12:15:49Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-15T12:15:50Z INF Registered tunnel connection connIndex=0 connection=f5c801d9-3108-411d-b03b-edd3c08304ad event=0 ip=198.41.192.7 location=sjc01 protocol=http2
+2026-06-15T17:55:25Z INF Lost connection with the edge connIndex=2
+2026-06-15T17:55:25Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-15T17:55:25Z WRN Serve tunnel error error="connection with edge closed" connIndex=2 event=0 ip=198.41.200.23
+2026-06-15T17:55:25Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-15T17:55:25Z WRN Connection terminated error="connection with edge closed" connIndex=2
+2026-06-15T17:55:33Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-15T17:55:33Z INF Registered tunnel connection connIndex=2 connection=152fd05f-5a3b-4511-aa39-c38529c77cb1 event=0 ip=198.41.200.23 location=sjc08 protocol=http2
+2026-06-15T21:56:21Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-15T21:56:21Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=2 event=0 ip=198.41.200.23
+2026-06-15T21:56:21Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-15T21:56:21Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=2
+2026-06-15T21:56:23Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-15T21:56:24Z INF Registered tunnel connection connIndex=2 connection=d2e90a16-b958-4b51-b8ba-b022bc8f4b2a event=0 ip=198.41.200.23 location=sjc08 protocol=http2
+2026-06-16T02:21:46Z INF Lost connection with the edge connIndex=2
+2026-06-16T02:21:46Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-16T02:21:46Z WRN Serve tunnel error error="connection with edge closed" connIndex=2 event=0 ip=198.41.200.23
+2026-06-16T02:21:46Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.23
+2026-06-16T02:21:46Z INF Lost connection with the edge connIndex=3
+2026-06-16T02:21:46Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-16T02:21:46Z WRN Serve tunnel error error="connection with edge closed" connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:21:46Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:21:46Z WRN Connection terminated error="connection with edge closed" connIndex=2
+2026-06-16T02:21:47Z WRN Connection terminated error="connection with edge closed" connIndex=3
+2026-06-16T02:21:49Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:21:49Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:21:49Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-16T02:21:49Z INF Lost connection with the edge connIndex=0
+2026-06-16T02:21:49Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-16T02:21:49Z ERR Serve tunnel error error="connection with edge closed" connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T02:21:49Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T02:21:49Z ERR Connection terminated error="connection with edge closed" connIndex=0
+2026-06-16T02:21:49Z ERR Connection terminated error="Error shutting down control stream: context canceled" connIndex=1
+2026-06-16T02:21:54Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T02:21:54Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:21:54Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:21:54Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.23
+2026-06-16T02:22:09Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:22:09Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T02:22:09Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T02:22:09Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.23:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.23
+2026-06-16T02:22:09Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:22:09Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:22:09Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.23:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.23
+2026-06-16T02:22:09Z INF Retrying connection in up to 4s connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:22:09Z INF Retrying connection in up to 4s connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T02:22:09Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:22:09Z INF Retrying connection in up to 4s connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:22:09Z INF Retrying connection in up to 4s connIndex=2 event=0 ip=198.41.200.23
+2026-06-16T02:22:09Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3
+2026-06-16T02:22:10Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.23:7844: i/o timeout" connIndex=2
+2026-06-16T02:22:12Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1
+2026-06-16T02:22:12Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=0
+2026-06-16T02:22:18Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.107
+2026-06-16T02:22:18Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.193
+2026-06-16T02:22:18Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.167
+2026-06-16T02:22:18Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.63
+2026-06-16T02:22:33Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.107:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.107
+2026-06-16T02:22:33Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.63:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.63
+2026-06-16T02:22:33Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.193
+2026-06-16T02:22:33Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.167:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.167
+2026-06-16T02:22:33Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.167:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.167
+2026-06-16T02:22:33Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.193
+2026-06-16T02:22:33Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.63:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.63
+2026-06-16T02:22:33Z INF Retrying connection in up to 8s connIndex=1 event=0 ip=198.41.200.63
+2026-06-16T02:22:33Z INF Retrying connection in up to 8s connIndex=3 event=0 ip=198.41.192.167
+2026-06-16T02:22:33Z INF Retrying connection in up to 8s connIndex=2 event=0 ip=198.41.200.193
+2026-06-16T02:22:33Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.107:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.107
+2026-06-16T02:22:33Z INF Retrying connection in up to 8s connIndex=0 event=0 ip=198.41.192.107
+2026-06-16T02:22:35Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.107:7844: i/o timeout" connIndex=0
+2026-06-16T02:22:35Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.63:7844: i/o timeout" connIndex=1
+2026-06-16T02:22:38Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.167:7844: i/o timeout" connIndex=3
+2026-06-16T02:22:40Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=2
+2026-06-16T02:22:46Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.233
+2026-06-16T02:22:46Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T02:22:46Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.27
+2026-06-16T02:22:46Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.7
+2026-06-16T02:23:01Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.233
+2026-06-16T02:23:01Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.27:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.27
+2026-06-16T02:23:01Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.27:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.27
+2026-06-16T02:23:01Z INF Retrying connection in up to 16s connIndex=0 event=0 ip=198.41.192.27
+2026-06-16T02:23:01Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.233
+2026-06-16T02:23:01Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T02:23:01Z INF Retrying connection in up to 16s connIndex=2 event=0 ip=198.41.200.233
+2026-06-16T02:23:01Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T02:23:01Z INF Retrying connection in up to 16s connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T02:23:01Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.7
+2026-06-16T02:23:01Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.7
+2026-06-16T02:23:01Z INF Retrying connection in up to 16s connIndex=3 event=0 ip=198.41.192.7
+2026-06-16T02:23:06Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.27:7844: i/o timeout" connIndex=0
+2026-06-16T02:23:10Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=3
+2026-06-16T02:23:12Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=2
+2026-06-16T02:23:14Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=1
+2026-06-16T02:24:29Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.227
+2026-06-16T02:24:29Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.33
+2026-06-16T02:24:29Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:24:29Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:24:32Z INF Registered tunnel connection connIndex=2 connection=f1211fb0-1dd9-4abb-be25-e82f7bd30780 event=0 ip=198.41.200.33 location=sjc10 protocol=http2
+2026-06-16T02:24:44Z WRN Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.227:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.227
+2026-06-16T02:24:44Z WRN Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:24:44Z WRN Serve tunnel error error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:24:44Z WRN Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:24:44Z WRN Serve tunnel error error="DialContext error: dial tcp 198.41.192.227:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.227
+2026-06-16T02:24:44Z INF Retrying connection in up to 32s connIndex=0 event=0 ip=198.41.192.227
+2026-06-16T02:24:44Z WRN Serve tunnel error error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:24:44Z INF Retrying connection in up to 32s connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T02:24:44Z INF Retrying connection in up to 32s connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:24:59Z WRN Connection terminated error="DialContext error: dial tcp 198.41.192.227:7844: i/o timeout" connIndex=0
+2026-06-16T02:25:00Z WRN Connection terminated error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3
+2026-06-16T02:25:09Z WRN Connection terminated error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1
+2026-06-16T02:25:17Z INF Lost connection with the edge connIndex=2
+2026-06-16T02:25:17Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-16T02:25:17Z ERR Serve tunnel error error="connection with edge closed" connIndex=2 event=0 ip=198.41.200.33
+2026-06-16T02:25:17Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.33
+2026-06-16T02:25:17Z ERR Connection terminated error="connection with edge closed" connIndex=2
+2026-06-16T02:28:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.7
+2026-06-16T02:28:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T02:28:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.33
+2026-06-16T02:28:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.57
+2026-06-16T02:28:40Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.7
+2026-06-16T02:28:40Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.33:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.33
+2026-06-16T02:28:40Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.57:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.57
+2026-06-16T02:28:40Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T02:28:40Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.7
+2026-06-16T02:28:40Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.33:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.33
+2026-06-16T02:28:40Z INF Retrying connection in up to 4s connIndex=2 event=0 ip=198.41.200.33
+2026-06-16T02:28:40Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T02:28:40Z INF Retrying connection in up to 1m4s connIndex=3 event=0 ip=198.41.192.7
+2026-06-16T02:28:40Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.57:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.57
+2026-06-16T02:28:40Z INF Retrying connection in up to 1m4s connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T02:28:40Z INF Retrying connection in up to 1m4s connIndex=0 event=0 ip=198.41.192.57
+2026-06-16T02:28:42Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.33:7844: i/o timeout" connIndex=2
+2026-06-16T02:28:46Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=1
+2026-06-16T02:28:51Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.57:7844: i/o timeout" connIndex=0
+2026-06-16T02:28:58Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=3
+2026-06-16T02:31:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T02:31:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T02:31:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T02:31:25Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T02:31:26Z INF Registered tunnel connection connIndex=1 connection=b0196f3c-651a-4090-aa8b-ef9f9dc66076 event=0 ip=198.41.200.233 location=sjc10 protocol=http2
+2026-06-16T02:31:26Z INF Registered tunnel connection connIndex=0 connection=2c6476a6-c6ec-4ef9-bdca-4919ef434ca1 event=0 ip=198.41.192.7 location=sjc01 protocol=http2
+2026-06-16T02:31:26Z INF Registered tunnel connection connIndex=3 connection=bd3c57a8-c1f4-4ab0-9f2d-df5fcd2582d6 event=0 ip=198.41.192.27 location=sjc01 protocol=http2
+2026-06-16T02:31:27Z INF Registered tunnel connection connIndex=2 connection=d9a097e0-c5c7-495f-a5fa-7425ed28ac78 event=0 ip=198.41.200.53 location=sjc10 protocol=http2
+2026-06-16T03:14:27Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T03:14:27Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-16T03:14:27Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T03:14:28Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-16T03:14:28Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:14:28Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:14:28Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-16T03:14:28Z WRN Serve tunnel error error="Error shutting down control stream: client disconnected" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:14:28Z INF Retrying connection in up to 1s connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:14:28Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=1
+2026-06-16T03:14:29Z WRN Connection terminated error="Error shutting down control stream: client disconnected" connIndex=3
+2026-06-16T03:14:29Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=2
+2026-06-16T03:14:29Z INF Lost connection with the edge connIndex=0
+2026-06-16T03:14:29Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-16T03:14:29Z ERR Serve tunnel error error="connection with edge closed" connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:14:29Z INF Retrying connection in up to 1s connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:14:31Z ERR Connection terminated error="connection with edge closed" connIndex=0
+2026-06-16T03:14:47Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:14:47Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T03:14:47Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:14:47Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:15:02Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:15:02Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.27:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T03:15:02Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.27:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T03:15:02Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.53:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:15:02Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.53:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:15:02Z INF Retrying connection in up to 4s connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:15:02Z INF Retrying connection in up to 4s connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T03:15:02Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:15:02Z INF Retrying connection in up to 4s connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:15:02Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:15:02Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:15:02Z INF Retrying connection in up to 4s connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:15:03Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.27:7844: i/o timeout" connIndex=3
+2026-06-16T03:15:03Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.53:7844: i/o timeout" connIndex=2
+2026-06-16T03:15:04Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=0
+2026-06-16T03:15:05Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1
+2026-06-16T03:15:36Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T03:15:36Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T03:15:36Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.47
+2026-06-16T03:15:36Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.43
+2026-06-16T03:15:51Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.43:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.43
+2026-06-16T03:15:51Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.43:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.43
+2026-06-16T03:15:51Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T03:15:51Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T03:15:51Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.47:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.47
+2026-06-16T03:15:51Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.47:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.47
+2026-06-16T03:15:51Z INF Retrying connection in up to 8s connIndex=0 event=0 ip=198.41.192.47
+2026-06-16T03:15:51Z INF Retrying connection in up to 8s connIndex=1 event=0 ip=198.41.200.193
+2026-06-16T03:15:51Z INF Retrying connection in up to 8s connIndex=2 event=0 ip=198.41.200.43
+2026-06-16T03:15:51Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T03:15:51Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T03:15:51Z INF Retrying connection in up to 8s connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T03:15:52Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.47:7844: i/o timeout" connIndex=0
+2026-06-16T03:15:55Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.193:7844: i/o timeout" connIndex=1
+2026-06-16T03:15:55Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.43:7844: i/o timeout" connIndex=2
+2026-06-16T03:15:58Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3
+2026-06-16T03:16:08Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.113
+2026-06-16T03:16:08Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.47
+2026-06-16T03:16:08Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:16:08Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:16:23Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.47:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.47
+2026-06-16T03:16:23Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.47:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.47
+2026-06-16T03:16:23Z INF Retrying connection in up to 16s connIndex=3 event=0 ip=198.41.192.47
+2026-06-16T03:16:23Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.53:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:16:23Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.113:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.113
+2026-06-16T03:16:23Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.113:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.113
+2026-06-16T03:16:23Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.53:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:16:23Z INF Retrying connection in up to 16s connIndex=2 event=0 ip=198.41.200.53
+2026-06-16T03:16:23Z INF Retrying connection in up to 16s connIndex=1 event=0 ip=198.41.200.113
+2026-06-16T03:16:23Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:16:23Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:16:23Z INF Retrying connection in up to 16s connIndex=0 event=0 ip=198.41.192.7
+2026-06-16T03:16:24Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.47:7844: i/o timeout" connIndex=3
+2026-06-16T03:16:25Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.53:7844: i/o timeout" connIndex=2
+2026-06-16T03:16:26Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T03:16:26Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.13
+2026-06-16T03:16:28Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.7:7844: i/o timeout" connIndex=0
+2026-06-16T03:16:37Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.113:7844: i/o timeout" connIndex=1
+2026-06-16T03:16:41Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T03:16:41Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T03:16:41Z INF Retrying connection in up to 32s connIndex=3 event=0 ip=198.41.192.37
+2026-06-16T03:16:41Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.13:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.13
+2026-06-16T03:16:41Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.13:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.13
+2026-06-16T03:16:41Z INF Retrying connection in up to 32s connIndex=2 event=0 ip=198.41.200.13
+2026-06-16T03:16:57Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.37:7844: i/o timeout" connIndex=3
+2026-06-16T03:17:13Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.13:7844: i/o timeout" connIndex=2
+2026-06-16T03:21:17Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.63
+2026-06-16T03:21:17Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:21:17Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.107
+2026-06-16T03:21:17Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.77
+2026-06-16T03:21:32Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:21:32Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:21:32Z INF Retrying connection in up to 32s connIndex=1 event=0 ip=198.41.200.233
+2026-06-16T03:21:32Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.77:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.77
+2026-06-16T03:21:32Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.77:7844: i/o timeout" connIndex=3 event=0 ip=198.41.192.77
+2026-06-16T03:21:32Z INF Retrying connection in up to 1m4s connIndex=3 event=0 ip=198.41.192.77
+2026-06-16T03:21:32Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.200.63:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.63
+2026-06-16T03:21:32Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.200.63:7844: i/o timeout" connIndex=2 event=0 ip=198.41.200.63
+2026-06-16T03:21:32Z ERR Unable to establish connection with Cloudflare edge error="DialContext error: dial tcp 198.41.192.107:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.107
+2026-06-16T03:21:32Z ERR Serve tunnel error error="DialContext error: dial tcp 198.41.192.107:7844: i/o timeout" connIndex=0 event=0 ip=198.41.192.107
+2026-06-16T03:21:32Z INF Retrying connection in up to 1m4s connIndex=2 event=0 ip=198.41.200.63
+2026-06-16T03:21:32Z INF Retrying connection in up to 32s connIndex=0 event=0 ip=198.41.192.107
+2026-06-16T03:21:33Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.233:7844: i/o timeout" connIndex=1
+2026-06-16T03:21:37Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.107:7844: i/o timeout" connIndex=0
+2026-06-16T03:21:44Z ERR Connection terminated error="DialContext error: dial tcp 198.41.192.77:7844: i/o timeout" connIndex=3
+2026-06-16T03:22:01Z ERR Connection terminated error="DialContext error: dial tcp 198.41.200.63:7844: i/o timeout" connIndex=2
+2026-06-16T03:25:57Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.233
+2026-06-16T03:25:57Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=0 event=0 ip=198.41.192.67
+2026-06-16T03:25:57Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=1 event=0 ip=198.41.200.53
+2026-06-16T03:25:57Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T03:25:58Z INF Registered tunnel connection connIndex=0 connection=d20f25ac-b602-462b-b983-b13002e98278 event=0 ip=198.41.192.67 location=sjc01 protocol=http2
+2026-06-16T03:25:59Z INF Registered tunnel connection connIndex=1 connection=3b6bc943-9dd6-4b9f-9582-eb1672436178 event=0 ip=198.41.200.53 location=sjc08 protocol=http2
+2026-06-16T03:25:59Z INF Registered tunnel connection connIndex=3 connection=8e27666c-a8cd-4a3c-ac7a-d6df45a7d408 event=0 ip=198.41.192.27 location=sjc06 protocol=http2
+2026-06-16T03:25:59Z INF Registered tunnel connection connIndex=2 connection=c6a9b868-ad41-4c2b-8e15-fcc9ab6bd7c2 event=0 ip=198.41.200.233 location=sjc07 protocol=http2
+2026-06-16T04:19:32Z ERR failed to serve incoming request error="Error shutting down control stream: context canceled"
+2026-06-16T04:19:32Z WRN Serve tunnel error error="Error shutting down control stream: context canceled" connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T04:19:32Z INF Retrying connection in up to 1s connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T04:19:34Z WRN Connection terminated error="Error shutting down control stream: context canceled" connIndex=3
+2026-06-16T04:19:48Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=3 event=0 ip=198.41.192.27
+2026-06-16T04:19:49Z INF Registered tunnel connection connIndex=3 connection=823ea535-ad8a-4c48-9a00-03b9a9fd04e7 event=0 ip=198.41.192.27 location=sjc06 protocol=http2
+2026-06-16T05:31:05Z INF Lost connection with the edge connIndex=2
+2026-06-16T05:31:05Z ERR failed to serve incoming request error="Error shutting down control stream: client disconnected"
+2026-06-16T05:31:05Z WRN Serve tunnel error error="connection with edge closed" connIndex=2 event=0 ip=198.41.200.233
+2026-06-16T05:31:05Z INF Retrying connection in up to 1s connIndex=2 event=0 ip=198.41.200.233
+2026-06-16T05:31:06Z WRN Connection terminated error="connection with edge closed" connIndex=2
+2026-06-16T05:31:23Z INF Tunnel connection curve preferences: [X25519MLKEM768 CurveID(65074) CurveP256] connIndex=2 event=0 ip=198.41.200.233
+2026-06-16T05:31:25Z INF Registered tunnel connection connIndex=2 connection=b33f185b-b043-4de2-ba56-1c676f61f5f6 event=0 ip=198.41.200.233 location=sjc11 protocol=http2
+2026-06-16T08:14:39Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: read tcp 127.0.0.1:65393->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host." connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T08:14:39Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: read tcp 127.0.0.1:65393->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-06-16T08:15:14Z ERR  error="http2: stream closed" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T08:15:14Z ERR failed to serve incoming request error="Failed to proxy HTTP: http2: stream closed"
+2026-06-16T08:15:17Z ERR  error="http2: stream closed" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T08:15:17Z ERR failed to serve incoming request error="Failed to proxy HTTP: http2: stream closed"
+2026-06-16T08:15:29Z ERR  error="http2: stream closed" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T08:15:29Z ERR failed to serve incoming request error="Failed to proxy HTTP: http2: stream closed"
+2026-06-16T08:16:11Z ERR  error="http2: stream closed" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T08:16:11Z ERR failed to serve incoming request error="Failed to proxy HTTP: http2: stream closed"
+2026-06-16T08:29:35Z ERR  error="context canceled" connIndex=3 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T08:29:35Z ERR failed to serve incoming request error="Failed to proxy HTTP: context canceled"
+2026-06-16T10:00:25Z ERR  error="read tcp 127.0.0.1:50858->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:00:25Z ERR failed to serve incoming request error="Failed to proxy HTTP: read tcp 127.0.0.1:50858->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-06-16T10:00:26Z ERR  error="read tcp 127.0.0.1:50859->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:00:26Z ERR failed to serve incoming request error="Failed to proxy HTTP: read tcp 127.0.0.1:50859->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-06-16T10:00:26Z ERR  error="read tcp 127.0.0.1:50850->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:00:26Z ERR failed to serve incoming request error="Failed to proxy HTTP: read tcp 127.0.0.1:50850->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-06-16T10:00:27Z ERR  error="read tcp 127.0.0.1:50900->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:00:27Z ERR failed to serve incoming request error="Failed to proxy HTTP: read tcp 127.0.0.1:50900->127.0.0.1:3000: wsarecv: An existing connection was forcibly closed by the remote host."
+2026-06-16T10:00:31Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:00:31Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-16T10:02:27Z ERR  error="http2: stream closed" connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:02:27Z ERR failed to serve incoming request error="Failed to proxy HTTP: http2: stream closed"
+2026-06-16T10:03:02Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:03:02Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:03:02Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:03:02Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-16T10:03:02Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-16T10:03:02Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-16T10:03:02Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:03:02Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-16T10:03:02Z ERR  error="Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it." connIndex=0 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:03:02Z ERR failed to serve incoming request error="Failed to proxy HTTP: Unable to reach the origin service. The service may be down or it may not be responding to traffic from cloudflared: dial tcp 127.0.0.1:3000: connectex: No connection could be made because the target machine actively refused it."
+2026-06-16T10:17:23Z WRN Your version 2026.5.2 is outdated. We recommend upgrading it to 2026.6.0
+2026-06-16T10:25:25Z ERR  error="http2: stream closed" connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:25:25Z ERR  error="http2: stream closed" connIndex=1 event=1 ingressRule=0 originService=http://127.0.0.1:3000
+2026-06-16T10:25:25Z ERR failed to serve incoming request error="Failed to proxy HTTP: http2: stream closed"
+2026-06-16T10:25:25Z ERR failed to serve incoming request error="Failed to proxy HTTP: http2: stream closed"

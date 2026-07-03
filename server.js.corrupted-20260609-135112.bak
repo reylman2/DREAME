@@ -1,0 +1,6027 @@
+﻿const http = require("http");
+const https = require("https");
+const net = require("net");
+const tls = require("tls");
+const fs = require("fs/promises");
+const fsNative = require("fs");
+const path = require("path");
+const crypto = require("crypto");
+const QRCode = require("qrcode");
+const { loadEnvFile } = require("./lib/env");
+const {
+  closePostgres,
+  getPool,
+  readPostgresDb,
+  upsertPostgresItems,
+  writePostgresDb,
+} = require("./lib/postgres-store");
+const { sendVerificationCode } = require("./lib/notifier");
+
+const ROOT = __dirname;
+loadEnvFile(path.join(ROOT, ".env"));
+
+const PORT = Number(process.env.PORT || 3000);
+const PUBLIC_DIR = path.join(ROOT, "public");
+const GENERATED_DIR = path.join(PUBLIC_DIR, "generated");
+const COMMERCIAL_VIDEO_SKILL_FILE = path.join(
+  ROOT,
+  "..",
+  "SKILL_CommercialProductVideoWorkflow.md",
+);
+const OPENAI_IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || "gpt-image-2";
+const OPENAI_BASE_URL = (
+  process.env.OPENAI_BASE_URL || "https://api.openai.com"
+).replace(/\/$/, "");
+const OPENAI_PROXY =
+  process.env.OPENAI_PROXY ||
+  process.env.HTTPS_PROXY ||
+  process.env.HTTP_PROXY ||
+  "";
+const OPENAI_TEXT_MODEL = process.env.OPENAI_TEXT_MODEL || "gpt-4.1-mini";
+const POLLINATIONS_TEXT_MODEL = process.env.POLLINATIONS_TEXT_MODEL || "openai";
+const SEEDANCE_API_KEY = (
+  process.env.SEEDANCE_API_KEY ||
+  process.env.ARK_API_KEY ||
+  ""
+).trim();
+const SEEDANCE_PROVIDER = (
+  process.env.SEEDANCE_PROVIDER ||
+  (SEEDANCE_API_KEY.startsWith("ark-") ? "ark" : "seedance2")
+)
+  .trim()
+  .toLowerCase();
+const SEEDANCE_DEFAULT_ARK_MODEL = "doubao-seedance-2-0-260128";
+const SEEDANCE_DEFAULT_THIRD_PARTY_MODEL = "seedance-2.0";
+const SEEDANCE_MODEL_ENV =
+  process.env.SEEDANCE_MODEL ||
+  process.env.SEEDANCE_VIDEO_MODEL ||
+  process.env.SEEDANCE_VEDIO_MODEL ||
+  "";
+const SEEDANCE_MODEL =
+  SEEDANCE_PROVIDER === "ark" &&
+  (!SEEDANCE_MODEL_ENV ||
+    SEEDANCE_MODEL_ENV === SEEDANCE_DEFAULT_THIRD_PARTY_MODEL)
+    ? SEEDANCE_DEFAULT_ARK_MODEL
+    : SEEDANCE_MODEL_ENV || SEEDANCE_DEFAULT_THIRD_PARTY_MODEL;
+const SEEDANCE_BASE_URL = (
+  process.env.SEEDANCE_BASE_URL ||
+  (SEEDANCE_PROVIDER === "ark"
+    ? "https://ark.cn-beijing.volces.com/api/v3"
+    : "https://seedance2.app/api/v1")
+).replace(/\/$/, "");
+const FACE_RESTORE_PROVIDER = (process.env.FACE_RESTORE_PROVIDER || "")
+  .trim()
+  .toLowerCase();
+const FACE_RESTORE_API_URL = (process.env.FACE_RESTORE_API_URL || "").trim();
+const FACE_RESTORE_API_KEY = (process.env.FACE_RESTORE_API_KEY || "").trim();
+const COMFYUI_BASE_URL = (
+  process.env.COMFYUI_BASE_URL || "http://127.0.0.1:8188"
+).replace(/\/$/, "");
+const COMFYUI_FACE_RESTORE_WORKFLOW = (
+  process.env.COMFYUI_FACE_RESTORE_WORKFLOW ||
+  "workflows/comfyui-face-restore-light.json"
+).trim();
+const COMFYUI_FACE_RESTORE_OUTPUT_NODE = (
+  process.env.COMFYUI_FACE_RESTORE_OUTPUT_NODE || ""
+).trim();
+const COMFYUI_FACE_SWAP_WORKFLOW = (
+  process.env.COMFYUI_FACE_SWAP_WORKFLOW ||
+  "workflows/comfyui-face-swap-light.json"
+).trim();
+const COMFYUI_FACE_SWAP_OUTPUT_NODE = (
+  process.env.COMFYUI_FACE_SWAP_OUTPUT_NODE || ""
+).trim();
+const COMFYUI_TIMEOUT_MS = Number(process.env.COMFYUI_TIMEOUT_MS || 600000);
+const COMFYUI_LOG_FILE =
+  process.env.COMFYUI_LOG_FILE || "/tmp/dreamehub-comfyui.log";
+const ASYNC_GENERATION_MODES = new Set([
+  "video",
+  "video-face-restore",
+  "video-face-swap",
+]);
+const PAYMENT_PROVIDER = (process.env.PAYMENT_PROVIDER || "alipay,wechat")
+  .trim()
+  .toLowerCase();
+const PAYMENT_CURRENCY = (process.env.PAYMENT_CURRENCY || "cny")
+  .trim()
+  .toLowerCase();
+const STRIPE_SECRET_KEY = (process.env.STRIPE_SECRET_KEY || "").trim();
+const STRIPE_WEBHOOK_SECRET = (process.env.STRIPE_WEBHOOK_SECRET || "").trim();
+
+function normalizePaymentPem(value, label) {
+  const raw = String(value || "")
+    .replace(/\\n/g, "\n")
+    .trim();
+  if (!raw) return "";
+  if (/-----BEGIN [^-]+-----/.test(raw)) return raw;
+  const compact = raw.replace(/\s+/g, "");
+  if (/^[A-Za-z0-9+/=]+$/.test(compact) && compact.length > 128) {
+    const lines = compact.match(/.{1,64}/g)?.join("\n") || compact;
+    return `-----BEGIN ${label}-----\n${lines}\n-----END ${label}-----`;
+  }
+  return raw;
+}
+
+const ALIPAY_APP_ID = (process.env.ALIPAY_APP_ID || "").trim();
+const ALIPAY_PRIVATE_KEY = normalizePaymentPem(
+  process.env.ALIPAY_PRIVATE_KEY,
+  "PRIVATE KEY",
+);
+const ALIPAY_PUBLIC_KEY = normalizePaymentPem(
+  process.env.ALIPAY_PUBLIC_KEY,
+  "PUBLIC KEY",
+);
+const ALIPAY_GATEWAY = (
+  process.env.ALIPAY_GATEWAY || "https://openapi.alipay.com/gateway.do"
+).trim();
+const WECHAT_PAY_APP_ID = (process.env.WECHAT_PAY_APP_ID || "").trim();
+const WECHAT_PAY_MCH_ID = (process.env.WECHAT_PAY_MCH_ID || "").trim();
+const WECHAT_PAY_MCH_SERIAL_NO = (
+  process.env.WECHAT_PAY_MCH_SERIAL_NO || ""
+).trim();
+const WECHAT_PAY_PRIVATE_KEY = (process.env.WECHAT_PAY_PRIVATE_KEY || "")
+  .replace(/\\n/g, "\n")
+  .trim();
+const WECHAT_PAY_API_V3_KEY = (process.env.WECHAT_PAY_API_V3_KEY || "").trim();
+const WECHAT_PAY_PLATFORM_CERT_PEM = (
+  process.env.WECHAT_PAY_PLATFORM_CERT_PEM || ""
+)
+  .replace(/\\n/g, "\n")
+  .trim();
+const CREDIT_MIN_CNY = Number(process.env.CREDIT_MIN_CNY || 0.12);
+const CREDIT_MARGIN_RATE = Number(process.env.CREDIT_MARGIN_RATE || 0.35);
+const SEEDANCE_SUPPORTED_RATIOS = ["21:9", "16:9", "4:3", "1:1", "3:4", "9:16"];
+const SEEDANCE_SUPPORTED_RESOLUTIONS = ["480p", "720p", "1080p"];
+const SEEDANCE_DURATION_MIN = 4;
+const SEEDANCE_DURATION_MAX = 15;
+const SEEDANCE_REFERENCE_IMAGE_LIMIT = 9;
+const SEEDANCE_REFERENCE_VIDEO_LIMIT = 3;
+const SEEDANCE_REFERENCE_AUDIO_LIMIT = 3;
+let dbCache = null;
+const generationJobs = new Map();
+const LOCAL_MEMORY_DB = process.env.DREAME_LOCAL_MEMORY_DB === "true";
+
+const DEFAULT_FREE_QUOTAS = {
+  "models:list": 1000,
+  "images:generations": 5,
+  "chat:completions": 50,
+  "workflows:run": 30,
+};
+
+function configuredFaceRestoreProvider() {
+  if (FACE_RESTORE_PROVIDER) return FACE_RESTORE_PROVIDER;
+  if (FACE_RESTORE_API_URL) return "custom";
+  if (process.env.COMFYUI_BASE_URL || process.env.COMFYUI_FACE_RESTORE_WORKFLOW)
+    return "comfyui";
+  return "custom";
+}
+
+function faceRestoreConfigured() {
+  const provider = configuredFaceRestoreProvider();
+  if (provider === "custom") return Boolean(FACE_RESTORE_API_URL);
+  if (provider === "comfyui")
+    return Boolean(COMFYUI_BASE_URL && COMFYUI_FACE_RESTORE_WORKFLOW);
+  return false;
+}
+
+function faceSwapConfigured() {
+  return Boolean(COMFYUI_BASE_URL && COMFYUI_FACE_SWAP_WORKFLOW);
+}
+
+const IMAGE_MODEL_REGISTRY = [
+  {
+    id: "openai:gpt-image-2",
+    provider: "openai",
+    upstreamModel: "gpt-image-2",
+    label: "GPT Images 2.0",
+    description:
+      "OpenAI 鏈€鏂板浘鐗囨ā鍨嬶紝鏀寔鏂囩敓鍥俱€佸浘鐢熷浘鍜屽浘鐗囩紪杈戯紝闇€瑕?OPENAI_API_KEY銆?,
+    requiresKey: true,
+    sizes: ["1024x1024", "1024x1536", "1536x1024", "auto"],
+    qualities: ["low", "medium", "high", "auto"],
+    capabilities: {
+      output: "image",
+      modes: [
+        "text-to-image",
+        "image-to-image",
+        "image-reference",
+        "image-edit",
+      ],
+      inputTypes: ["text", "image"],
+      supportsReferenceImage: true,
+      supportsReferenceVideo: false,
+      supportsReferenceAudio: false,
+      supportsRegionMask: false,
+      supportsFirstLastFrame: false,
+      supportsBatch: false,
+      realApi: Boolean(process.env.OPENAI_API_KEY),
+    },
+  },
+  {
+    id: "openai:gpt-image-1",
+    provider: "openai",
+    upstreamModel: "gpt-image-1",
+    label: "GPT Image 1",
+    description:
+      "OpenAI 楂樿川閲忓浘鐗囨ā鍨嬶紝鏀寔鏂囩敓鍥惧拰鍥剧墖鍙傝€冪紪杈戯紝闇€瑕?OPENAI_API_KEY銆?,
+    requiresKey: true,
+    sizes: ["1024x1024", "1024x1536", "1536x1024", "auto"],
+    qualities: ["low", "medium", "high", "auto"],
+    capabilities: {
+      output: "image",
+      modes: [
+        "text-to-image",
+        "image-to-image",
+        "image-reference",
+        "image-edit",
+      ],
+      inputTypes: ["text", "image"],
+      supportsReferenceImage: true,
+      supportsReferenceVideo: false,
+      supportsReferenceAudio: false,
+      supportsRegionMask: false,
+      supportsFirstLastFrame: false,
+      supportsBatch: false,
+      realApi: Boolean(process.env.OPENAI_API_KEY),
+    },
+  },
+  {
+    id: "pollinations:flux",
+    provider: "pollinations",
+    upstreamModel: "flux",
+    label: "Flux",
+    description: "Pollinations 鍏嶈垂鍏紑鏂囩敓鍥炬ā鍨嬶紝鏃犻渶 OpenAI 棰濆害銆?,
+    requiresKey: false,
+    sizes: ["1024x1024", "1024x1536", "1536x1024"],
+    qualities: ["auto"],
+    capabilities: {
+      output: "image",
+      modes: ["text-to-image"],
+      inputTypes: ["text"],
+      supportsReferenceImage: false,
+      supportsReferenceVideo: false,
+      supportsReferenceAudio: false,
+      supportsRegionMask: false,
+      supportsFirstLastFrame: false,
+      supportsBatch: false,
+      realApi: true,
+    },
+  },
+  {
+    id: "pollinations:turbo",
+    provider: "pollinations",
+    upstreamModel: "turbo",
+    label: "Turbo",
+    description: "Pollinations 蹇€熷厤璐规枃鐢熷浘妯″瀷锛岄€傚悎棰勮鍜屼綆鎴愭湰璇曠敤銆?,
+    requiresKey: false,
+    sizes: ["1024x1024", "1024x1536", "1536x1024"],
+    qualities: ["auto"],
+    capabilities: {
+      output: "image",
+      modes: ["text-to-image"],
+      inputTypes: ["text"],
+      supportsReferenceImage: false,
+      supportsReferenceVideo: false,
+      supportsReferenceAudio: false,
+      supportsRegionMask: false,
+      supportsFirstLastFrame: false,
+      supportsBatch: false,
+      realApi: true,
+    },
+  },
+];
+
+const API_CAPABILITIES = {
+  text: {
+    realApi: true,
+    models: [
+      {
+        id: "dreamehub-free-chat",
+        provider: "pollinations",
+        label: "鍏嶈垂鐪熷疄瀵硅瘽",
+        engine: POLLINATIONS_TEXT_MODEL,
+        capabilities: {
+          output: "text",
+          modes: ["text-to-text"],
+          inputTypes: ["text"],
+          realApi: true,
+        },
+      },
+      {
+        id: "pollinations:openai",
+        provider: "pollinations",
+        label: "Pollinations OpenAI",
+        engine: "openai",
+        capabilities: {
+          output: "text",
+          modes: ["text-to-text"],
+          inputTypes: ["text"],
+          realApi: true,
+        },
+      },
+      {
+        id: "openai-chat",
+        provider: "openai",
+        label: "OpenAI 鏂囨湰",
+        engine: OPENAI_TEXT_MODEL,
+        capabilities: {
+          output: "text",
+          modes: ["text-to-text"],
+          inputTypes: ["text"],
+          realApi: Boolean(process.env.OPENAI_API_KEY),
+        },
+      },
+      {
+        id: "seedance-prompt-zh",
+        provider: "pollinations",
+        label: "Seedance 涓枃鎻愮ず璇?鍏嶈垂鐗?,
+        engine: POLLINATIONS_TEXT_MODEL,
+        capabilities: {
+          output: "text",
+          modes: ["text-to-text"],
+          inputTypes: ["text"],
+          realApi: true,
+        },
+      },
+      {
+        id: "seedance-prompt-zh-openai",
+        provider: "openai",
+        label: "Seedance 涓枃鎻愮ず璇?OpenAI",
+        engine: OPENAI_TEXT_MODEL,
+        capabilities: {
+          output: "text",
+          modes: ["text-to-text"],
+          inputTypes: ["text"],
+          realApi: Boolean(process.env.OPENAI_API_KEY),
+        },
+      },
+    ],
+    reason: "",
+  },
+  image: {
+    realApi: true,
+    models: IMAGE_MODEL_REGISTRY.map((model) => ({
+      id: model.id,
+      provider: model.provider,
+      label: model.label,
+      capabilities: model.capabilities,
+    })),
+  },
+  video: {
+    realApi: Boolean(
+      SEEDANCE_API_KEY || faceRestoreConfigured() || faceSwapConfigured(),
+    ),
+    models: [
+      ...(SEEDANCE_API_KEY
+        ? [
+            {
+              id: "seedance:2.0",
+              provider: SEEDANCE_PROVIDER === "ark" ? "ark" : "seedance",
+              label:
+                SEEDANCE_PROVIDER === "ark"
+                  ? "Doubao Seedance 2.0 (Ark)"
+                  : "Seedance 2.0",
+              capabilities: {
+                output: "video",
+                modes: [
+                  "text-to-video",
+                  "image-to-video",
+                  "first-last-frame",
+                  "reference-to-video",
+                ],
+                inputTypes: ["text", "image", "video", "audio"],
+                supportsReferenceImage: true,
+                supportsReferenceVideo: true,
+                supportsReferenceAudio: true,
+                supportsRegionMask: false,
+                supportsFirstLastFrame: true,
+                ratios: ["auto", ...SEEDANCE_SUPPORTED_RATIOS],
+                resolutions: SEEDANCE_SUPPORTED_RESOLUTIONS,
+                durationSeconds: {
+                  min: SEEDANCE_DURATION_MIN,
+                  max: SEEDANCE_DURATION_MAX,
+                },
+                referenceLimits: {
+                  image: SEEDANCE_REFERENCE_IMAGE_LIMIT,
+                  video: SEEDANCE_REFERENCE_VIDEO_LIMIT,
+                  audio: SEEDANCE_REFERENCE_AUDIO_LIMIT,
+                },
+                controls: [
+                  "generate_audio",
+                  "watermark",
+                  "return_last_frame",
+                  "camera_fixed",
+                  "seed",
+                  "service_tier",
+                  "draft",
+                  "draft_task",
+                  "callback_url",
+                  "execution_expires_after",
+                  "safety_identifier",
+                  "web_search",
+                ],
+                realApi: true,
+              },
+            },
+          ]
+        : []),
+      {
+        id: "face-restore:hd",
+        provider: "custom",
+        label: "瑙嗛闈㈤儴楂樻竻淇",
+        capabilities: {
+          output: "video",
+          modes: ["face-restoration"],
+          inputTypes: ["video"],
+          supportsReferenceImage: false,
+          supportsReferenceVideo: true,
+          supportsReferenceAudio: false,
+          supportsRegionMask: false,
+          supportsFirstLastFrame: false,
+          realApi: faceRestoreConfigured(),
+        },
+      },
+      {
+        id: "face-swap:light",
+        provider: "comfyui",
+        label: "瑙嗛鎹㈣劯锛圛nsightFace锛?,
+        capabilities: {
+          output: "video",
+          modes: ["face-swap"],
+          inputTypes: ["video", "image"],
+          supportsReferenceImage: true,
+          supportsReferenceVideo: true,
+          supportsReferenceAudio: false,
+          supportsRegionMask: false,
+          supportsFirstLastFrame: false,
+          realApi: faceSwapConfigured(),
+        },
+      },
+    ],
+    reason:
+      SEEDANCE_API_KEY || faceRestoreConfigured() || faceSwapConfigured()
+        ? ""
+        : "缂哄皯 SEEDANCE_API_KEY銆丗ACE_RESTORE_API_URL 鎴?ComfyUI 宸ヤ綔娴侀厤缃紝鏃犳硶鍚敤鐪熷疄瑙嗛 API銆?,
+  },
+};
+
+const mimeTypes = {
+  ".html": "text/html; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".svg": "image/svg+xml; charset=utf-8",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+  ".gif": "image/gif",
+  ".mp4": "video/mp4",
+  ".mov": "video/quicktime",
+  ".webm": "video/webm",
+  ".mp3": "audio/mpeg",
+  ".wav": "audio/wav",
+  ".m4a": "audio/mp4",
+  ".aac": "audio/aac",
+};
+
+function requireDatabaseUrl() {
+  if (!LOCAL_MEMORY_DB && !process.env.DATABASE_URL) {
+    throw new Error(
+      "DATABASE_URL is required. PostgreSQL is the only supported runtime database.",
+    );
+  }
+}
+
+function createLocalMemoryDb() {
+  return {
+    stats: {
+      creators: "0",
+      models: "0",
+      generations: "0",
+      uptime: "local",
+    },
+    users: [],
+    sessions: [],
+    verificationRequests: [],
+    workspaces: [],
+    wallets: [],
+    apiKeys: [],
+    orders: [],
+    generations: [],
+    models: [],
+    workflows: [],
+    communityWorks: [],
+    plans: [],
+    userWorkflows: [],
+    commercialVideoChats: [],
+  };
+}
+
+async function readDb() {
+  requireDatabaseUrl();
+  if (dbCache) return dbCache;
+  if (LOCAL_MEMORY_DB) {
+    dbCache = createLocalMemoryDb();
+    return dbCache;
+  }
+  dbCache = await readPostgresDb();
+  return dbCache;
+}
+
+async function writeDb(db) {
+  requireDatabaseUrl();
+  if (LOCAL_MEMORY_DB) {
+    dbCache = db;
+    return;
+  }
+  await writePostgresDb(db);
+  dbCache = db;
+}
+
+async function upsertDbItems(collection, items) {
+  requireDatabaseUrl();
+  if (LOCAL_MEMORY_DB) return;
+  await upsertPostgresItems(collection, items);
+}
+
+async function checkPostgresHealth() {
+  requireDatabaseUrl();
+  if (LOCAL_MEMORY_DB) return;
+  const db = getPool();
+  await db.query("select 1");
+}
+
+function sendJson(res, status, payload) {
+  res.writeHead(status, {
+    "Content-Type": "application/json; charset=utf-8",
+    "Cache-Control": "no-store",
+  });
+  res.end(JSON.stringify(payload));
+}
+
+function sendError(res, status, message) {
+  sendJson(res, status, { error: message });
+}
+
+async function readBody(req) {
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  if (!chunks.length) return {};
+
+  try {
+    return JSON.parse(Buffer.concat(chunks).toString("utf8"));
+  } catch {
+    return null;
+  }
+}
+
+async function readRawBody(req) {
+  const chunks = [];
+  for await (const chunk of req) chunks.push(chunk);
+  return Buffer.concat(chunks);
+}
+
+async function readFormBody(req) {
+  const rawBody = await readRawBody(req);
+  return Object.fromEntries(new URLSearchParams(rawBody.toString("utf8")));
+}
+
+function publicUser(user) {
+  if (!user) return null;
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    avatar: user.avatar,
+    plan: user.plan,
+    credits: user.credits,
+    role: user.role,
+  };
+}
+
+function ensureCollections(db) {
+  db.stats ||= {};
+  db.stats.creators ||= "0";
+  db.stats.models ||= "0";
+  db.stats.works ||= "0";
+  db.stats.calls ||= "0";
+  db.users ||= [];
+  db.sessions ||= [];
+  db.verificationRequests ||= [];
+  db.workspaces ||= [];
+  db.wallets ||= [];
+  db.apiKeys ||= [];
+  db.orders ||= [];
+  db.generations ||= [];
+  db.userWorkflows ||= [];
+  db.models ||= [];
+  db.workflows ||= [];
+  db.communityWorks ||= [];
+  db.plans ||= defaultPlans();
+  db.commercialVideoChats ||= [];
+
+  for (const user of db.users) {
+    ensureUserInfrastructure(db, user);
+  }
+}
+
+function ensureUserInfrastructure(db, user) {
+  let created = false;
+  let workspace = db.workspaces.find((item) => item.ownerId === user.id);
+  if (!workspace) {
+    workspace = createDefaultWorkspace(user);
+    db.workspaces.push(workspace);
+    created = true;
+  }
+
+  let wallet = db.wallets.find((item) => item.userId === user.id);
+  if (!wallet) {
+    wallet = createWallet(user, workspace);
+    db.wallets.push(wallet);
+    created = true;
+  }
+
+  return { workspace, wallet, created };
+}
+
+function createDefaultWorkspace(user) {
+  const projectId = crypto.randomUUID();
+  return {
+    id: crypto.randomUUID(),
+    ownerId: user.id,
+    name: `${user.name} 鐨勫伐浣滃尯`,
+    slug: `${user.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "workspace"}-${Date.now()}`,
+    defaultProjectId: projectId,
+    projects: [
+      {
+        id: projectId,
+        name: "Default Project",
+        environment: "production",
+        createdAt: new Date().toISOString(),
+      },
+    ],
+    createdAt: new Date().toISOString(),
+  };
+}
+
+function createWallet(user, workspace) {
+  return {
+    id: crypto.randomUUID(),
+    userId: user.id,
+    workspaceId: workspace.id,
+    currency: "CNY",
+    balance: 0,
+    frozenBalance: 0,
+    createdAt: new Date().toISOString(),
+  };
+}
+
+function safeJsonClone(value, fallback) {
+  try {
+    const cloned = JSON.parse(JSON.stringify(value ?? fallback));
+    return cloned ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function createDefaultUserCanvasWorkflow(user) {
+  const now = new Date().toISOString();
+  return {
+    id: "free-canvas",
+    userId: user.id,
+    title: "鑷敱鐢诲竷",
+    subtitle: "鑷敱娣诲姞鏂囨湰銆佸浘鐗囥€佽棰戜笌闊抽鑺傜偣锛岄€氳繃杩炵嚎鍐冲畾鐢熸垚涓婁笅鏂囥€?,
+    icon: "锛?,
+    accent: "cyan",
+    mode: "free",
+    composerKind: "free",
+    modelLabel: "鑷敱鑺傜偣",
+    cost: 0,
+    prompt: "",
+    nodes: [],
+    links: [],
+    batchOutputs: [],
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
+function userCanvasWorkflows(db, user) {
+  db.userWorkflows ||= [];
+  return db.userWorkflows.filter((item) => item.userId === user.id);
+}
+
+function ensureUserCanvasWorkflows(db, user) {
+  const workflows = userCanvasWorkflows(db, user);
+  if (workflows.length) return { workflows, created: false };
+  const workflow = createDefaultUserCanvasWorkflow(user);
+  db.userWorkflows.push(workflow);
+  return { workflows: [workflow], created: true };
+}
+
+function publicCanvasWorkflow(workflow) {
+  const payload = safeJsonClone(workflow, {});
+  delete payload.userId;
+  return payload;
+}
+
+function sanitizeCanvasWorkflowPayload(payload, user, existing = {}) {
+  const source =
+    payload?.workflow && typeof payload.workflow === "object"
+      ? payload.workflow
+      : payload || {};
+  const now = new Date().toISOString();
+  const title =
+    String(source.title || existing.title || "鏈懡鍚嶅伐浣滄祦")
+      .trim()
+      .slice(0, 80) || "鏈懡鍚嶅伐浣滄祦";
+  return {
+    ...existing,
+    id: String(existing.id || source.id || crypto.randomUUID()).slice(0, 80),
+    userId: user.id,
+    title,
+    subtitle: String(source.subtitle || existing.subtitle || "").slice(0, 240),
+    icon: String(source.icon || existing.icon || "锛?).slice(0, 8),
+    accent: String(source.accent || existing.accent || "cyan").slice(0, 24),
+    mode: String(source.mode || existing.mode || "free").slice(0, 48),
+    composerKind: String(
+      source.composerKind || existing.composerKind || "free",
+    ).slice(0, 48),
+    modelLabel: String(
+      source.modelLabel || existing.modelLabel || "鑷敱鑺傜偣",
+    ).slice(0, 80),
+    cost: Number.isFinite(Number(source.cost ?? existing.cost))
+      ? Number(source.cost ?? existing.cost)
+      : 0,
+    prompt: String(source.prompt || "").slice(0, 50000),
+    nodes: Array.isArray(source.nodes)
+      ? safeJsonClone(source.nodes, [])
+      : safeJsonClone(existing.nodes, []),
+    links: Array.isArray(source.links)
+      ? safeJsonClone(source.links, [])
+      : safeJsonClone(existing.links, []),
+    batchOutputs: Array.isArray(source.batchOutputs)
+      ? safeJsonClone(source.batchOutputs, [])
+      : safeJsonClone(existing.batchOutputs, []),
+    createdAt: existing.createdAt || source.createdAt || now,
+    updatedAt: now,
+  };
+}
+
+function publicWorkspace(workspace) {
+  if (!workspace) return null;
+  return {
+    id: workspace.id,
+    name: workspace.name,
+    slug: workspace.slug,
+    projects: workspace.projects,
+    createdAt: workspace.createdAt,
+  };
+}
+
+function publicWallet(wallet) {
+  if (!wallet) return null;
+  return {
+    id: wallet.id,
+    currency: wallet.currency,
+    balance: wallet.balance,
+    frozenBalance: wallet.frozenBalance,
+    createdAt: wallet.createdAt,
+  };
+}
+
+function publicOrder(order) {
+  if (!order) return null;
+  return {
+    id: order.id,
+    orderNo: order.orderNo,
+    planId: order.planId,
+    planName: order.planName,
+    amount: order.amount,
+    currency: order.currency || "CNY",
+    credits: order.credits,
+    method: order.method,
+    provider: order.provider,
+    status: order.status,
+    checkoutUrl: order.checkoutUrl || "",
+    qrText: order.qrText || "",
+    qrImage: order.qrImage || "",
+    paidAt: order.paidAt || "",
+    createdAt: order.createdAt,
+  };
+}
+
+function defaultPlans() {
+  return [
+    {
+      id: "starter",
+      name: "Starter",
+      period: "Starter pack",
+      price: 19,
+      credits: 120,
+      features: ["120 compute credits", "Image and text generation", "API key access"],
+    },
+    {
+      id: "creator",
+      name: "Creator",
+      period: "Popular",
+      price: 59,
+      credits: 420,
+      features: ["420 compute credits", "Workflow templates", "Generation history"],
+    },
+    {
+      id: "studio",
+      name: "Studio",
+      period: "Team pack",
+      price: 129,
+      credits: 1000,
+      features: ["1000 compute credits", "Batch creation", "Priority workspace use"],
+    },
+  ];
+}
+
+function planUnitPrice(plan) {
+  const price = Number(plan?.price || 0);
+  const credits = Number(plan?.credits || 0);
+  if (!Number.isFinite(price) || !Number.isFinite(credits) || credits <= 0)
+    return Infinity;
+  return price / credits;
+}
+
+function isPlanProfitable(plan) {
+  const minUnitPrice = Number.isFinite(CREDIT_MIN_CNY) ? CREDIT_MIN_CNY : 0.12;
+  return planUnitPrice(plan) >= minUnitPrice;
+}
+
+function profitProtectedPlan(plan) {
+  const minUnitPrice = Number.isFinite(CREDIT_MIN_CNY) ? CREDIT_MIN_CNY : 0.12;
+  const credits = Number(plan?.credits || 0);
+  if (!Number.isFinite(credits) || credits <= 0) return plan;
+  const minimumPrice = Math.ceil(credits * minUnitPrice);
+  if (Number(plan.price || 0) >= minimumPrice) return plan;
+  return {
+    ...plan,
+    originalPrice: plan.price,
+    price: minimumPrice,
+    profitProtected: true,
+  };
+}
+
+function publicPlan(plan) {
+  const protectedPlan = profitProtectedPlan(plan);
+  return {
+    ...protectedPlan,
+    unitPrice: Number(planUnitPrice(protectedPlan).toFixed(4)),
+  };
+}
+
+function billablePlans(db) {
+  return (db.plans || []).map(profitProtectedPlan).filter(isPlanProfitable);
+}
+
+function maskApiKey(secret) {
+  return `${secret.slice(0, 10)}...${secret.slice(-4)}`;
+}
+
+function hashSecret(secret) {
+  return crypto.createHash("sha256").update(secret).digest("hex");
+}
+
+function publicApiKey(apiKey) {
+  ensureApiKeyQuotaShape(apiKey);
+  return {
+    id: apiKey.id,
+    workspaceId: apiKey.workspaceId,
+    name: apiKey.name,
+    maskedKey: apiKey.maskedKey,
+    permissions: apiKey.permissions,
+    quota: apiKey.quota,
+    used: apiKey.used,
+    freeQuota: apiKey.freeQuota,
+    usage: apiKey.usage,
+    ipWhitelist: apiKey.ipWhitelist,
+    status: apiKey.status,
+    createdAt: apiKey.createdAt,
+    lastUsedAt: apiKey.lastUsedAt,
+  };
+}
+
+function parseIpWhitelist(value) {
+  if (Array.isArray(value))
+    return value
+      .map(String)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  return String(value || "")
+    .split(/[\n,]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function parsePermissions(value) {
+  const allowed = new Set([
+    "images:create",
+    "chat:create",
+    "videos:create",
+    "models:read",
+    "workflows:run",
+    "billing:read",
+  ]);
+  const permissions = Array.isArray(value) ? value : [value].filter(Boolean);
+  const clean = permissions.filter((item) => allowed.has(item));
+  return clean.length ? clean : ["images:create", "models:read"];
+}
+
+function ensureApiKeyQuotaShape(apiKey) {
+  apiKey.freeQuota ||= {};
+  apiKey.usage ||= {};
+  for (const [endpoint, quota] of Object.entries(DEFAULT_FREE_QUOTAS)) {
+    if (!Number.isFinite(Number(apiKey.freeQuota[endpoint])))
+      apiKey.freeQuota[endpoint] = quota;
+    if (!Number.isFinite(Number(apiKey.usage[endpoint])))
+      apiKey.usage[endpoint] = 0;
+  }
+  apiKey.quota ||= Object.values(apiKey.freeQuota).reduce(
+    (sum, item) => sum + Number(item || 0),
+    0,
+  );
+  apiKey.used ||= Object.values(apiKey.usage).reduce(
+    (sum, item) => sum + Number(item || 0),
+    0,
+  );
+}
+
+function parseFreeQuotas(value) {
+  const quotas = { ...DEFAULT_FREE_QUOTAS };
+  const incoming = value && typeof value === "object" ? value : {};
+  for (const endpoint of Object.keys(quotas)) {
+    if (incoming[endpoint] !== undefined) {
+      quotas[endpoint] = Math.max(0, Number(incoming[endpoint] || 0));
+    }
+  }
+  return quotas;
+}
+
+function getClientIp(req) {
+  const forwarded = String(req.headers["x-forwarded-for"] || "")
+    .split(",")[0]
+    .trim();
+  const raw = forwarded || req.socket.remoteAddress || "";
+  return raw.replace(/^::ffff:/, "");
+}
+
+function ipv4ToInt(ip) {
+  const parts = ip.split(".").map(Number);
+  if (
+    parts.length !== 4 ||
+    parts.some((part) => !Number.isInteger(part) || part < 0 || part > 255)
+  ) {
+    return null;
+  }
+  return parts.reduce((acc, part) => (acc << 8) + part, 0) >>> 0;
+}
+
+function ipMatchesRule(ip, rule) {
+  if (!rule) return false;
+  if (rule === ip) return true;
+  if (
+    (ip === "::1" || ip === "127.0.0.1") &&
+    (rule === "localhost" || rule === "127.0.0.1" || rule === "::1")
+  ) {
+    return true;
+  }
+  if (!rule.includes("/")) return false;
+
+  const [rangeIp, bitsRaw] = rule.split("/");
+  const bits = Number(bitsRaw);
+  const ipInt = ipv4ToInt(ip);
+  const rangeInt = ipv4ToInt(rangeIp);
+  if (
+    ipInt === null ||
+    rangeInt === null ||
+    !Number.isInteger(bits) ||
+    bits < 0 ||
+    bits > 32
+  ) {
+    return false;
+  }
+
+  const mask = bits === 0 ? 0 : (0xffffffff << (32 - bits)) >>> 0;
+  return (ipInt & mask) === (rangeInt & mask);
+}
+
+function isIpAllowed(ip, whitelist) {
+  if (!whitelist?.length) return true;
+  return whitelist.some((rule) => ipMatchesRule(ip, rule));
+}
+
+function requirePlatformApiKey(req, res, db, permission, endpoint) {
+  const token = getToken(req);
+  if (!token) {
+    sendError(res, 401, "缂哄皯骞冲彴 API Key");
+    return null;
+  }
+
+  const keyHash = hashSecret(token);
+  const apiKey = db.apiKeys.find((item) => item.keyHash === keyHash);
+  if (!apiKey || apiKey.status !== "active") {
+    sendError(res, 401, "API Key 鏃犳晥鎴栧凡绂佺敤");
+    return null;
+  }
+  ensureApiKeyQuotaShape(apiKey);
+
+  if (!apiKey.permissions.includes(permission)) {
+    sendError(res, 403, "API Key 鏉冮檺涓嶈冻");
+    return null;
+  }
+
+  if (endpoint && apiKey.usage[endpoint] >= apiKey.freeQuota[endpoint]) {
+    sendError(res, 429, `${endpoint} 鍏嶈垂棰濆害宸茬敤灏絗);
+    return null;
+  }
+
+  const clientIp = getClientIp(req);
+  if (!isIpAllowed(clientIp, apiKey.ipWhitelist)) {
+    sendError(res, 403, `褰撳墠 IP 涓嶅湪鐧藉悕鍗曞唴锛?{clientIp}`);
+    return null;
+  }
+
+  return apiKey;
+}
+
+function consumeApiQuota(apiKey, endpoint, amount = 1) {
+  ensureApiKeyQuotaShape(apiKey);
+  apiKey.usage[endpoint] += amount;
+  apiKey.used = Object.values(apiKey.usage).reduce(
+    (sum, item) => sum + Number(item || 0),
+    0,
+  );
+  apiKey.lastUsedAt = new Date().toISOString();
+}
+
+function quotaSummary(apiKey) {
+  ensureApiKeyQuotaShape(apiKey);
+  const endpoints = {};
+  for (const endpoint of Object.keys(apiKey.freeQuota)) {
+    endpoints[endpoint] = {
+      limit: apiKey.freeQuota[endpoint],
+      used: apiKey.usage[endpoint] || 0,
+      remaining: Math.max(
+        0,
+        apiKey.freeQuota[endpoint] - (apiKey.usage[endpoint] || 0),
+      ),
+    };
+  }
+  return {
+    limit: apiKey.quota,
+    used: apiKey.used,
+    remaining: Math.max(0, apiKey.quota - apiKey.used),
+    endpoints,
+  };
+}
+
+function envNumber(name, fallback) {
+  const value = Number(process.env[name]);
+  return Number.isFinite(value) ? value : fallback;
+}
+
+function profitableCreditsFromCost(upstreamCostCny, minimumCredits = 1) {
+  const unitPrice = Number.isFinite(CREDIT_MIN_CNY) ? CREDIT_MIN_CNY : 0.12;
+  const margin = Number.isFinite(CREDIT_MARGIN_RATE) ? CREDIT_MARGIN_RATE : 0.35;
+  const protectedMargin = Math.min(0.85, Math.max(0, margin));
+  const cost = Math.max(0, Number(upstreamCostCny || 0));
+  const credits = Math.ceil(cost / Math.max(0.01, unitPrice * (1 - protectedMargin)));
+  return Math.max(minimumCredits, credits);
+}
+
+function generationBillingQuote(body, imageModel = null) {
+  const mode = String(body?.mode || "image");
+  const count = Math.max(1, Math.min(4, Number(body?.count || 1)));
+  if (mode === "video") {
+    const duration = normalizeSeedanceDuration(body?.duration);
+    const resolution = normalizeSeedanceResolution(body?.resolution);
+    const resolutionMultiplier =
+      resolution === "1080p" ? 2 : resolution === "480p" ? 0.7 : 1;
+    const audioMultiplier = body?.generateAudio ? 1.15 : 1;
+    const baseCost = envNumber("UPSTREAM_COST_SEEDANCE_720P_5S_CNY", 5.6);
+    const upstreamCost =
+      baseCost * (duration / 5) * resolutionMultiplier * audioMultiplier * count;
+    return {
+      credits: profitableCreditsFromCost(upstreamCost, 85),
+      upstreamCostCny: Number(upstreamCost.toFixed(2)),
+      basis: {
+        mode,
+        count,
+        duration,
+        resolution,
+        generateAudio: Boolean(body?.generateAudio),
+      },
+    };
+  }
+  if (mode === "video-face-restore") {
+    const upstreamCost = envNumber("UPSTREAM_COST_FACE_RESTORE_CNY", 0.6);
+    return {
+      credits: profitableCreditsFromCost(upstreamCost, 8),
+      upstreamCostCny: upstreamCost,
+      basis: { mode },
+    };
+  }
+  if (mode === "video-face-swap") {
+    const upstreamCost = envNumber("UPSTREAM_COST_FACE_SWAP_CNY", 0.8);
+    return {
+      credits: profitableCreditsFromCost(upstreamCost, 10),
+      upstreamCostCny: upstreamCost,
+      basis: { mode },
+    };
+  }
+  if (mode === "train") {
+    const upstreamCost = envNumber("UPSTREAM_COST_TRAIN_CNY", 3);
+    return {
+      credits: profitableCreditsFromCost(upstreamCost, 30),
+      upstreamCostCny: upstreamCost,
+      basis: { mode },
+    };
+  }
+  if (mode === "text") {
+    const upstreamCost = body?.model === "seedance-prompt-zh-openai" ? 0.06 : 0;
+    return {
+      credits: profitableCreditsFromCost(upstreamCost, upstreamCost > 0 ? 6 : 1),
+      upstreamCostCny: upstreamCost,
+      basis: { mode, model: body?.model || "" },
+    };
+  }
+
+  const provider = imageModel?.provider || "image";
+  const quality = String(body?.quality || "medium");
+  const upstreamCost =
+    provider === "openai"
+      ? quality === "high"
+        ? envNumber("UPSTREAM_COST_OPENAI_IMAGE_HIGH_CNY", 0.9)
+        : quality === "low"
+          ? envNumber("UPSTREAM_COST_OPENAI_IMAGE_LOW_CNY", 0.25)
+          : envNumber("UPSTREAM_COST_OPENAI_IMAGE_MEDIUM_CNY", 0.45)
+      : envNumber("UPSTREAM_COST_FREE_IMAGE_CNY", 0.08);
+  return {
+    credits: profitableCreditsFromCost(upstreamCost, provider === "openai" ? 14 : 4),
+    upstreamCostCny: upstreamCost,
+    basis: {
+      mode,
+      provider,
+      model: imageModel?.id || body?.imageModel || "",
+      quality,
+      size: body?.size || "auto",
+    },
+  };
+}
+
+function getToken(req) {
+  const header = req.headers.authorization || "";
+  return header.startsWith("Bearer ") ? header.slice(7) : "";
+}
+
+function currentUser(req, db) {
+  const token = getToken(req);
+  const session = db.sessions.find((item) => item.token === token);
+  if (!session) return null;
+  return db.users.find((user) => user.id === session.userId) || null;
+}
+
+function requireUser(req, res, db) {
+  const user = currentUser(req, db);
+  if (!user) {
+    sendError(res, 401, "璇峰厛鐧诲綍");
+    return null;
+  }
+  return user;
+}
+
+const COMMERCIAL_VIDEO_MODES = [
+  "quick_prompt",
+  "single_shot",
+  "product_demo",
+  "commercial_campaign",
+  "multi_platform_campaign",
+];
+
+const COMMERCIAL_VIDEO_STAGES = [
+  "scope_mode",
+  "brand_guidelines",
+  "marketing_brief",
+  "script",
+  "shot_list",
+  "references",
+  "assets",
+  "prompts",
+  "keyframes",
+  "storyboard",
+  "generation_mode",
+  "generation",
+  "overlays",
+  "audio",
+  "variants",
+  "localization",
+  "review",
+  "export",
+];
+
+function commercialSkillSpec() {
+  return {
+    name: "Commercial Product Marketing Video Workflow",
+    source: "SKILL_CommercialProductVideoWorkflow.md",
+    modes: COMMERCIAL_VIDEO_MODES,
+    stages: COMMERCIAL_VIDEO_STAGES,
+    principles: [
+      "Preserve user-authored intent and version generated artifacts.",
+      "Keep every stage resumable with structured state.",
+      "Confirm paid generation, final exports, and irreversible review actions.",
+      "Use storyboard prompts as frozen-state descriptions, not motion prompts.",
+      "Select and confirm video generation mode before submitting a job.",
+    ],
+  };
+}
+
+async function commercialSkillAvailable() {
+  try {
+    await fs.access(COMMERCIAL_VIDEO_SKILL_FILE);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function emptyCommercialArtifacts() {
+  return {
+    brandGuidelines: {},
+    marketingBrief: {},
+    script: [],
+    shotList: [],
+    storyboardPrompts: [],
+    generationModes: [],
+    overlays: [],
+    reviewChecklist: [],
+    exportManifest: {},
+  };
+}
+
+function createCommercialVideoChat(user) {
+  const now = new Date().toISOString();
+  return {
+    id: crypto.randomUUID(),
+    userId: user.id,
+    title: "Commercial video workflow",
+    skillSource: "SKILL_CommercialProductVideoWorkflow.md",
+    mode: "",
+    stage: "scope_mode",
+    artifacts: emptyCommercialArtifacts(),
+    messages: [
+      {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content:
+          "Tell me what you want to advertise. I will guide the workflow from scope mode to brief, script, shot list, storyboard prompts, generation mode, review, and export.",
+        createdAt: now,
+      },
+    ],
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
+function latestCommercialVideoChat(db, user) {
+  return db.commercialVideoChats
+    .filter((item) => item.userId === user.id)
+    .sort(
+      (a, b) =>
+        new Date(b.updatedAt || b.createdAt || 0).getTime() -
+        new Date(a.updatedAt || a.createdAt || 0).getTime(),
+    )[0];
+}
+
+function inferCommercialMode(text) {
+  const lower = String(text || "").toLowerCase();
+  if (/prompt|negative prompt|鎻愮ず璇峾鏀瑰啓/.test(lower)) return "quick_prompt";
+  if (/one shot|single shot|鍗曢暅澶磡涓€涓暅澶磡涓€鏉?.test(lower))
+    return "single_shot";
+  if (/platform|tiktok|youtube|instagram|reels|澶氬钩鍙皘鏈湴鍖東locali[sz]e/.test(lower))
+    return "multi_platform_campaign";
+  if (/campaign|commercial|骞垮憡鐗噟鍏ㄦ|鍝佺墝|鎶曟斁/.test(lower))
+    return "commercial_campaign";
+  if (/demo|mechanism|appliance|product|浜у搧|鏈烘|鍔熻兘|婕旂ず/.test(lower))
+    return "product_demo";
+  return "";
+}
+
+function splitListText(value) {
+  return String(value || "")
+    .split(/[,锛?锛沑n]/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 8);
+}
+
+function extractCommercialLabel(message, labels) {
+  const source = String(message || "");
+  const allLabels = [
+    "brand",
+    "product",
+    "category",
+    "audience",
+    "target",
+    "benefit",
+    "cta",
+    "colors?",
+  ];
+  const wanted = labels.join("|");
+  const boundary = allLabels.join("|");
+  const pattern = new RegExp(
+    `(?:^|\\s)(?:${wanted})\\s*[:锛歖\\s*([\\s\\S]*?)(?=\\s+(?:${boundary})\\s*[:锛歖|\\n|$)`,
+    "i",
+  );
+  const match = source.match(pattern);
+  return match ? match[1].trim() : "";
+}
+
+function updateCommercialArtifacts(chat, text) {
+  const message = String(text || "").trim();
+  const artifacts = chat.artifacts || emptyCommercialArtifacts();
+  const brief = artifacts.marketingBrief || {};
+  const brand = artifacts.brandGuidelines || {};
+
+  const pairs = [
+    ["productName", ["product"]],
+    ["productCategory", ["category"]],
+    ["targetAudience", ["audience", "target"]],
+    ["coreBenefit", ["benefit"]],
+    ["ctaCopy", ["cta"]],
+  ];
+  for (const [key, labels] of pairs) {
+    const value = extractCommercialLabel(message, labels);
+    if (value) brief[key] = value.slice(0, 240);
+  }
+
+  const brandValue = extractCommercialLabel(message, ["brand"]);
+  if (brandValue) brand.brandName = brandValue.slice(0, 120);
+
+  const colorValue = extractCommercialLabel(message, ["colors?"]);
+  if (colorValue) {
+    brand.colors ||= {};
+    brand.colors.primary = splitListText(colorValue);
+  }
+
+  if (!brief.productName && message.length < 120) brief.productName = message;
+  brief.updatedAt = new Date().toISOString();
+  brand.updatedAt = new Date().toISOString();
+  artifacts.marketingBrief = brief;
+  artifacts.brandGuidelines = brand;
+  chat.artifacts = artifacts;
+}
+
+function commercialMissingFields(chat) {
+  const artifacts = chat.artifacts || emptyCommercialArtifacts();
+  const brief = artifacts.marketingBrief || {};
+  const brand = artifacts.brandGuidelines || {};
+  const missing = [];
+  if (!chat.mode) missing.push("workflow mode");
+  if (!brand.brandName) missing.push("brand name");
+  if (!brief.productName) missing.push("product name");
+  if (!brief.targetAudience) missing.push("target audience");
+  if (!brief.coreBenefit) missing.push("core benefit");
+  if (!brief.ctaCopy) missing.push("CTA copy");
+  return missing;
+}
+
+function nextCommercialStage(chat) {
+  const missing = commercialMissingFields(chat);
+  if (missing.includes("workflow mode")) return "scope_mode";
+  if (missing.includes("brand name")) return "brand_guidelines";
+  if (
+    missing.includes("product name") ||
+    missing.includes("target audience") ||
+    missing.includes("core benefit") ||
+    missing.includes("CTA copy")
+  )
+    return "marketing_brief";
+  const artifacts = chat.artifacts || emptyCommercialArtifacts();
+  if (!artifacts.script?.length) return "script";
+  if (!artifacts.shotList?.length) return "shot_list";
+  if (!artifacts.storyboardPrompts?.length) return "storyboard";
+  if (!artifacts.generationModes?.length) return "generation_mode";
+  return "review";
+}
+
+function ensureCommercialDraftArtifacts(chat) {
+  const artifacts = chat.artifacts || emptyCommercialArtifacts();
+  const brief = artifacts.marketingBrief || {};
+  const product = brief.productName || "the product";
+  const benefit = brief.coreBenefit || "the core benefit";
+  const audience = brief.targetAudience || "the target audience";
+  const cta = brief.ctaCopy || "Learn more";
+
+  if (!artifacts.script.length && brief.productName && brief.coreBenefit) {
+    artifacts.script = [
+      {
+        id: "scene-hook",
+        title: "Hook",
+        text: `Open on ${product} solving a clear pain point for ${audience}.`,
+        durationEstimate: 4,
+        hookScene: true,
+      },
+      {
+        id: "scene-demo",
+        title: "Product demo",
+        text: `Show the product benefit: ${benefit}. Keep product identity stable.`,
+        durationEstimate: 8,
+      },
+      {
+        id: "scene-cta",
+        title: "CTA",
+        text: `End with ${cta}.`,
+        durationEstimate: 3,
+        ctaScene: true,
+      },
+    ];
+  }
+
+  if (!artifacts.shotList.length && artifacts.script.length) {
+    artifacts.shotList = [
+      {
+        id: "shot-01",
+        sceneId: "scene-hook",
+        summary: "Hero reveal with product clearly visible",
+        duration: 4,
+        aspectRatio: "16:9",
+        generationMode: "",
+      },
+      {
+        id: "shot-02",
+        sceneId: "scene-demo",
+        summary: "Feature demonstration with protected product details",
+        duration: 8,
+        aspectRatio: "16:9",
+        generationMode: "",
+      },
+      {
+        id: "shot-03",
+        sceneId: "scene-cta",
+        summary: "Final brand lockup and CTA",
+        duration: 3,
+        aspectRatio: "16:9",
+        generationMode: "",
+      },
+    ];
+  }
+
+  if (!artifacts.storyboardPrompts.length && artifacts.shotList.length) {
+    artifacts.storyboardPrompts = artifacts.shotList.map((shot, index) => ({
+      id: `storyboard-${index + 1}`,
+      shotId: shot.id,
+      timing: index === 1 ? "mid" : "start",
+      prompt: `Frozen storyboard frame for ${shot.summary}. Product: ${product}. Brand-safe commercial lighting. No motion blur, no product deformation.`,
+      reviewStatus: "draft",
+    }));
+  }
+
+  if (!artifacts.generationModes.length && artifacts.shotList.length) {
+    artifacts.generationModes = artifacts.shotList.map((shot) => ({
+      shotId: shot.id,
+      recommended: shot.id === "shot-02" ? "first_last" : "i2v",
+      confirmed: false,
+      reason:
+        shot.id === "shot-02"
+          ? "Feature demo benefits from precise start and end states."
+          : "Hero and CTA shots benefit from an approved starting composition.",
+    }));
+  }
+
+  if (!artifacts.reviewChecklist.length) {
+    artifacts.reviewChecklist = [
+      { item: "Brand colors and logo rules checked", status: "pending" },
+      { item: "Product identity preserved", status: "pending" },
+      { item: "Claims and CTA reviewed", status: "pending" },
+      { item: "Generation mode confirmed before video job", status: "pending" },
+    ];
+  }
+
+  chat.artifacts = artifacts;
+}
+
+function commercialAssistantText(chat, userText) {
+  const missing = commercialMissingFields(chat);
+  const artifacts = chat.artifacts || emptyCommercialArtifacts();
+  const brief = artifacts.marketingBrief || {};
+  const lines = [];
+  lines.push(`Mode: ${chat.mode || "not selected"} | Stage: ${chat.stage}`);
+
+  if (missing.length) {
+    lines.push(`I still need: ${missing.join(", ")}.`);
+    lines.push(
+      "Reply in any format, or use labels like Brand:, Product:, Audience:, Benefit:, CTA:.",
+    );
+    return lines.join("\n");
+  }
+
+  ensureCommercialDraftArtifacts(chat);
+  lines.push(`Brief locked for ${brief.productName}.`);
+  lines.push("Draft script, shot list, storyboard prompts, and generation-mode recommendations are ready in the artifact panel.");
+  lines.push(
+    "Next action: confirm generation mode per shot, then upload/approve storyboard frames before any real paid video job.",
+  );
+  if (/export|final/i.test(userText)) {
+    lines.push(
+      "Final export is blocked until brand/legal/client review items are approved and no placeholder outputs remain.",
+    );
+  }
+  return lines.join("\n");
+}
+
+async function publicCommercialVideoChat(chat) {
+  return {
+    ...chat,
+    skill: {
+      ...commercialSkillSpec(),
+      available: await commercialSkillAvailable(),
+    },
+  };
+}
+
+function normalizeImageSize(size) {
+  const allowedSizes = new Set(["1024x1024", "1024x1536", "1536x1024", "auto"]);
+  return allowedSizes.has(size) ? size : "1024x1024";
+}
+
+function normalizeImageQuality(quality) {
+  const allowedQualities = new Set(["low", "medium", "high", "auto"]);
+  return allowedQualities.has(quality) ? quality : "medium";
+}
+
+function clampNumber(value, fallback, min, max) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.min(max, Math.max(min, number));
+}
+
+function optionalBoolean(value) {
+  if (value === undefined || value === null || value === "") return undefined;
+  if (typeof value === "boolean") return value;
+  const normalized = String(value).trim().toLowerCase();
+  if (["true", "1", "yes", "on"].includes(normalized)) return true;
+  if (["false", "0", "no", "off"].includes(normalized)) return false;
+  return Boolean(value);
+}
+
+function arkSafetyIdentifier(user) {
+  const source = String(user?.id || user?.email || "guest").slice(0, 128);
+  return crypto.createHash("sha256").update(source).digest("hex").slice(0, 64);
+}
+
+function resolveImageModel(modelId) {
+  const requested = modelId || "openai:gpt-image-2";
+  return (
+    IMAGE_MODEL_REGISTRY.find(
+      (model) => model.id === requested || model.upstreamModel === requested,
+    ) || IMAGE_MODEL_REGISTRY[0]
+  );
+}
+
+function imageDimensions(size) {
+  const normalized = normalizeImageSize(size);
+  if (normalized === "1024x1536") return { width: 1024, height: 1536 };
+  if (normalized === "1536x1024") return { width: 1536, height: 1024 };
+  return { width: 1024, height: 1024 };
+}
+
+function mimeFromContentType(contentType) {
+  const type = String(contentType || "")
+    .split(";")[0]
+    .trim();
+  if (type) return type;
+  return "image/png";
+}
+
+function extensionFromMime(mimeType) {
+  const normalized = String(mimeType || "").toLowerCase();
+  if (normalized.includes("jpeg") || normalized.includes("jpg")) return ".jpg";
+  if (normalized.includes("webp")) return ".webp";
+  if (normalized.includes("png")) return ".png";
+  if (normalized.includes("mp4")) return ".mp4";
+  if (normalized.includes("quicktime")) return ".mov";
+  if (normalized.includes("mpeg")) return ".mpg";
+  if (normalized.includes("wav")) return ".wav";
+  if (normalized.includes("mp3")) return ".mp3";
+  return ".png";
+}
+
+async function referenceImageToFile(asset, index = 0) {
+  const source = String(asset?.source || "");
+  if (!source) return null;
+  if (source.startsWith("data:image/")) {
+    const match = source.match(/^data:([^;,]+);base64,(.+)$/);
+    if (!match) return null;
+    const mimeType = mimeFromContentType(match[1]);
+    return {
+      buffer: Buffer.from(match[2], "base64"),
+      mimeType,
+      filename: `${asset.refName || `reference-${index + 1}`}${extensionFromMime(mimeType)}`,
+    };
+  }
+
+  const localPrefix = "/generated/";
+  const publicUrlPrefix = `${process.env.PUBLIC_BASE_URL || ""}/generated/`;
+  let relativePath = "";
+
+  if (source.startsWith(localPrefix)) {
+    relativePath = source;
+  } else if (publicUrlPrefix && source.startsWith(publicUrlPrefix)) {
+    relativePath = source.slice((process.env.PUBLIC_BASE_URL || "").length);
+  } else {
+    try {
+      const sourceUrl = new URL(source);
+      if (
+        ["localhost", "127.0.0.1"].includes(sourceUrl.hostname) &&
+        sourceUrl.pathname.startsWith(localPrefix)
+      ) {
+        relativePath = sourceUrl.pathname;
+      }
+    } catch {
+      return null;
+    }
+  }
+
+  if (!relativePath) return null;
+  const fileName = path.basename(relativePath);
+  const ext = path.extname(fileName).toLowerCase();
+  const mimeType = mimeTypes[ext] || "image/png";
+  const file = await fs.readFile(path.join(GENERATED_DIR, fileName));
+  return {
+    buffer: file,
+    mimeType: mimeFromContentType(mimeType),
+    filename: fileName,
+  };
+}
+
+function buildPollinationsImageUrl(body, imageModel) {
+  const { width, height } = imageDimensions(body.size);
+  const prompt = [
+    String(body.prompt || "").trim(),
+    Number(body.strength)
+      ? `style strength ${Number(body.strength)} of 100`
+      : "",
+  ]
+    .filter(Boolean)
+    .join(", ");
+  const params = new URLSearchParams({
+    model: imageModel.upstreamModel,
+    width: String(width),
+    height: String(height),
+    nologo: "true",
+    seed: String(Math.floor(Math.random() * 100000000)),
+  });
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?${params.toString()}`;
+}
+
+function requestBinaryDirect(url) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const req = https.request(
+      {
+        method: "GET",
+        hostname: target.hostname,
+        port: target.port || 443,
+        path: `${target.pathname}${target.search}`,
+        timeout: 120000,
+        headers: {
+          Accept: "image/avif,image/webp,image/png,image/jpeg,image/*,*/*",
+          "User-Agent": "DreameHub/1.0",
+        },
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          if (res.statusCode < 200 || res.statusCode >= 300) {
+            reject(new Error(`鍥剧墖鏈嶅姟杩斿洖 HTTP ${res.statusCode}`));
+            return;
+          }
+          const contentType = res.headers["content-type"] || "";
+          if (!contentType.startsWith("image/")) {
+            reject(
+              new Error(
+                `鍥剧墖鏈嶅姟杩斿洖浜嗛潪鍥剧墖鍝嶅簲锛?{contentType || "unknown"}`,
+              ),
+            );
+            return;
+          }
+          resolve({
+            buffer: Buffer.concat(chunks),
+            contentType,
+          });
+        });
+      },
+    );
+    req.on("timeout", () => req.destroy(new Error("IMAGE_REQUEST_TIMEOUT")));
+    req.on("error", reject);
+    req.end();
+  });
+}
+
+function requestBinaryViaHttpProxy(url, proxyUrl) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const proxy = new URL(proxyUrl);
+    const socket = net.connect(Number(proxy.port || 80), proxy.hostname);
+    socket.setTimeout(120000);
+    socket.once("connect", () => {
+      const auth = proxy.username
+        ? `Proxy-Authorization: Basic ${Buffer.from(`${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`).toString("base64")}\r\n`
+        : "";
+      socket.write(
+        `CONNECT ${target.hostname}:443 HTTP/1.1\r\nHost: ${target.hostname}:443\r\n${auth}\r\n`,
+      );
+    });
+
+    let buffered = Buffer.alloc(0);
+    socket.on("data", function onProxyData(chunk) {
+      buffered = Buffer.concat([buffered, chunk]);
+      const headerEnd = buffered.indexOf("\r\n\r\n");
+      if (headerEnd === -1) return;
+
+      const header = buffered.slice(0, headerEnd).toString("utf8");
+      if (!/^HTTP\/1\.[01] 200/i.test(header)) {
+        socket.destroy();
+        reject(new Error(`浠ｇ悊 CONNECT 澶辫触锛?{header.split("\r\n")[0]}`));
+        return;
+      }
+
+      socket.removeListener("data", onProxyData);
+      const secureSocket = tls.connect({ socket, servername: target.hostname });
+      const req = https.request(
+        {
+          method: "GET",
+          hostname: target.hostname,
+          path: `${target.pathname}${target.search}`,
+          createConnection: () => secureSocket,
+          timeout: 120000,
+          headers: {
+            Accept: "image/avif,image/webp,image/png,image/jpeg,image/*,*/*",
+            "User-Agent": "DreameHub/1.0",
+          },
+        },
+        (res) => {
+          const chunks = [];
+          res.on("data", (data) => chunks.push(data));
+          res.on("end", () => {
+            if (res.statusCode < 200 || res.statusCode >= 300) {
+              reject(new Error(`鍥剧墖鏈嶅姟杩斿洖 HTTP ${res.statusCode}`));
+              return;
+            }
+            const contentType = res.headers["content-type"] || "";
+            if (!contentType.startsWith("image/")) {
+              reject(
+                new Error(
+                  `鍥剧墖鏈嶅姟杩斿洖浜嗛潪鍥剧墖鍝嶅簲锛?{contentType || "unknown"}`,
+                ),
+              );
+              return;
+            }
+            resolve({
+              buffer: Buffer.concat(chunks),
+              contentType,
+            });
+          });
+        },
+      );
+      req.on("timeout", () => req.destroy(new Error("IMAGE_REQUEST_TIMEOUT")));
+      req.on("error", reject);
+      req.end();
+    });
+
+    socket.on("timeout", () =>
+      socket.destroy(new Error("IMAGE_PROXY_TIMEOUT")),
+    );
+    socket.on("error", reject);
+  });
+}
+
+function isProxyConnectionError(error) {
+  const message = String(error?.message || "");
+  return [
+    "ECONNREFUSED",
+    "ECONNRESET",
+    "ENOTFOUND",
+    "EHOSTUNREACH",
+    "OPENAI_PROXY_TIMEOUT",
+    "IMAGE_PROXY_TIMEOUT",
+    "浠ｇ悊 CONNECT 澶辫触",
+  ].some((fragment) => message.includes(fragment) || error?.code === fragment);
+}
+
+async function requestImageBinary(url) {
+  if (OPENAI_PROXY) {
+    try {
+      return await requestBinaryViaHttpProxy(url, OPENAI_PROXY);
+    } catch (error) {
+      if (!isProxyConnectionError(error)) throw error;
+      try {
+        return await requestBinaryDirect(url);
+      } catch (directError) {
+        throw new Error(
+          `浠ｇ悊涓嶅彲鐢ㄤ笖鐩磋繛鍥剧墖鏈嶅姟澶辫触銆備唬鐞嗛敊璇細${error.message}锛涚洿杩為敊璇細${directError.message}`,
+        );
+      }
+    }
+  }
+  return requestBinaryDirect(url);
+}
+
+function imageExtension(contentType) {
+  if (contentType.includes("png")) return "png";
+  if (contentType.includes("webp")) return "webp";
+  if (contentType.includes("gif")) return "gif";
+  return "jpg";
+}
+
+function generatedExtension(contentType, fallback = ".bin") {
+  const normalized = String(contentType || "").toLowerCase();
+  if (normalized.includes("mp4")) return ".mp4";
+  if (normalized.includes("quicktime")) return ".mov";
+  if (normalized.includes("webm")) return ".webm";
+  if (normalized.includes("jpeg") || normalized.includes("jpg")) return ".jpg";
+  if (normalized.includes("png")) return ".png";
+  if (normalized.includes("webp")) return ".webp";
+  return fallback;
+}
+
+async function saveGeneratedImage(buffer, contentType) {
+  await fs.mkdir(GENERATED_DIR, { recursive: true });
+  const fileName = `${crypto.randomUUID()}.${imageExtension(contentType)}`;
+  await fs.writeFile(path.join(GENERATED_DIR, fileName), buffer);
+  return `/generated/${fileName}`;
+}
+
+async function saveGeneratedBinary(
+  buffer,
+  contentType,
+  fallbackExtension = ".bin",
+) {
+  await fs.mkdir(GENERATED_DIR, { recursive: true });
+  const fileName = `${crypto.randomUUID()}${generatedExtension(contentType, fallbackExtension)}`;
+  await fs.writeFile(path.join(GENERATED_DIR, fileName), buffer);
+  return `/generated/${fileName}`;
+}
+
+function requestJsonDirect(url, payload, headers) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const client = target.protocol === "http:" ? http : https;
+    const req = client.request(
+      {
+        method: "POST",
+        hostname: target.hostname,
+        port: target.port || (target.protocol === "http:" ? 80 : 443),
+        path: `${target.pathname}${target.search}`,
+        headers,
+        timeout: 120000,
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          const text = Buffer.concat(chunks).toString("utf8");
+          try {
+            resolve({
+              ok: res.statusCode >= 200 && res.statusCode < 300,
+              status: res.statusCode,
+              json: JSON.parse(text),
+            });
+          } catch {
+            reject(
+              new Error(`OpenAI 杩斿洖浜嗛潪 JSON 鍝嶅簲锛欻TTP ${res.statusCode}`),
+            );
+          }
+        });
+      },
+    );
+    req.on("timeout", () => req.destroy(new Error("OPENAI_REQUEST_TIMEOUT")));
+    req.on("error", reject);
+    req.write(JSON.stringify(payload));
+    req.end();
+  });
+}
+
+function requestJsonViaHttpProxy(url, payload, headers, proxyUrl) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const proxy = new URL(proxyUrl);
+    const proxyPort = Number(proxy.port || 80);
+
+    const socket = net.connect(proxyPort, proxy.hostname);
+    socket.setTimeout(120000);
+    socket.once("connect", () => {
+      const auth = proxy.username
+        ? `Proxy-Authorization: Basic ${Buffer.from(`${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`).toString("base64")}\r\n`
+        : "";
+      socket.write(
+        `CONNECT ${target.hostname}:443 HTTP/1.1\r\nHost: ${target.hostname}:443\r\n${auth}\r\n`,
+      );
+    });
+
+    let buffered = Buffer.alloc(0);
+    socket.on("data", function onProxyData(chunk) {
+      buffered = Buffer.concat([buffered, chunk]);
+      const headerEnd = buffered.indexOf("\r\n\r\n");
+      if (headerEnd === -1) return;
+
+      const header = buffered.slice(0, headerEnd).toString("utf8");
+      if (!/^HTTP\/1\.[01] 200/i.test(header)) {
+        socket.destroy();
+        reject(new Error(`浠ｇ悊 CONNECT 澶辫触锛?{header.split("\r\n")[0]}`));
+        return;
+      }
+
+      socket.removeListener("data", onProxyData);
+      const secureSocket = tls.connect({ socket, servername: target.hostname });
+      const req = https.request(
+        {
+          method: "POST",
+          hostname: target.hostname,
+          path: `${target.pathname}${target.search}`,
+          headers,
+          createConnection: () => secureSocket,
+          timeout: 120000,
+        },
+        (res) => {
+          const chunks = [];
+          res.on("data", (data) => chunks.push(data));
+          res.on("end", () => {
+            const text = Buffer.concat(chunks).toString("utf8");
+            try {
+              resolve({
+                ok: res.statusCode >= 200 && res.statusCode < 300,
+                status: res.statusCode,
+                json: JSON.parse(text),
+              });
+            } catch {
+              reject(
+                new Error(`OpenAI 杩斿洖浜嗛潪 JSON 鍝嶅簲锛欻TTP ${res.statusCode}`),
+              );
+            }
+          });
+        },
+      );
+      req.on("timeout", () => req.destroy(new Error("OPENAI_REQUEST_TIMEOUT")));
+      req.on("error", reject);
+      req.write(JSON.stringify(payload));
+      req.end();
+    });
+
+    socket.on("timeout", () =>
+      socket.destroy(new Error("OPENAI_PROXY_TIMEOUT")),
+    );
+    socket.on("error", reject);
+  });
+}
+
+async function requestOpenAIJson(pathname, payload) {
+  const url = `${OPENAI_BASE_URL}${pathname}`;
+  const body = JSON.stringify(payload);
+  const headers = {
+    "Content-Type": "application/json",
+    "Content-Length": Buffer.byteLength(body),
+    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+  };
+
+  if (OPENAI_PROXY) {
+    try {
+      return await requestJsonViaHttpProxy(url, payload, headers, OPENAI_PROXY);
+    } catch (error) {
+      if (!isProxyConnectionError(error)) throw error;
+      try {
+        return await requestJsonDirect(url, payload, headers);
+      } catch (directError) {
+        throw new Error(
+          `浠ｇ悊涓嶅彲鐢ㄤ笖鐩磋繛 OpenAI 澶辫触銆備唬鐞嗛敊璇細${error.message}锛涚洿杩為敊璇細${directError.message}`,
+        );
+      }
+    }
+  }
+
+  return requestJsonDirect(url, payload, headers);
+}
+
+async function requestProviderJson(url, payload, headers = {}) {
+  const body = JSON.stringify(payload);
+  const requestHeaders = {
+    "Content-Type": "application/json",
+    "Content-Length": Buffer.byteLength(body),
+    ...headers,
+  };
+  return requestJsonDirect(url, payload, requestHeaders);
+}
+
+function requestFormJsonDirect(url, fields, headers = {}) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const body = new URLSearchParams(fields).toString();
+    const client = target.protocol === "http:" ? http : https;
+    const req = client.request(
+      {
+        method: "POST",
+        hostname: target.hostname,
+        port: target.port || (target.protocol === "http:" ? 80 : 443),
+        path: `${target.pathname}${target.search}`,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Length": Buffer.byteLength(body),
+          ...headers,
+        },
+        timeout: 120000,
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          const text = Buffer.concat(chunks).toString("utf8");
+          let json = null;
+          try {
+            json = JSON.parse(text);
+          } catch {}
+          resolve({
+            ok: res.statusCode >= 200 && res.statusCode < 300,
+            status: res.statusCode,
+            json,
+            text,
+          });
+        });
+      },
+    );
+    req.on("timeout", () => req.destroy(new Error("FORM_REQUEST_TIMEOUT")));
+    req.on("error", reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+function requestJsonBodyDirect(url, body, headers = {}) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const client = target.protocol === "http:" ? http : https;
+    const req = client.request(
+      {
+        method: "POST",
+        hostname: target.hostname,
+        port: target.port || (target.protocol === "http:" ? 80 : 443),
+        path: `${target.pathname}${target.search}`,
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": Buffer.byteLength(body),
+          ...headers,
+        },
+        timeout: 120000,
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          const text = Buffer.concat(chunks).toString("utf8");
+          let json = null;
+          try {
+            json = JSON.parse(text);
+          } catch {}
+          resolve({
+            ok: res.statusCode >= 200 && res.statusCode < 300,
+            status: res.statusCode,
+            json,
+            text,
+            headers: res.headers,
+          });
+        });
+      },
+    );
+    req.on("timeout", () => req.destroy(new Error("JSON_BODY_TIMEOUT")));
+    req.on("error", reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+function requestJsonGetDirect(url, headers = {}) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const client = target.protocol === "http:" ? http : https;
+    const req = client.request(
+      {
+        method: "GET",
+        hostname: target.hostname,
+        port: target.port || (target.protocol === "http:" ? 80 : 443),
+        path: `${target.pathname}${target.search}`,
+        headers,
+        timeout: 120000,
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          const text = Buffer.concat(chunks).toString("utf8");
+          try {
+            resolve({
+              ok: res.statusCode >= 200 && res.statusCode < 300,
+              status: res.statusCode,
+              json: JSON.parse(text),
+            });
+          } catch {
+            reject(new Error(`鏈嶅姟杩斿洖浜嗛潪 JSON 鍝嶅簲锛欻TTP ${res.statusCode}`));
+          }
+        });
+      },
+    );
+    req.on("timeout", () => req.destroy(new Error("JSON_GET_TIMEOUT")));
+    req.on("error", reject);
+    req.end();
+  });
+}
+
+function requestJsonMethodDirect(url, method = "GET", headers = {}) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const client = target.protocol === "http:" ? http : https;
+    const req = client.request(
+      {
+        method,
+        hostname: target.hostname,
+        port: target.port || (target.protocol === "http:" ? 80 : 443),
+        path: `${target.pathname}${target.search}`,
+        headers,
+        timeout: 120000,
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          const text = Buffer.concat(chunks).toString("utf8");
+          let json = null;
+          try {
+            json = text ? JSON.parse(text) : {};
+          } catch {}
+          resolve({
+            ok: res.statusCode >= 200 && res.statusCode < 300,
+            status: res.statusCode,
+            json,
+            text,
+          });
+        });
+      },
+    );
+    req.on("timeout", () => req.destroy(new Error("JSON_METHOD_TIMEOUT")));
+    req.on("error", reject);
+    req.end();
+  });
+}
+
+function requestAnyBinaryDirect(url) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const client = target.protocol === "http:" ? http : https;
+    const req = client.request(
+      {
+        method: "GET",
+        hostname: target.hostname,
+        port: target.port || (target.protocol === "http:" ? 80 : 443),
+        path: `${target.pathname}${target.search}`,
+        timeout: 120000,
+        headers: { "User-Agent": "DreameHub/1.0" },
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          if (res.statusCode < 200 || res.statusCode >= 300) {
+            reject(new Error(`浜岃繘鍒惰祫婧愯繑鍥?HTTP ${res.statusCode}`));
+            return;
+          }
+          resolve({
+            buffer: Buffer.concat(chunks),
+            contentType:
+              res.headers["content-type"] || "application/octet-stream",
+          });
+        });
+      },
+    );
+    req.on("timeout", () => req.destroy(new Error("BINARY_REQUEST_TIMEOUT")));
+    req.on("error", reject);
+    req.end();
+  });
+}
+
+function requestMultipartForm(url, parts, headers = {}) {
+  const multipart = buildMultipartBody(parts);
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const client = target.protocol === "http:" ? http : https;
+    const req = client.request(
+      {
+        method: "POST",
+        hostname: target.hostname,
+        port: target.port || (target.protocol === "http:" ? 80 : 443),
+        path: `${target.pathname}${target.search}`,
+        headers: {
+          "Content-Type": `multipart/form-data; boundary=${multipart.boundary}`,
+          "Content-Length": multipart.body.length,
+          ...headers,
+        },
+        timeout: 120000,
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (chunk) => chunks.push(chunk));
+        res.on("end", () => {
+          const text = Buffer.concat(chunks).toString("utf8");
+          try {
+            resolve({
+              ok: res.statusCode >= 200 && res.statusCode < 300,
+              status: res.statusCode,
+              json: JSON.parse(text),
+            });
+          } catch {
+            reject(new Error(`鏈嶅姟杩斿洖浜嗛潪 JSON 鍝嶅簲锛欻TTP ${res.statusCode}`));
+          }
+        });
+      },
+    );
+    req.on("timeout", () =>
+      req.destroy(new Error("MULTIPART_REQUEST_TIMEOUT")),
+    );
+    req.on("error", reject);
+    req.write(multipart.body);
+    req.end();
+  });
+}
+
+function extractOpenAIText(payload) {
+  if (payload.output_text) return String(payload.output_text);
+  const chunks = [];
+  for (const item of payload.output || []) {
+    for (const content of item.content || []) {
+      if (content.text) chunks.push(content.text);
+    }
+  }
+  return chunks.join("\n").trim();
+}
+
+function seedancePromptInput(prompt) {
+  const userPrompt = String(prompt || "").trim();
+  return [
+    "浣犳槸鍗虫ⅵ Seedance 2.0 鐨勪腑鏂囪棰戞彁绀鸿瘝宸ョ▼甯堛€傝鎶婄敤鎴风殑鎯虫硶鏀瑰啓鎴愬彲鐩存帴鐢ㄤ簬 Seedance 2.0 鐨勯珮璐ㄩ噺瑙嗛鐢熸垚鎻愮ず璇嶃€?,
+    "",
+    "蹇呴』閬靛畧锛?,
+    "- 鐢ㄤ腑鏂囪緭鍑猴紝鍙緭鍑烘渶缁堟彁绀鸿瘝锛屼笉瑕佽В閲婁綘鐨勬€濊矾銆?,
+    "- 閫傚悎鏂囨湰銆佸浘鐗囥€佽棰戙€侀煶棰戝妯℃€佽緭鍏ワ紱濡傛灉鐢ㄦ埛鎻愬埌绱犳潗锛岃浣跨敤 @鍥剧墖1銆丂瑙嗛1銆丂闊抽1 绛夊紩鐢紝骞舵槑纭瘡涓紩鐢ㄧ殑鐢ㄩ€斻€?,
+    "- 浼樺厛鍐欐竻涓讳綋銆佸満鏅€佸姩浣溿€佽繍闀溿€佸垎鏃舵鐢婚潰銆佽浆鍦?鐗规晥銆侀煶鏁?闊充箰鍜岄鏍兼皼鍥淬€?,
+    "- 8 绉掍互涓婃垨淇℃伅杈冨鐨勮棰戯紝鎸?0-3 绉掋€?-6 绉掋€?-10 绉掋€?0-15 绉掕繖绫绘椂闂存鎷嗗垎銆?,
+    "- 寮曠敤涓嶈兘鍚硦锛屼笉瑕佸彧鍐欌€滃弬鑰?@瑙嗛1鈥濓紝瑕佽鏄庡弬鑰冭繍闀溿€佸姩浣溿€佽妭濂忋€佺壒鏁堛€侀煶鑹叉垨鍦烘櫙銆?,
+    "- 閬垮厤鍚屼竴娈甸噷鍑虹幇浜掔浉鍐茬獊鐨勯暅澶存寚浠わ紱涓嶈鍦?4-5 绉掑唴濉炲叆杩囧鍦烘櫙銆?,
+    "- 濡傛灉鐢ㄦ埛娌℃湁鎸囧畾鏃堕暱锛岄粯璁ょ敓鎴?10-15 绉掔珫鐗堢煭瑙嗛鎻愮ず璇嶃€?,
+    "- 鍙互鍔犲叆鐢靛奖绾ц川鎰熴€佹祬鏅繁銆佸喎鏆栧姣斻€侀煶鏁堛€丅GM銆佹梺鐧借姘旂瓑澧炲己鎻忚堪銆?,
+    "- 涓嶈瑕佹眰涓婁紶鍐欏疄鐪熶汉娓呮櫚鑴搁儴绱犳潗銆?,
+    "",
+    "鎺ㄨ崘缁撴瀯锛?,
+    "[涓讳綋/浜虹墿璁惧畾] + [鍦烘櫙/鐜] + [鍔ㄤ綔/杩愬姩鎻忚堪] + [杩愰暅璇█] + [鍒嗘椂娈垫弿杩癩 + [杞満/鐗规晥] + [闊抽/闊虫晥璁捐] + [椋庢牸/姘涘洿]",
+    "",
+    "鐢ㄦ埛鎯虫硶锛?,
+    userPrompt,
+  ].join("\n");
+}
+
+function chatMessageText(content) {
+  if (typeof content === "string") return content;
+  if (!Array.isArray(content)) return "";
+  return content
+    .map((part) => {
+      if (typeof part === "string") return part;
+      if (part?.type === "text") return part.text || "";
+      return part?.text || "";
+    })
+    .join("\n")
+    .trim();
+}
+
+function normalizeChatMessages(messages) {
+  return messages
+    .filter((item) => ["system", "user", "assistant"].includes(item?.role))
+    .map((item) => ({
+      role: item.role,
+      content: chatMessageText(item.content),
+    }))
+    .filter((item) => item.content);
+}
+
+function pollinationsModelName(model) {
+  if (!model || model === "dreamehub-free-chat") return POLLINATIONS_TEXT_MODEL;
+  if (String(model).startsWith("pollinations:"))
+    return String(model).slice("pollinations:".length);
+  return POLLINATIONS_TEXT_MODEL;
+}
+
+async function callPollinationsChatCompletion(body) {
+  const messages = normalizeChatMessages(
+    Array.isArray(body.messages) ? body.messages : [],
+  );
+  if (!messages.some((item) => item.role === "user")) {
+    throw new Error("messages 涓嚦灏戦渶瑕佷竴鏉?user 娑堟伅");
+  }
+  const response = await requestProviderJson(
+    "https://text.pollinations.ai/openai",
+    {
+      model: pollinationsModelName(body.model),
+      messages,
+      temperature: body.temperature ?? 0.7,
+      max_tokens: body.max_tokens || body.max_completion_tokens || undefined,
+    },
+  );
+  const payload = response.json;
+  if (!response.ok) {
+    throw new Error(
+      payload.error?.message ||
+        payload.message ||
+        "Pollinations text generation failed",
+    );
+  }
+  const content = payload.choices?.[0]?.message?.content;
+  if (!content) throw new Error("鍏嶈垂鏂囨湰妯″瀷鏈繑鍥炲唴瀹?);
+  return {
+    id: payload.id || `chatcmpl_${crypto.randomUUID()}`,
+    model: payload.model || pollinationsModelName(body.model),
+    content,
+    usage: payload.usage || null,
+  };
+}
+
+function openAIModelName(model) {
+  if (
+    !model ||
+    model === "openai-chat" ||
+    model === "seedance-prompt-zh-openai"
+  )
+    return OPENAI_TEXT_MODEL;
+  if (String(model).startsWith("openai:"))
+    return String(model).slice("openai:".length);
+  return OPENAI_TEXT_MODEL;
+}
+
+async function callOpenAIChatCompletion(body) {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error("缂哄皯 OPENAI_API_KEY锛屾棤娉曡皟鐢?OpenAI 鏂囨湰鎺ュ彛");
+  }
+  const messages = normalizeChatMessages(
+    Array.isArray(body.messages) ? body.messages : [],
+  );
+  if (!messages.some((item) => item.role === "user")) {
+    throw new Error("messages 涓嚦灏戦渶瑕佷竴鏉?user 娑堟伅");
+  }
+  const response = await requestOpenAIJson("/v1/responses", {
+    model: openAIModelName(body.model),
+    input: messages.map((item) => `${item.role}: ${item.content}`).join("\n\n"),
+    temperature: body.temperature ?? 0.7,
+  });
+  const payload = response.json;
+  if (!response.ok) {
+    throw new Error(payload.error?.message || "OpenAI text generation failed");
+  }
+  const content = extractOpenAIText(payload);
+  if (!content) throw new Error("OpenAI 鏈繑鍥炴枃鏈唴瀹?);
+  return {
+    id: payload.id || `chatcmpl_${crypto.randomUUID()}`,
+    model: openAIModelName(body.model),
+    content,
+    usage: payload.usage || null,
+  };
+}
+
+async function callOpenAISeedancePromptTextGeneration(body) {
+  const output = await callOpenAIChatCompletion({
+    model: body.model || "seedance-prompt-zh-openai",
+    temperature: body.temperature ?? 0.6,
+    messages: [
+      {
+        role: "user",
+        content: seedancePromptInput(body.prompt),
+      },
+    ],
+  });
+  return {
+    provider: "openai",
+    engine: `seedance-prompt-zh-openai:${output.model}`,
+    text: output.content,
+    usage: output.usage,
+  };
+}
+
+async function callPlainTextGeneration(body) {
+  const selectedModel = body.imageModel || body.model || "dreamehub-free-chat";
+  const request = {
+    model: selectedModel,
+    temperature: body.temperature ?? 0.7,
+    max_tokens: body.max_tokens || 1200,
+    messages: [
+      {
+        role: "user",
+        content: String(body.prompt || "").trim(),
+      },
+    ],
+  };
+  const output =
+    selectedModel === "openai-chat" ||
+    String(selectedModel).startsWith("openai:")
+      ? await callOpenAIChatCompletion(request)
+      : await callPollinationsChatCompletion(request);
+  return {
+    provider:
+      selectedModel === "openai-chat" ||
+      String(selectedModel).startsWith("openai:")
+        ? "openai"
+        : "pollinations",
+    engine: `${selectedModel}:${output.model}`,
+    text: output.content,
+    usage: output.usage,
+  };
+}
+
+async function callSeedancePromptTextGeneration(body) {
+  const selectedModel = body.imageModel || body.model || "";
+  if (selectedModel === "seedance-prompt-zh-openai") {
+    return callOpenAISeedancePromptTextGeneration({
+      ...body,
+      model: selectedModel,
+    });
+  }
+  const output = await callPollinationsChatCompletion({
+    model: body.model || "dreamehub-free-chat",
+    temperature: body.temperature ?? 0.6,
+    max_tokens: body.max_tokens || 1400,
+    messages: [
+      {
+        role: "user",
+        content: seedancePromptInput(body.prompt),
+      },
+    ],
+  });
+  return {
+    provider: "pollinations",
+    engine: `seedance-prompt-zh:${output.model}`,
+    text: output.content,
+    usage: output.usage,
+  };
+}
+
+function buildMultipartBody(parts) {
+  const boundary = `----DreameHub${crypto.randomUUID().replace(/-/g, "")}`;
+  const chunks = [];
+  for (const part of parts) {
+    chunks.push(Buffer.from(`--${boundary}\r\n`));
+    if (part.buffer) {
+      chunks.push(
+        Buffer.from(
+          `Content-Disposition: form-data; name="${part.name}"; filename="${part.filename || "file"}"\r\nContent-Type: ${part.mimeType || "application/octet-stream"}\r\n\r\n`,
+        ),
+      );
+      chunks.push(part.buffer);
+      chunks.push(Buffer.from("\r\n"));
+    } else {
+      chunks.push(
+        Buffer.from(
+          `Content-Disposition: form-data; name="${part.name}"\r\n\r\n${String(part.value || "")}\r\n`,
+        ),
+      );
+    }
+  }
+  chunks.push(Buffer.from(`--${boundary}--\r\n`));
+  return { boundary, body: Buffer.concat(chunks) };
+}
+
+function requestMultipartDirect(url, body, headers) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const req = https.request(
+      {
+        method: "POST",
+        hostname: target.hostname,
+        path: `${target.pathname}${target.search}`,
+        headers,
+        timeout: 120000,
+      },
+      (res) => {
+        const chunks = [];
+        res.on("data", (data) => chunks.push(data));
+        res.on("end", () => {
+          const text = Buffer.concat(chunks).toString("utf8");
+          try {
+            resolve({
+              ok: res.statusCode >= 200 && res.statusCode < 300,
+              status: res.statusCode,
+              json: JSON.parse(text),
+            });
+          } catch {
+            reject(
+              new Error(`OpenAI 杩斿洖浜嗛潪 JSON 鍝嶅簲锛欻TTP ${res.statusCode}`),
+            );
+          }
+        });
+      },
+    );
+    req.on("timeout", () => req.destroy(new Error("OPENAI_REQUEST_TIMEOUT")));
+    req.on("error", reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+function requestMultipartViaHttpProxy(url, body, headers, proxyUrl) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const proxy = new URL(proxyUrl);
+    const proxyPort = Number(proxy.port || 80);
+    const socket = net.connect(proxyPort, proxy.hostname);
+    socket.setTimeout(120000);
+    socket.once("connect", () => {
+      const auth = proxy.username
+        ? `Proxy-Authorization: Basic ${Buffer.from(`${decodeURIComponent(proxy.username)}:${decodeURIComponent(proxy.password)}`).toString("base64")}\r\n`
+        : "";
+      socket.write(
+        `CONNECT ${target.hostname}:443 HTTP/1.1\r\nHost: ${target.hostname}:443\r\n${auth}\r\n`,
+      );
+    });
+
+    let buffered = Buffer.alloc(0);
+    socket.on("data", function onProxyData(chunk) {
+      buffered = Buffer.concat([buffered, chunk]);
+      const headerEnd = buffered.indexOf("\r\n\r\n");
+      if (headerEnd === -1) return;
+
+      const header = buffered.slice(0, headerEnd).toString("utf8");
+      if (!/^HTTP\/1\.[01] 200/i.test(header)) {
+        socket.destroy();
+        reject(new Error(`浠ｇ悊 CONNECT 澶辫触锛?{header.split("\r\n")[0]}`));
+        return;
+      }
+
+      socket.removeListener("data", onProxyData);
+      const secureSocket = tls.connect({ socket, servername: target.hostname });
+      const req = https.request(
+        {
+          method: "POST",
+          hostname: target.hostname,
+          path: `${target.pathname}${target.search}`,
+          headers,
+          createConnection: () => secureSocket,
+          timeout: 120000,
+        },
+        (res) => {
+          const chunks = [];
+          res.on("data", (data) => chunks.push(data));
+          res.on("end", () => {
+            const text = Buffer.concat(chunks).toString("utf8");
+            try {
+              resolve({
+                ok: res.statusCode >= 200 && res.statusCode < 300,
+                status: res.statusCode,
+                json: JSON.parse(text),
+              });
+            } catch {
+              reject(
+                new Error(`OpenAI 杩斿洖浜嗛潪 JSON 鍝嶅簲锛欻TTP ${res.statusCode}`),
+              );
+            }
+          });
+        },
+      );
+      req.on("timeout", () => req.destroy(new Error("OPENAI_REQUEST_TIMEOUT")));
+      req.on("error", reject);
+      req.write(body);
+      req.end();
+    });
+
+    socket.on("timeout", () =>
+      socket.destroy(new Error("OPENAI_PROXY_TIMEOUT")),
+    );
+    socket.on("error", reject);
+  });
+}
+
+async function requestOpenAIMultipart(pathname, parts) {
+  const url = `${OPENAI_BASE_URL}${pathname}`;
+  const multipart = buildMultipartBody(parts);
+  const headers = {
+    "Content-Type": `multipart/form-data; boundary=${multipart.boundary}`,
+    "Content-Length": multipart.body.length,
+    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+  };
+
+  if (OPENAI_PROXY) {
+    try {
+      return await requestMultipartViaHttpProxy(
+        url,
+        multipart.body,
+        headers,
+        OPENAI_PROXY,
+      );
+    } catch (error) {
+      if (!isProxyConnectionError(error)) throw error;
+      try {
+        return await requestMultipartDirect(url, multipart.body, headers);
+      } catch (directError) {
+        throw new Error(
+          `浠ｇ悊涓嶅彲鐢ㄤ笖鐩磋繛 OpenAI 澶辫触銆備唬鐞嗛敊璇細${error.message}锛涚洿杩為敊璇細${directError.message}`,
+        );
+      }
+    }
+  }
+
+  return requestMultipartDirect(url, multipart.body, headers);
+}
+
+async function callOpenAIImageGeneration(body, modelName) {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error("缂哄皯 OPENAI_API_KEY锛屾棤娉曡皟鐢ㄧ湡瀹?GPT Images 2.0 鎺ュ彛");
+  }
+
+  let response;
+  try {
+    response = await requestOpenAIJson("/v1/images/generations", {
+      model: body.model || OPENAI_IMAGE_MODEL,
+      prompt: [
+        String(body.prompt || "").trim(),
+        modelName
+          ? `\n\nUse the visual direction of this marketplace model: ${modelName}.`
+          : "",
+        Number(body.strength)
+          ? `\nStyle strength: ${Number(body.strength)} / 100.`
+          : "",
+      ].join(""),
+      size: normalizeImageSize(body.size),
+      quality: normalizeImageQuality(body.quality),
+      n: 1,
+    });
+  } catch (error) {
+    throw new Error(
+      `鏃犳硶杩炴帴 OpenAI API锛?{error.message}銆傝妫€鏌?VPN 浠ｇ悊锛屽苟鍦?.env 璁剧疆 OPENAI_PROXY銆俙,
+    );
+  }
+
+  const payload = response.json;
+  if (!response.ok) {
+    const message = payload.error?.message || "OpenAI image generation failed";
+    throw new Error(message);
+  }
+
+  const base64Image = payload.data?.[0]?.b64_json;
+  if (!base64Image) {
+    throw new Error("OpenAI 鏈繑鍥?b64_json 鍥剧墖鏁版嵁");
+  }
+
+  await fs.mkdir(GENERATED_DIR, { recursive: true });
+  const fileName = `${crypto.randomUUID()}.png`;
+  await fs.writeFile(
+    path.join(GENERATED_DIR, fileName),
+    Buffer.from(base64Image, "base64"),
+  );
+
+  return {
+    image: `/generated/${fileName}`,
+    provider: "openai",
+    engine: body.model || OPENAI_IMAGE_MODEL,
+    usage: payload.usage || null,
+  };
+}
+
+async function callOpenAIImageEdit(body, modelName) {
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error("缂哄皯 OPENAI_API_KEY锛屾棤娉曡皟鐢ㄧ湡瀹?OpenAI 鍥剧墖鍙傝€冩帴鍙?);
+  }
+
+  const imageReferences = Array.isArray(body.referenceAssets)
+    ? body.referenceAssets.filter((asset) => asset.type === "image")
+    : [];
+  if (!imageReferences.length) {
+    return callOpenAIImageGeneration(body, modelName);
+  }
+
+  const imageFiles = [];
+  for (const [index, asset] of imageReferences.entries()) {
+    const imageFile = await referenceImageToFile(asset, index);
+    if (imageFile) imageFiles.push(imageFile);
+  }
+
+  if (!imageFiles.length) throw new Error("娌℃湁鍙彁浜ょ粰 OpenAI 鐨勫弬鑰冨浘鐗?);
+
+  let response;
+  try {
+    response = await requestOpenAIMultipart("/v1/images/edits", [
+      { name: "model", value: body.model || OPENAI_IMAGE_MODEL },
+      {
+        name: "prompt",
+        value: [
+          String(body.prompt || "").trim(),
+          modelName
+            ? `\n\nUse the visual direction of this marketplace model: ${modelName}.`
+            : "",
+          Number(body.strength)
+            ? `\nStyle strength: ${Number(body.strength)} / 100.`
+            : "",
+        ].join(""),
+      },
+      { name: "size", value: normalizeImageSize(body.size) },
+      { name: "quality", value: normalizeImageQuality(body.quality) },
+      { name: "n", value: "1" },
+      ...imageFiles.map((file) => ({
+        name: "image[]",
+        ...file,
+      })),
+    ]);
+  } catch (error) {
+    throw new Error(
+      `鏃犳硶杩炴帴 OpenAI 鍥剧墖鍙傝€冩帴鍙ｏ細${error.message}銆傝妫€鏌?VPN 浠ｇ悊锛屽苟鍦?.env 璁剧疆 OPENAI_PROXY銆俙,
+    );
+  }
+
+  const payload = response.json;
+  if (!response.ok) {
+    const message = payload.error?.message || "OpenAI image edit failed";
+    throw new Error(message);
+  }
+
+  const base64Image = payload.data?.[0]?.b64_json;
+  if (!base64Image) {
+    throw new Error("OpenAI 鏈繑鍥?b64_json 鍥剧墖鏁版嵁");
+  }
+
+  await fs.mkdir(GENERATED_DIR, { recursive: true });
+  const fileName = `${crypto.randomUUID()}.png`;
+  await fs.writeFile(
+    path.join(GENERATED_DIR, fileName),
+    Buffer.from(base64Image, "base64"),
+  );
+
+  return {
+    image: `/generated/${fileName}`,
+    provider: "openai",
+    engine: body.model || OPENAI_IMAGE_MODEL,
+    referenceInputSupported: true,
+    referenceWarning: "",
+    usage: payload.usage || null,
+  };
+}
+
+async function callImageGeneration(body, modelName) {
+  const imageModel = resolveImageModel(body.imageModel || body.model);
+  const referenceAssetCount = Array.isArray(body.referenceAssets)
+    ? body.referenceAssets.length
+    : 0;
+
+  if (imageModel.provider === "pollinations") {
+    const remoteUrl = buildPollinationsImageUrl(body, imageModel);
+    const image = await requestImageBinary(remoteUrl);
+    return {
+      image: await saveGeneratedImage(image.buffer, image.contentType),
+      provider: "pollinations",
+      engine: imageModel.id,
+      referenceInputSupported: false,
+      referenceWarning: referenceAssetCount
+        ? "褰撳墠 Pollinations 妯″瀷鍙帴鏀舵枃鏈?prompt锛屼笉鎺ユ敹鍥剧墖浜岃繘鍒跺弬鑰冦€傚弬鑰冪礌鏉愬凡璁板綍鍒?DreameHub API锛屼絾鏈涓婃父妯″瀷娑堣垂銆?
+        : "",
+      usage: null,
+    };
+  }
+
+  const openaiBody = {
+    ...body,
+    model: imageModel.upstreamModel,
+  };
+  if (referenceAssetCount) return callOpenAIImageEdit(openaiBody, modelName);
+  return callOpenAIImageGeneration(openaiBody, modelName);
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function extractVideoId(payload) {
+  return (
+    payload.video_id ||
+    payload.id ||
+    payload.data?.video_id ||
+    payload.data?.id ||
+    payload.task_id ||
+    payload.data?.task_id ||
+    ""
+  );
+}
+
+function extractVideoUrl(payload) {
+  return (
+    payload.video_url ||
+    payload.url ||
+    payload.output_url ||
+    payload.content?.video_url ||
+    payload.content?.videoUrl ||
+    payload.data?.video_url ||
+    payload.data?.url ||
+    payload.data?.output_url ||
+    payload.data?.content?.video_url ||
+    payload.data?.content?.videoUrl ||
+    payload.result?.video_url ||
+    payload.result?.url ||
+    ""
+  );
+}
+
+function extractLastFrameUrl(payload) {
+  return (
+    payload.last_frame_url ||
+    payload.lastFrameUrl ||
+    payload.content?.last_frame_url ||
+    payload.content?.lastFrameUrl ||
+    payload.data?.last_frame_url ||
+    payload.data?.lastFrameUrl ||
+    payload.data?.content?.last_frame_url ||
+    payload.data?.content?.lastFrameUrl ||
+    payload.result?.last_frame_url ||
+    payload.result?.lastFrameUrl ||
+    ""
+  );
+}
+
+function extractVideoStatus(payload) {
+  return String(
+    payload.status ||
+      payload.data?.status ||
+      payload.result?.status ||
+      payload.task?.status ||
+      "",
+  ).toLowerCase();
+}
+
+function faceRestoreVideoInput(body) {
+  const references = Array.isArray(body.referenceAssets)
+    ? body.referenceAssets
+    : [];
+  const referenceVideo = references.find(
+    (asset) => asset.type === "video" && asset.source,
+  );
+  if (referenceVideo) return referenceVideo;
+  const node = body.node || {};
+  if (node.type === "video" && (node.source || node.videoUrl)) {
+    return {
+      displayName: node.title || "褰撳墠瑙嗛",
+      mimeType: node.mimeType || "video/mp4",
+      size: Number(node.size || 0),
+      source: node.source || node.videoUrl,
+    };
+  }
+  return null;
+}
+
+function faceSwapImageInput(body) {
+  const references = Array.isArray(body.referenceAssets)
+    ? body.referenceAssets
+    : [];
+  const referenceImage = references.find(
+    (asset) => asset.type === "image" && asset.source,
+  );
+  if (referenceImage) return referenceImage;
+  const node = body.node || {};
+  if (node.type === "image" && (node.source || node.image)) {
+    return {
+      displayName: node.title || "鍙傝€冭劯鍥?,
+      mimeType: node.mimeType || "image/png",
+      size: Number(node.size || 0),
+      source: node.source || node.image,
+    };
+  }
+  return null;
+}
+
+function parseDataUrl(value) {
+  const match = String(value || "").match(/^data:([^;,]+)?(;base64)?,(.*)$/s);
+  if (!match) return null;
+  const mimeType = match[1] || "application/octet-stream";
+  const isBase64 = Boolean(match[2]);
+  const data = isBase64
+    ? Buffer.from(match[3], "base64")
+    : Buffer.from(decodeURIComponent(match[3]), "utf8");
+  return { buffer: data, contentType: mimeType };
+}
+
+async function videoSourceToBuffer(input) {
+  const source = String(input.source || "");
+  const dataUrl = parseDataUrl(source);
+  if (dataUrl) return dataUrl;
+  if (/^https?:\/\//i.test(source)) return requestAnyBinaryDirect(source);
+  throw new Error("瑙嗛绱犳潗蹇呴』鏄?data URL 鎴?http(s) URL銆?);
+}
+
+async function imageSourceToBuffer(input) {
+  const source = String(input.source || "");
+  const dataUrl = parseDataUrl(source);
+  if (dataUrl) return dataUrl;
+  if (/^https?:\/\//i.test(source)) return requestAnyBinaryDirect(source);
+  if (source.startsWith("/generated/")) {
+    const fileName = path.basename(source);
+    const ext = path.extname(fileName).toLowerCase();
+    return {
+      buffer: await fs.readFile(path.join(GENERATED_DIR, fileName)),
+      contentType: mimeTypes[ext] || "image/png",
+    };
+  }
+  throw new Error(
+    "鎹㈣劯鍙傝€冨浘蹇呴』鏄?data URL銆乭ttp(s) URL 鎴?/generated/ 鏈湴鍥剧墖銆?,
+  );
+}
+
+function comfyWorkflowPath(workflowPath = COMFYUI_FACE_RESTORE_WORKFLOW) {
+  return path.isAbsolute(workflowPath)
+    ? workflowPath
+    : path.join(ROOT, workflowPath);
+}
+
+function replaceComfyPlaceholders(value, replacements) {
+  if (typeof value === "string") {
+    return Object.entries(replacements).reduce(
+      (result, [key, replacement]) =>
+        result.replaceAll(`{{${key}}}`, String(replacement)),
+      value,
+    );
+  }
+  if (Array.isArray(value))
+    return value.map((item) => replaceComfyPlaceholders(item, replacements));
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [
+        key,
+        replaceComfyPlaceholders(item, replacements),
+      ]),
+    );
+  }
+  return value;
+}
+
+async function loadComfyWorkflow(
+  workflowPath,
+  replacements,
+  label = "ComfyUI 宸ヤ綔娴?,
+) {
+  let raw;
+  try {
+    raw = await fs.readFile(comfyWorkflowPath(workflowPath), "utf8");
+  } catch {
+    throw new Error(`鎵句笉鍒?${label} 鏂囦欢锛?{workflowPath}`);
+  }
+  return replaceComfyPlaceholders(JSON.parse(raw), replacements);
+}
+
+async function loadComfyFaceRestoreWorkflow(replacements) {
+  return loadComfyWorkflow(
+    COMFYUI_FACE_RESTORE_WORKFLOW,
+    replacements,
+    "ComfyUI 闈㈤儴淇宸ヤ綔娴?,
+  );
+}
+
+async function uploadVideoToComfyUI(input) {
+  const binary = await videoSourceToBuffer(input);
+  const extension =
+    extensionFromMime(input.mimeType || binary.contentType || "video/mp4") ||
+    ".mp4";
+  const filename = `${crypto.randomUUID()}${extension}`;
+  const response = await requestMultipartForm(
+    `${COMFYUI_BASE_URL}/upload/image`,
+    [
+      {
+        name: "image",
+        filename,
+        mimeType: input.mimeType || binary.contentType || "video/mp4",
+        buffer: binary.buffer,
+      },
+      { name: "type", value: "input" },
+      { name: "overwrite", value: "true" },
+    ],
+  );
+  if (!response.ok) {
+    throw new Error(
+      response.json?.error?.message ||
+        response.json?.message ||
+        "ComfyUI 瑙嗛涓婁紶澶辫触",
+    );
+  }
+  return response.json?.name || response.json?.filename || filename;
+}
+
+async function uploadImageToComfyUI(input) {
+  const binary = await imageSourceToBuffer(input);
+  const extension =
+    extensionFromMime(input.mimeType || binary.contentType || "image/png") ||
+    ".png";
+  const filename = `${crypto.randomUUID()}${extension}`;
+  const response = await requestMultipartForm(
+    `${COMFYUI_BASE_URL}/upload/image`,
+    [
+      {
+        name: "image",
+        filename,
+        mimeType: input.mimeType || binary.contentType || "image/png",
+        buffer: binary.buffer,
+      },
+      { name: "type", value: "input" },
+      { name: "overwrite", value: "true" },
+    ],
+  );
+  if (!response.ok) {
+    throw new Error(
+      response.json?.error?.message ||
+        response.json?.message ||
+        "ComfyUI 鍥剧墖涓婁紶澶辫触",
+    );
+  }
+  return response.json?.name || response.json?.filename || filename;
+}
+
+function updateGenerationJob(jobId, patch) {
+  if (!jobId) return;
+  const job = generationJobs.get(jobId);
+  if (!job) return;
+  Object.assign(job, patch, { updatedAt: new Date().toISOString() });
+}
+
+function findComfyOutputVideo(
+  historyPayload,
+  promptId,
+  outputNodeId = COMFYUI_FACE_RESTORE_OUTPUT_NODE,
+) {
+  const history = historyPayload?.[promptId] || historyPayload;
+  const outputs = history?.outputs || {};
+  const selectedNodes = outputNodeId ? [outputNodeId] : Object.keys(outputs);
+  for (const nodeId of selectedNodes) {
+    const output = outputs[nodeId] || {};
+    const videos = output.videos || output.gifs || output.images || [];
+    for (const item of videos) {
+      const filename = item.filename || item.name;
+      if (!filename) continue;
+      const params = new URLSearchParams({
+        filename,
+        type: item.type || "output",
+      });
+      if (item.subfolder) params.set("subfolder", item.subfolder);
+      return `${COMFYUI_BASE_URL}/view?${params.toString()}`;
+    }
+  }
+  return "";
+}
+
+async function waitForComfyOutput(
+  promptId,
+  outputNodeId = COMFYUI_FACE_RESTORE_OUTPUT_NODE,
+  label = "ComfyUI 宸ヤ綔娴?,
+  jobId = "",
+) {
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < COMFYUI_TIMEOUT_MS) {
+    await delay(2000);
+    updateGenerationJob(jobId, {
+      message: "ComfyUI 姝ｅ湪鎵ц宸ヤ綔娴?,
+      elapsedMs: Date.now() - startedAt,
+      progress: await comfyLogProgress(),
+    });
+    const response = await requestJsonGetDirect(
+      `${COMFYUI_BASE_URL}/history/${encodeURIComponent(promptId)}`,
+    );
+    if (!response.ok) continue;
+    const videoUrl = findComfyOutputVideo(
+      response.json,
+      promptId,
+      outputNodeId,
+    );
+    if (videoUrl) {
+      updateGenerationJob(jobId, {
+        message: "ComfyUI 宸茬敓鎴愯棰戯紝姝ｅ湪淇濆瓨鍒版湰鍦?,
+      });
+      return videoUrl;
+    }
+    const history = response.json?.[promptId] || response.json;
+    if (history?.status?.status_str === "error") {
+      throw new Error(`${label} 鎵ц澶辫触`);
+    }
+  }
+  throw new Error(`${label} 瓒呮椂锛岃妫€鏌ュ伐浣滄祦鎴栬皟澶?COMFYUI_TIMEOUT_MS銆俙);
+}
+
+async function comfyLogProgress() {
+  try {
+    const text = await fs.readFile(COMFYUI_LOG_FILE, "utf8");
+    const lines = text.split(/\r?\n/).slice(-180);
+    for (let index = lines.length - 1; index >= 0; index -= 1) {
+      const line = lines[index];
+      const processed = line.match(
+        /\[DreameHubFaceSwap\] Processed (\d+)\/([^ ]+) frames \(([^)]+)\)/,
+      );
+      if (processed) {
+        const current = Number(processed[1] || 0);
+        const total = processed[2] === "?" ? 0 : Number(processed[2] || 0);
+        return {
+          label: total
+            ? `宸插鐞?${current}/${total} 甯
+            : `宸插鐞?${current} 甯,
+          current,
+          total,
+          percent: total
+            ? Math.min(99, Math.round((current / total) * 100))
+            : 0,
+          rate: processed[3],
+        };
+      }
+      const start = line.match(/\[DreameHubFaceSwap\] Start (.+)$/);
+      if (start)
+        return {
+          label: `宸插紑濮嬪鐞嗭細${start[1]}`,
+          current: 0,
+          total: 0,
+          percent: 0,
+          rate: "",
+        };
+      const finalizing = line.match(/\[DreameHubFaceSwap\] Finalizing (.+)$/);
+      if (finalizing)
+        return {
+          label: "姝ｅ湪灏佽娴忚鍣ㄥ彲鎾斁 MP4",
+          current: 0,
+          total: 0,
+          percent: 99,
+          rate: "",
+        };
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+async function persistComfyOutputVideo(videoUrl) {
+  const binary = await requestAnyBinaryDirect(videoUrl);
+  const publicPath = await saveGeneratedBinary(
+    binary.buffer,
+    binary.contentType || "video/mp4",
+    ".mp4",
+  );
+  return publicPath;
+}
+
+async function submitComfyWorkflow(workflow, outputNodeId, label, jobId = "") {
+  const clientId = crypto.randomUUID();
+  const response = await requestProviderJson(`${COMFYUI_BASE_URL}/prompt`, {
+    prompt: workflow,
+    client_id: clientId,
+  });
+  if (!response.ok) {
+    throw new Error(
+      response.json?.error?.message ||
+        response.json?.message ||
+        `${label} 鎻愪氦澶辫触`,
+    );
+  }
+  const promptId = response.json?.prompt_id;
+  if (!promptId) throw new Error("ComfyUI 鏈繑鍥?prompt_id");
+  updateGenerationJob(jobId, {
+    promptId,
+    message: "宸叉彁浜ゅ埌 ComfyUI锛岀瓑寰呮墽琛?,
+    progress: null,
+  });
+  const comfyVideoUrl = await waitForComfyOutput(
+    promptId,
+    outputNodeId,
+    label,
+    jobId,
+  );
+  const videoUrl = await persistComfyOutputVideo(comfyVideoUrl);
+  return { promptId, videoUrl, comfyVideoUrl };
+}
+
+async function callComfyUIFaceRestoreGeneration(body) {
+  const input = faceRestoreVideoInput(body);
+  if (!input?.source) {
+    throw new Error(
+      "璇峰厛涓婁紶鎴栬繛鎺ヤ竴涓棰戠礌鏉愶紝鍐嶄娇鐢?ComfyUI 闈㈤儴楂樻竻淇銆?,
+    );
+  }
+  const uploadedVideoName = await uploadVideoToComfyUI(input);
+  const workflow = await loadComfyFaceRestoreWorkflow({
+    VIDEO_NAME: uploadedVideoName,
+    PROMPT:
+      String(body.prompt || "").trim() ||
+      "restore face, high definition, keep identity and motion stable",
+    STRENGTH: clampNumber(body.strength, 55, 0, 100) / 100,
+    FIDELITY: clampNumber(body.faceRestoreFidelity, 50, 0, 100) / 100,
+    SCALE: clampNumber(body.faceRestoreScale, 1.25, 1, 2),
+    PADDING: clampNumber(body.faceRestorePadding, 0.12, 0, 0.35),
+    QUALITY: body.quality || "high",
+  });
+  const { promptId, videoUrl } = await submitComfyWorkflow(
+    workflow,
+    COMFYUI_FACE_RESTORE_OUTPUT_NODE,
+    "ComfyUI 闈㈤儴淇宸ヤ綔娴?,
+    body.__jobId || "",
+  );
+  return {
+    image: videoUrl,
+    videoUrl,
+    provider: "comfyui",
+    engine: "face-restore:hd:comfyui",
+    taskId: promptId,
+    referenceInputSupported: true,
+    referenceWarning: "",
+    usage: null,
+  };
+}
+
+async function callComfyUIFaceSwapGeneration(body) {
+  const input = faceRestoreVideoInput(body);
+  if (!input?.source) {
+    throw new Error("璇峰厛涓婁紶鎴栬繛鎺ヤ竴涓棰戠礌鏉愶紝鍐嶄娇鐢?ComfyUI 瑙嗛鎹㈣劯銆?);
+  }
+  const faceImage = faceSwapImageInput(body);
+  if (!faceImage?.source) {
+    throw new Error("璇峰厛杩炴帴鎴栦笂浼犱竴寮犲弬鑰冭劯鍥撅紝鍐嶄娇鐢ㄨ棰戞崲鑴搞€?);
+  }
+  const uploadedVideoName = await uploadVideoToComfyUI(input);
+  const uploadedFaceImageName = await uploadImageToComfyUI(faceImage);
+  const workflow = await loadComfyWorkflow(
+    COMFYUI_FACE_SWAP_WORKFLOW,
+    {
+      VIDEO_NAME: uploadedVideoName,
+      FACE_IMAGE_NAME: uploadedFaceImageName,
+      PROMPT:
+        String(body.prompt || "").trim() ||
+        "swap face, keep target video motion and lighting",
+      STRENGTH: clampNumber(body.strength, 82, 0, 100) / 100,
+      FEATHER: clampNumber(body.faceSwapFeather, 22, 2, 50) / 100,
+      COLOR_MATCH: clampNumber(body.faceSwapColorMatch, 75, 0, 100) / 100,
+      QUALITY: body.quality || "high",
+    },
+    "ComfyUI 瑙嗛鎹㈣劯宸ヤ綔娴?,
+  );
+  const { promptId, videoUrl } = await submitComfyWorkflow(
+    workflow,
+    COMFYUI_FACE_SWAP_OUTPUT_NODE,
+    "ComfyUI 瑙嗛鎹㈣劯宸ヤ綔娴?,
+    body.__jobId || "",
+  );
+  return {
+    image: videoUrl,
+    videoUrl,
+    provider: "comfyui",
+    engine: "face-swap:insightface:comfyui",
+    taskId: promptId,
+    referenceInputSupported: true,
+    referenceWarning: "",
+    usage: null,
+  };
+}
+
+async function callVideoFaceRestoreGeneration(body) {
+  if (configuredFaceRestoreProvider() === "comfyui") {
+    return callComfyUIFaceRestoreGeneration(body);
+  }
+  if (!FACE_RESTORE_API_URL) {
+    throw new Error(
+      "缂哄皯 FACE_RESTORE_API_URL锛屾棤娉曡皟鐢ㄨ棰戦潰閮ㄩ珮娓呬慨澶嶆帴鍙ｃ€傝鍦?.env 閰嶇疆涓婃父淇鏈嶅姟鍦板潃銆?,
+    );
+  }
+  const input = faceRestoreVideoInput(body);
+  if (!input?.source) {
+    throw new Error("璇峰厛涓婁紶鎴栬繛鎺ヤ竴涓棰戠礌鏉愶紝鍐嶄娇鐢ㄩ潰閮ㄩ珮娓呬慨澶嶃€?);
+  }
+  const response = await requestProviderJson(
+    FACE_RESTORE_API_URL,
+    {
+      video: input.source,
+      videoName: input.displayName || input.originalName || "input-video",
+      mimeType: input.mimeType || "video/mp4",
+      prompt:
+        String(body.prompt || "").trim() ||
+        "瀵硅棰戜腑鐨勪汉鑴歌繘琛岄珮娓呬慨澶嶏紝澧炲己浜斿畼娓呮櫚搴︺€佺毊鑲ょ粏鑺傚拰绋冲畾鎬э紝淇濇寔鍘熷韬唤銆佽〃鎯呫€佸姩浣滃拰鑳屾櫙涓嶅彉銆?,
+      task: "video-face-restoration",
+      faceRestore: true,
+      quality: body.quality || "high",
+      strength: Number(body.strength || 72),
+    },
+    FACE_RESTORE_API_KEY
+      ? { Authorization: `Bearer ${FACE_RESTORE_API_KEY}` }
+      : {},
+  );
+  if (!response.ok) {
+    throw new Error(
+      response.json?.error?.message ||
+        response.json?.message ||
+        "瑙嗛闈㈤儴楂樻竻淇澶辫触",
+    );
+  }
+  const videoUrl = extractVideoUrl(response.json);
+  if (!videoUrl) {
+    throw new Error("瑙嗛闈㈤儴楂樻竻淇鎺ュ彛鏈繑鍥?video_url/url/output_url");
+  }
+  return {
+    image: videoUrl,
+    videoUrl,
+    provider: "face-restore",
+    engine: "face-restore:hd",
+    taskId: extractVideoId(response.json),
+    referenceInputSupported: true,
+    referenceWarning: "",
+    usage: response.json?.usage || null,
+  };
+}
+
+function seedanceAuthorizationHeader() {
+  return { Authorization: `Bearer ${SEEDANCE_API_KEY}` };
+}
+
+async function resolveSeedanceImageUrl(source) {
+  const value = String(source || "").trim();
+  const publicBaseUrl = (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "");
+  const localGeneratedPath = localGeneratedPublicPath(value);
+  if (localGeneratedPath) {
+    if (!publicBaseUrl) {
+      throw new Error(
+        "Seedance 鍥剧敓瑙嗛闇€瑕佸彲鍏綉璁块棶鐨勫浘鐗?URL銆傝閰嶇疆 PUBLIC_BASE_URL 鍚庡啀浣跨敤鏈湴鍥剧墖銆?,
+      );
+    }
+    const publicUrl = `${publicBaseUrl}${localGeneratedPath}`;
+    await assertRemoteAssetDownloadable(publicUrl, "image");
+    return publicUrl;
+  }
+  if (value.startsWith("data:image/")) {
+    const dataUrl = parseDataUrl(value);
+    if (!dataUrl) throw new Error("鍙傝€冨浘 data URL 鏃犳硶瑙ｆ瀽锛岃閲嶆柊涓婁紶鍥剧墖銆?);
+    const publicPath = await saveGeneratedImage(
+      dataUrl.buffer,
+      dataUrl.contentType,
+    );
+    if (publicBaseUrl) {
+      const publicUrl = `${publicBaseUrl}${publicPath}`;
+      await assertRemoteAssetDownloadable(publicUrl, "image");
+      return publicUrl;
+    }
+    throw new Error(
+      "Ark Seedance 鍥剧敓瑙嗛闇€瑕佸彲鍏綉璁块棶鐨勫浘鐗?URL銆傚弬鑰冨浘宸蹭繚瀛樺埌鏈湴锛岃鍏堥厤缃?PUBLIC_BASE_URL 鍚庨噸璇曘€?,
+    );
+  }
+  if (/^https?:\/\//i.test(value)) {
+    await assertRemoteAssetDownloadable(value, "image");
+    return value;
+  }
+  return value;
+}
+
+async function resolveSeedanceAudioUrl(source, mimeType = "audio/mpeg") {
+  const value = String(source || "").trim();
+  const publicBaseUrl = (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "");
+  const localGeneratedPath = localGeneratedPublicPath(value);
+  if (localGeneratedPath) {
+    if (!publicBaseUrl) {
+      throw new Error(
+        "Seedance 闊抽鍙傝€冮渶瑕佸彲鍏綉璁块棶鐨勯煶棰?URL銆傝閰嶇疆 PUBLIC_BASE_URL 鍚庡啀浣跨敤鏈湴闊抽銆?,
+      );
+    }
+    const publicUrl = `${publicBaseUrl}${localGeneratedPath}`;
+    await assertRemoteAssetDownloadable(publicUrl, "audio");
+    return publicUrl;
+  }
+  if (value.startsWith("data:audio/")) {
+    const dataUrl = parseDataUrl(value);
+    if (!dataUrl) throw new Error("闊抽 data URL 鏃犳硶瑙ｆ瀽锛岃閲嶆柊涓婁紶闊抽銆?);
+    const publicPath = await saveGeneratedBinary(
+      dataUrl.buffer,
+      dataUrl.contentType || mimeType,
+      extensionFromMime(dataUrl.contentType || mimeType),
+    );
+    if (publicBaseUrl) {
+      const publicUrl = `${publicBaseUrl}${publicPath}`;
+      await assertRemoteAssetDownloadable(publicUrl, "audio");
+      return publicUrl;
+    }
+    throw new Error(
+      "Ark Seedance 闊抽鍙傝€冮渶瑕佸彲鍏綉璁块棶鐨勯煶棰?URL銆傞煶棰戝凡淇濆瓨鍒版湰鍦帮紝璇峰厛閰嶇疆 PUBLIC_BASE_URL 鍚庨噸璇曘€?,
+    );
+  }
+  if (/^https?:\/\//i.test(value)) {
+    await assertRemoteAssetDownloadable(value, "audio");
+    return value;
+  }
+  return value;
+}
+
+async function resolveSeedanceVideoUrl(source, mimeType = "video/mp4") {
+  const value = String(source || "").trim();
+  const publicBaseUrl = (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "");
+  const localGeneratedPath = localGeneratedPublicPath(value);
+  if (localGeneratedPath) {
+    if (!publicBaseUrl) {
+      throw new Error(
+        "Seedance 瑙嗛鍙傝€冮渶瑕佸彲鍏綉璁块棶鐨勮棰?URL銆傝閰嶇疆 PUBLIC_BASE_URL 鍚庡啀浣跨敤鏈湴瑙嗛銆?,
+      );
+    }
+    const publicUrl = `${publicBaseUrl}${localGeneratedPath}`;
+    await assertRemoteAssetDownloadable(publicUrl, "video");
+    return publicUrl;
+  }
+  if (value.startsWith("data:video/")) {
+    const dataUrl = parseDataUrl(value);
+    if (!dataUrl) throw new Error("瑙嗛 data URL 鏃犳硶瑙ｆ瀽锛岃閲嶆柊涓婁紶瑙嗛銆?);
+    const publicPath = await saveGeneratedBinary(
+      dataUrl.buffer,
+      dataUrl.contentType || mimeType,
+      extensionFromMime(dataUrl.contentType || mimeType),
+    );
+    if (publicBaseUrl) {
+      const publicUrl = `${publicBaseUrl}${publicPath}`;
+      await assertRemoteAssetDownloadable(publicUrl, "video");
+      return publicUrl;
+    }
+    throw new Error(
+      "Ark Seedance 瑙嗛鍙傝€冮渶瑕佸彲鍏綉璁块棶鐨勮棰?URL銆傝棰戝凡淇濆瓨鍒版湰鍦帮紝璇峰厛閰嶇疆 PUBLIC_BASE_URL 鍚庨噸璇曘€?,
+    );
+  }
+  if (/^https?:\/\//i.test(value)) {
+    await assertRemoteAssetDownloadable(value, "video");
+    return value;
+  }
+  return value;
+}
+
+function localGeneratedPublicPath(value) {
+  const source = String(value || "").trim();
+  if (source.startsWith("/generated/")) return source;
+  const publicBaseUrl = (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "");
+  if (publicBaseUrl && source.startsWith(`${publicBaseUrl}/generated/`))
+    return source.slice(publicBaseUrl.length);
+  try {
+    const sourceUrl = new URL(source);
+    if (
+      ["localhost", "127.0.0.1", "::1"].includes(sourceUrl.hostname) &&
+      sourceUrl.pathname.startsWith("/generated/")
+    ) {
+      return sourceUrl.pathname;
+    }
+  } catch {}
+  return "";
+}
+
+function isOwnPublicBaseUrl(url) {
+  const publicBaseUrl = (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "");
+  if (!publicBaseUrl) return false;
+  try {
+    const target = new URL(url);
+    const base = new URL(publicBaseUrl);
+    return target.protocol === base.protocol && target.hostname === base.hostname;
+  } catch {
+    return false;
+  }
+}
+
+async function assertRemoteAssetDownloadable(url, expectedKind) {
+  let lastError = null;
+  for (let attempt = 1; attempt <= 4; attempt += 1) {
+    try {
+      const binary = await requestAnyBinaryDirect(
+        `${url}${url.includes("?") ? "&" : "?"}_dh_probe=${Date.now()}-${attempt}`,
+      );
+      const contentType = String(binary.contentType || "").toLowerCase();
+      if (!contentType.startsWith(`${expectedKind}/`)) {
+        throw new Error(
+          `PUBLIC_BASE_URL 杩斿洖鐨勮祫婧愪笉鏄?${expectedKind} 鏂囦欢锛?{url}锛圕ontent-Type: ${contentType || "unknown"}锛夈€傝妫€鏌ュ叕缃戦毀閬撴槸鍚︾洿杩炲埌鏈湇鍔★紝localtunnel 楠岃瘉椤典細瀵艰嚧 Seedance 涓嬭浇澶辫触銆俙,
+        );
+      }
+      return true;
+    } catch (error) {
+      lastError = error;
+      if (
+        isOwnPublicBaseUrl(url) &&
+        /ENOTFOUND|EAI_AGAIN|getaddrinfo/i.test(String(error.message || ""))
+      ) {
+        console.warn(
+          `PUBLIC_BASE_URL 鏈満 DNS 鏆傛湭瑙ｆ瀽锛岃烦杩囨湰鏈洪妫€锛?{url}`,
+        );
+        return true;
+      }
+      if (!/HTTP 408|TIMEOUT/i.test(String(error.message || ""))) throw error;
+      await delay(800 * attempt);
+    }
+  }
+  throw new Error(
+    `鍏綉浜岃繘鍒惰祫婧愬娆′笅杞藉け璐ワ細${url}銆傛渶鍚庨敊璇細${lastError?.message || "unknown"}銆俵ocaltunnel 涓存椂闅ч亾瀵逛簩杩涘埗璧勬簮鍙兘浼氶棿姝?408锛岃閲嶅惎闅ч亾鎴栨敼鐢?Cloudflare/ngrok 鍥哄畾闅ч亾銆俙,
+  );
+}
+
+function seedanceReferenceAssets(body, type) {
+  return (
+    Array.isArray(body.referenceAssets) ? body.referenceAssets : []
+  ).filter((asset) => asset.type === type && asset.source);
+}
+
+function seedanceAssetText(asset) {
+  return [
+    asset?.instruction,
+    asset?.displayName,
+    asset?.originalName,
+    asset?.title,
+    asset?.role,
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function normalizeSeedanceImageRole(value) {
+  const role = String(value || "").trim();
+  if (["first_frame", "last_frame", "reference_image"].includes(role))
+    return role;
+  return "";
+}
+
+function normalizeSeedanceReferenceRole(asset) {
+  const explicit = String(asset?.seedanceRole || "").trim();
+  if (
+    [
+      "first_frame",
+      "last_frame",
+      "reference_image",
+      "reference_video",
+      "reference_audio",
+    ].includes(explicit)
+  )
+    return explicit;
+  if (asset?.type === "image") return normalizeSeedanceImageRole(explicit);
+  if (asset?.type === "video" && explicit === "reference_video") return explicit;
+  if (asset?.type === "audio" && explicit === "reference_audio") return explicit;
+  return "";
+}
+
+function arkSeedanceImageAssets(body, fallbackImageReference = null) {
+  const imageAssets = seedanceReferenceAssets(body, "image");
+  const workflowMode = String(body?.workflowMode || body?.model || "").trim();
+  const roleAssets = imageAssets
+    .map((asset) => ({
+      ...asset,
+      seedanceRole: normalizeSeedanceImageRole(asset.seedanceRole),
+    }))
+    .filter((asset) => asset.seedanceRole);
+  const firstLastAssets = roleAssets.filter((asset) =>
+    ["first_frame", "last_frame"].includes(asset.seedanceRole),
+  );
+  if (firstLastAssets.length) {
+    const sameAsset = (left, right) =>
+      Boolean(
+        left &&
+          right &&
+          ((left.source && left.source === right.source) ||
+            (left.refName && left.refName === right.refName) ||
+            (left.id && left.id === right.id)),
+      );
+    const firstRole = firstLastAssets.find(
+      (asset) => asset.seedanceRole === "first_frame",
+    );
+    const lastRole = firstLastAssets.find(
+      (asset) => asset.seedanceRole === "last_frame",
+    );
+    const first =
+      firstRole || imageAssets.find((asset) => !sameAsset(asset, lastRole));
+    const last =
+      lastRole || imageAssets.find((asset) => !sameAsset(asset, first));
+    return [first, last].filter(Boolean);
+  }
+  const referenceAssets = roleAssets.filter(
+    (asset) => asset.seedanceRole === "reference_image",
+  );
+  if (referenceAssets.length) return referenceAssets;
+  if (/鍏ㄨ兘鍙傝€億reference-to-video|all-reference/i.test(workflowMode)) {
+    return imageAssets.map((asset) => ({
+      ...asset,
+      seedanceRole: "reference_image",
+    }));
+  }
+  if (/棣栧熬甯first-last|first_last/i.test(workflowMode)) {
+    const first = imageAssets[0]
+      ? { ...imageAssets[0], seedanceRole: "first_frame" }
+      : null;
+    const last = imageAssets[1]
+      ? { ...imageAssets[1], seedanceRole: "last_frame" }
+      : null;
+    return [first, last].filter(Boolean);
+  }
+  if (/鍥剧敓瑙嗛|image-to-video|棣栧抚/i.test(workflowMode) && imageAssets[0]) {
+    return [{ ...imageAssets[0], seedanceRole: "first_frame" }];
+  }
+  return fallbackImageReference ? [fallbackImageReference] : [];
+}
+
+function arkSeedanceVideoAssets(body) {
+  return seedanceReferenceAssets(body, "video")
+    .map((asset) => ({
+      ...asset,
+      seedanceRole: normalizeSeedanceReferenceRole(asset) || "reference_video",
+    }))
+    .filter((asset) => asset.seedanceRole === "reference_video");
+}
+
+function arkSeedanceAudioAssets(body) {
+  return seedanceReferenceAssets(body, "audio")
+    .map((asset) => ({
+      ...asset,
+      seedanceRole: normalizeSeedanceReferenceRole(asset) || "reference_audio",
+    }))
+    .filter((asset) => asset.seedanceRole === "reference_audio");
+}
+
+function seedanceImageReferenceScore(asset) {
+  const text = seedanceAssetText(asset);
+  let score = 0;
+  if (/棣栧抚|绗竴甯寮€鍦簗璧峰|寮€濮嬬敾闈鍦烘櫙|鑳屾櫙|鐜|绌洪棿|瀹ゅ唴|瀹㈠巺|鍏ㄦ櫙|鏋勫浘/u.test(text))
+    score += 20;
+  if (/浜у搧|鍟嗗搧|澶栬|閫犲瀷|鏈鸿韩|璁惧|鍐扮|鐩告満|鍙傝€冨浘|涓ユ牸鍙傝€?u.test(text))
+    score -= 15;
+  return score;
+}
+
+function selectSeedanceImageReference(body, audioReferences = []) {
+  const imageReferences = seedanceReferenceAssets(body, "image");
+  if (!imageReferences.length) return null;
+  const workflowMode = String(body?.workflowMode || body?.model || "").trim();
+  const scored = imageReferences
+    .map((asset, index) => ({
+      asset,
+      index,
+      score: seedanceImageReferenceScore(asset),
+    }))
+    .sort((a, b) => b.score - a.score || a.index - b.index);
+
+  if (/鍥剧敓瑙嗛|image-to-video|棣栧抚/u.test(workflowMode))
+    return scored[0]?.asset || imageReferences[0];
+
+  const sceneReference = scored.find((item) => item.score > 0)?.asset || null;
+  if (sceneReference) return sceneReference;
+
+  const hasProductReference = scored.some((item) => item.score < 0);
+  if (hasProductReference) {
+    const neutralReference = scored.find((item) => item.score >= 0)?.asset;
+    if (neutralReference) return neutralReference;
+  }
+
+  if (audioReferences.length) return imageReferences[0];
+  return null;
+}
+
+function validateSeedanceOfficialRequest(body) {
+  const workflowMode = String(body?.workflowMode || body?.model || "").trim();
+  const references = Array.isArray(body?.referenceAssets)
+    ? body.referenceAssets
+    : [];
+  const imageReferences = references.filter((asset) => asset.type === "image");
+  const videoReferences = references.filter((asset) => asset.type === "video");
+  const audioReferences = references.filter((asset) => asset.type === "audio");
+  const roles = references.map(normalizeSeedanceReferenceRole).filter(Boolean);
+  const hasFirstFrameRole = roles.includes("first_frame");
+  const hasLastFrameRole = roles.includes("last_frame");
+  const isFirstLastMode =
+    /棣栧熬甯first-last|first_last/i.test(workflowMode) || hasLastFrameRole;
+  const isImageToVideoMode = /鍥剧敓瑙嗛|image-to-video|棣栧抚/i.test(workflowMode);
+  const isFirstFrameMode =
+    isImageToVideoMode || (hasFirstFrameRole && !hasLastFrameRole);
+  const isReferenceMode =
+    /鍏ㄨ兘鍙傝€億reference-to-video|all-reference/i.test(workflowMode) ||
+    roles.some((role) =>
+      ["reference_image", "reference_video", "reference_audio"].includes(role),
+    ) ||
+    videoReferences.length ||
+    audioReferences.length;
+
+  if (imageReferences.length > SEEDANCE_REFERENCE_IMAGE_LIMIT)
+    return `Seedance 2.0 鍙傝€冨浘鐗囨渶澶?${SEEDANCE_REFERENCE_IMAGE_LIMIT} 寮犮€俙;
+  if (videoReferences.length > SEEDANCE_REFERENCE_VIDEO_LIMIT)
+    return `Seedance 2.0 鍙傝€冭棰戞渶澶?${SEEDANCE_REFERENCE_VIDEO_LIMIT} 涓€俙;
+  if (audioReferences.length > SEEDANCE_REFERENCE_AUDIO_LIMIT)
+    return `Seedance 2.0 鍙傝€冮煶棰戞渶澶?${SEEDANCE_REFERENCE_AUDIO_LIMIT} 涓€俙;
+  if (audioReferences.length && !imageReferences.length && !videoReferences.length)
+    return "Seedance 2.0 鍙傝€冮煶棰戜笉鑳藉崟鐙緭鍏ワ紝闇€瑕佸悓鏃惰繛鎺ヨ嚦灏戜竴寮犲浘鐗囨垨涓€涓棰戝弬鑰冦€?;
+
+  if (isFirstLastMode) {
+    if (imageReferences.length < 2)
+      return "棣栧熬甯ц棰戦渶瑕佽嚦灏戣繛鎺ヤ袱寮犲浘鐗囩礌鏉愩€?;
+    if (videoReferences.length || audioReferences.length)
+      return "瀹樻柟棣栧熬甯у満鏅笉鑳芥贩鐢ㄥ弬鑰冭棰戞垨鍙傝€冮煶棰戙€?;
+    if (roles.some((role) => role.startsWith("reference_")))
+      return "瀹樻柟棣栧熬甯у満鏅笉鑳芥贩鐢ㄥ妯℃€?reference_* 鍙傝€冪礌鏉愩€?;
+  }
+
+  if (isFirstFrameMode && !isFirstLastMode) {
+    if (!imageReferences.length) return "鍥剧敓瑙嗛鑷冲皯闇€瑕佷竴寮犲浘鐗囩礌鏉愩€?;
+    if (videoReferences.length || audioReferences.length)
+      return "瀹樻柟鍥剧敓瑙嗛棣栧抚鍦烘櫙涓嶈兘娣风敤鍙傝€冭棰戞垨鍙傝€冮煶棰戙€?;
+  }
+
+  if (isReferenceMode && (hasFirstFrameRole || hasLastFrameRole))
+    return "瀹樻柟澶氭ā鎬佸弬鑰冨満鏅笉鑳芥贩鐢?first_frame / last_frame銆?;
+
+  return "";
+}
+
+function normalizeSeedanceRatio(value, { autoValue = "auto" } = {}) {
+  const ratio = String(value || "auto").trim();
+  if (!ratio || ratio === "鏅鸿兘姣斾緥" || ratio === "auto" || ratio === "adaptive")
+    return autoValue;
+  const supported = new Set(SEEDANCE_SUPPORTED_RATIOS);
+  return supported.has(ratio) ? ratio : autoValue;
+}
+
+function normalizeSeedanceDuration(value) {
+  const duration = Number(value || 5);
+  if (!Number.isFinite(duration) || duration <= 0) return 5;
+  return Math.max(
+    SEEDANCE_DURATION_MIN,
+    Math.min(SEEDANCE_DURATION_MAX, Math.round(duration)),
+  );
+}
+
+function normalizeSeedanceResolution(value) {
+  const resolution = String(value || "720p").trim().toLowerCase();
+  const supported = new Set(SEEDANCE_SUPPORTED_RESOLUTIONS);
+  return supported.has(resolution) ? resolution : "720p";
+}
+
+async function buildArkSeedanceRequestBody(
+  body,
+  imageReference,
+  audioReferences = [],
+) {
+  const prompt = String(body.prompt || "").trim();
+  const content = [];
+  if (prompt) content.push({ type: "text", text: prompt });
+  if (body.draftTaskId) {
+    content.push({
+      type: "draft_task",
+      draft_task: { id: String(body.draftTaskId).trim() },
+    });
+  }
+  const imageAssets = arkSeedanceImageAssets(body, imageReference);
+  for (const imageAsset of imageAssets) {
+    if (!imageAsset?.source) continue;
+    const role = normalizeSeedanceImageRole(imageAsset.seedanceRole);
+    content.push({
+      type: "image_url",
+      ...(role ? { role } : {}),
+      image_url: { url: await resolveSeedanceImageUrl(imageAsset.source) },
+    });
+  }
+  const videoAssets = arkSeedanceVideoAssets(body);
+  for (const videoAsset of videoAssets) {
+    if (!videoAsset?.source) continue;
+    content.push({
+      type: "video_url",
+      role: "reference_video",
+      video_url: {
+        url: await resolveSeedanceVideoUrl(
+          videoAsset.source,
+          videoAsset.mimeType || "video/mp4",
+        ),
+      },
+    });
+  }
+  const audioAssets = audioReferences.length
+    ? audioReferences
+    : arkSeedanceAudioAssets(body);
+  for (const audioReference of audioAssets) {
+    content.push({
+      type: "audio_url",
+      role: "reference_audio",
+      audio_url: {
+        url: await resolveSeedanceAudioUrl(
+          audioReference.source,
+          audioReference.mimeType || "audio/mpeg",
+        ),
+      },
+    });
+  }
+  if (!content.length) {
+    throw new Error("Seedance 2.0 鑷冲皯闇€瑕佹枃鏈彁绀鸿瘝鎴栦竴涓弬鑰冪礌鏉愩€?);
+  }
+  const requestBody = {
+    model: SEEDANCE_MODEL,
+    content,
+    resolution: normalizeSeedanceResolution(body.resolution),
+    duration: normalizeSeedanceDuration(body.duration),
+  };
+  const ratio = normalizeSeedanceRatio(body.aspectRatio, { autoValue: "adaptive" });
+  if (ratio) requestBody.ratio = ratio;
+  if (body.seed !== undefined && body.seed !== "")
+    requestBody.seed = Number(body.seed);
+  const generateAudio = optionalBoolean(body.generateAudio);
+  if (generateAudio !== undefined) requestBody.generate_audio = generateAudio;
+  const watermark = optionalBoolean(body.watermark);
+  if (watermark !== undefined) requestBody.watermark = watermark;
+  const returnLastFrame = optionalBoolean(body.returnLastFrame);
+  if (returnLastFrame !== undefined)
+    requestBody.return_last_frame = returnLastFrame;
+  const cameraFixed = optionalBoolean(body.cameraFixed);
+  if (cameraFixed !== undefined) requestBody.camera_fixed = cameraFixed;
+  if (body.serviceTier)
+    requestBody.service_tier = String(body.serviceTier).trim();
+  const draft = optionalBoolean(body.draft);
+  if (draft !== undefined) requestBody.draft = draft;
+  if (body.callbackUrl)
+    requestBody.callback_url = String(body.callbackUrl).trim();
+  if (body.executionExpiresAfter)
+    requestBody.execution_expires_after = String(
+      body.executionExpiresAfter,
+    ).trim();
+  if (body.safetyIdentifier)
+    requestBody.safety_identifier = String(body.safetyIdentifier).trim();
+  if (optionalBoolean(body.webSearch))
+    requestBody.tools = [{ type: "web_search" }];
+  return requestBody;
+}
+
+function seedanceProgress(attempt, total, label) {
+  const current = Math.min(attempt + 1, total);
+  return {
+    label,
+    current,
+    total,
+    percent: Math.min(99, Math.max(1, Math.round((current / total) * 100))),
+    rate: "",
+  };
+}
+
+async function waitForArkSeedanceVideo(videoId, jobId = "") {
+  for (let attempt = 0; attempt < 120; attempt += 1) {
+    await delay(5000);
+    updateGenerationJob(jobId, {
+      message: "Seedance 2.0 姝ｅ湪鐢熸垚瑙嗛",
+      progress: seedanceProgress(attempt, 120, "绛夊緟 Seedance 2.0 杩斿洖瑙嗛"),
+    });
+    const statusResponse = await requestJsonGetDirect(
+      `${SEEDANCE_BASE_URL}/contents/generations/tasks/${encodeURIComponent(videoId)}`,
+      seedanceAuthorizationHeader(),
+    );
+    if (!statusResponse.ok) continue;
+    const videoUrl = extractVideoUrl(statusResponse.json);
+    const lastFrameUrl = extractLastFrameUrl(statusResponse.json);
+    const status = extractVideoStatus(statusResponse.json);
+    if (videoUrl)
+      return { videoUrl, lastFrameUrl, payload: statusResponse.json };
+    if (["failed", "error", "canceled", "cancelled"].includes(status)) {
+      throw new Error(
+        statusResponse.json.error?.message ||
+          statusResponse.json.message ||
+          "Ark Seedance 2.0 鐢熸垚澶辫触",
+      );
+    }
+  }
+  return { videoUrl: "", payload: null };
+}
+
+async function callArkSeedanceVideoGeneration(
+  body,
+  imageReference,
+  audioReferences = [],
+) {
+  const jobId = body.__jobId || "";
+  updateGenerationJob(jobId, {
+    message: "姝ｅ湪鎻愪氦鍒?Seedance 2.0",
+    progress: {
+      label: "鎻愪氦鐢熸垚浠诲姟",
+      current: 0,
+      total: 1,
+      percent: 1,
+      rate: "",
+    },
+  });
+  const createResponse = await requestProviderJson(
+    `${SEEDANCE_BASE_URL}/contents/generations/tasks`,
+    await buildArkSeedanceRequestBody(body, imageReference, audioReferences),
+    seedanceAuthorizationHeader(),
+  );
+  if (!createResponse.ok) {
+    const arkImageAssets = arkSeedanceImageAssets(body, imageReference);
+    const arkVideoAssets = arkSeedanceVideoAssets(body);
+    const errorPayload = createResponse.json?.error || {};
+    const requestId =
+      createResponse.json?.request_id ||
+      createResponse.json?.requestId ||
+      errorPayload.request_id ||
+      errorPayload.requestId ||
+      "";
+    const message =
+      errorPayload.message ||
+      createResponse.json?.message ||
+      createResponse.json?.error?.code ||
+      "Ark Seedance 2.0 video generation failed";
+    console.error("Ark Seedance create failed", {
+      status: createResponse.status,
+      requestId,
+      message,
+      body: {
+        mode: body.mode,
+        aspectRatio: body.aspectRatio,
+        resolution: body.resolution,
+        duration: body.duration,
+        count: body.count,
+        generateAudio: body.generateAudio,
+        imageReferences: arkImageAssets.length,
+        videoReferences: arkVideoAssets.length,
+        audioReferences: audioReferences.length,
+      },
+      response: createResponse.json,
+    });
+    throw new Error(
+      requestId ? `${message} Request id: ${requestId}` : message,
+    );
+  }
+
+  let videoUrl = extractVideoUrl(createResponse.json);
+  let lastFrameUrl = extractLastFrameUrl(createResponse.json);
+  const videoId = extractVideoId(createResponse.json);
+  updateGenerationJob(jobId, {
+    promptId: videoId || "",
+    message: videoUrl
+      ? "Seedance 2.0 宸茶繑鍥炶棰戯紝姝ｅ湪淇濆瓨"
+      : "Seedance 2.0 浠诲姟宸叉彁浜わ紝绛夊緟鐢熸垚缁撴灉",
+    progress: {
+      label: videoUrl ? "姝ｅ湪淇濆瓨瑙嗛" : "宸茶繘鍏?Seedance 2.0 闃熷垪",
+      current: videoUrl ? 1 : 0,
+      total: 1,
+      percent: videoUrl ? 99 : 3,
+      rate: "",
+    },
+  });
+  if (!videoUrl && videoId) {
+    const result = await waitForArkSeedanceVideo(videoId, jobId);
+    videoUrl = result.videoUrl;
+    lastFrameUrl = result.lastFrameUrl || lastFrameUrl;
+  }
+
+  if (!videoUrl) {
+    throw new Error(
+      videoId
+        ? `Ark Seedance 2.0 浠诲姟宸叉彁浜や絾鏆傛湭杩斿洖瑙嗛 URL锛?{videoId}`
+        : "Ark Seedance 2.0 鏈繑鍥炶棰?URL",
+    );
+  }
+
+  return {
+    image: videoUrl,
+    videoUrl,
+    lastFrameUrl,
+    provider: "ark",
+    engine: SEEDANCE_MODEL,
+    taskId: videoId,
+    referenceInputSupported: Boolean(
+      arkSeedanceImageAssets(body, imageReference).length ||
+        arkSeedanceVideoAssets(body).length ||
+        audioReferences.length
+    ),
+    usage: createResponse.json?.usage || null,
+  };
+}
+
+async function callThirdPartySeedanceVideoGeneration(
+  body,
+  imageReference,
+  audioReferences = [],
+) {
+  const jobId = body.__jobId || "";
+  const mode = imageReference ? "image_to_video" : "text_to_video";
+  const requestBody = {
+    model: SEEDANCE_MODEL,
+    task_type: mode,
+    mode,
+    prompt: String(body.prompt || "").trim(),
+    duration: normalizeSeedanceDuration(body.duration),
+    aspect_ratio: normalizeSeedanceRatio(body.aspectRatio),
+    resolution: normalizeSeedanceResolution(body.resolution),
+  };
+  if (imageReference?.source)
+    requestBody.image_url = await resolveSeedanceImageUrl(imageReference.source);
+  if (audioReferences.length) {
+    const audioUrls = [];
+    for (const asset of audioReferences) {
+      audioUrls.push(
+        await resolveSeedanceAudioUrl(asset.source, asset.mimeType || "audio/mpeg"),
+      );
+    }
+    requestBody.audio_url = audioUrls[0];
+    requestBody.audio_urls = audioUrls;
+  }
+
+  const createResponse = await requestProviderJson(
+    `${SEEDANCE_BASE_URL}/generate`,
+    requestBody,
+    seedanceAuthorizationHeader(),
+  );
+  if (!createResponse.ok) {
+    throw new Error(
+      createResponse.json?.error?.message ||
+        createResponse.json?.message ||
+        "Seedance 2.0 video generation failed",
+    );
+  }
+
+  let videoUrl = extractVideoUrl(createResponse.json);
+  const videoId = extractVideoId(createResponse.json);
+  updateGenerationJob(jobId, {
+    promptId: videoId || "",
+    message: videoUrl
+      ? "Seedance 2.0 宸茶繑鍥炶棰戯紝姝ｅ湪淇濆瓨"
+      : "Seedance 2.0 浠诲姟宸叉彁浜わ紝绛夊緟鐢熸垚缁撴灉",
+    progress: {
+      label: videoUrl ? "姝ｅ湪淇濆瓨瑙嗛" : "宸茶繘鍏?Seedance 2.0 闃熷垪",
+      current: videoUrl ? 1 : 0,
+      total: 1,
+      percent: videoUrl ? 99 : 5,
+      rate: "",
+    },
+  });
+  if (!videoUrl && videoId) {
+    for (let attempt = 0; attempt < 30; attempt += 1) {
+      await delay(2000);
+      updateGenerationJob(jobId, {
+        message: "Seedance 2.0 姝ｅ湪鐢熸垚瑙嗛",
+        progress: seedanceProgress(
+          attempt,
+          30,
+          "绛夊緟 Seedance 2.0 杩斿洖瑙嗛",
+        ),
+      });
+      const statusResponse = await requestProviderJson(
+        `${SEEDANCE_BASE_URL}/videos/${encodeURIComponent(videoId)}`,
+        {},
+        seedanceAuthorizationHeader(),
+      );
+      if (!statusResponse.ok) continue;
+      videoUrl = extractVideoUrl(statusResponse.json);
+      const status = extractVideoStatus(statusResponse.json);
+      if (videoUrl) break;
+      if (["failed", "error", "canceled", "cancelled"].includes(status)) {
+        throw new Error(statusResponse.json.message || "Seedance 2.0 鐢熸垚澶辫触");
+      }
+    }
+  }
+
+  if (!videoUrl) {
+    throw new Error(
+      videoId
+        ? `Seedance 2.0 浠诲姟宸叉彁浜や絾鏆傛湭杩斿洖瑙嗛 URL锛?{videoId}`
+        : "Seedance 2.0 鏈繑鍥炶棰?URL",
+    );
+  }
+
+  return {
+    image: videoUrl,
+    videoUrl,
+    provider: "seedance",
+    engine: SEEDANCE_MODEL,
+    taskId: videoId,
+    referenceInputSupported: Boolean(
+      imageReference?.source || audioReferences.length,
+    ),
+    usage: null,
+  };
+}
+
+async function callSeedanceVideoGeneration(body) {
+  if (!SEEDANCE_API_KEY) {
+    throw new Error("缂哄皯 SEEDANCE_API_KEY锛屾棤娉曡皟鐢?Seedance 2.0 瑙嗛鎺ュ彛");
+  }
+  const audioReferences = seedanceReferenceAssets(body, "audio");
+  const videoReferences = seedanceReferenceAssets(body, "video");
+  const imageReferences = seedanceReferenceAssets(body, "image");
+  const imageReference = selectSeedanceImageReference(body, audioReferences);
+  if (audioReferences.length && !imageReferences.length && !videoReferences.length) {
+    throw new Error(
+      "Seedance 闊抽鍙傝€冮渶瑕佸悓鏃惰繛鎺ヨ嚦灏?1 涓浘鐗囨垨瑙嗛鍙傝€冪礌鏉愩€傝鍐嶈繛鎺ュ弬鑰冪礌鏉愬悗鎻愪氦銆?,
+    );
+  }
+  if (SEEDANCE_PROVIDER === "ark" || SEEDANCE_PROVIDER === "volcengine") {
+    return callArkSeedanceVideoGeneration(
+      body,
+      imageReference,
+      audioReferences,
+    );
+  }
+  if (
+    videoReferences.length ||
+    imageReferences.length > 1 ||
+    imageReferences.some((asset) => normalizeSeedanceReferenceRole(asset)) ||
+    audioReferences.length > 1
+  ) {
+    throw new Error(
+      "褰撳墠闈?Ark Seedance 缃戝叧涓嶆敮鎸佸畬鏁村畼鏂瑰妯℃€佸弬鑰冿紝璇峰垏鎹?SEEDANCE_PROVIDER=ark銆?,
+    );
+  }
+  return callThirdPartySeedanceVideoGeneration(
+    body,
+    imageReference,
+    audioReferences,
+  );
+}
+
+function createMockTextGeneration(prompt, referenceAssets = []) {
+  const source = prompt || "鏈～鍐欐彁绀鸿瘝";
+  const refs = referenceAssets.length
+    ? `\n\n鍙傝€冪礌鏉愶細${referenceAssets
+        .map(
+          (asset) => asset.displayName || asset.originalName || asset.refName,
+        )
+        .filter(Boolean)
+        .join("銆?)}`
+    : "";
+  return `銆愮敓鎴愭枃鏈€慭n${source}\n\n銆愮粨鏋勫缓璁€慭n1. 鏄庣‘涓讳綋銆佸満鏅笌鎯呯华銆俓n2. 琛ュ厖闀滃ご銆佸姩浣滀笌瑙嗚椋庢牸銆俓n3. 濡傛灉瑕佺户缁帴鍥剧墖鎴栬棰戣妭鐐癸紝鍙洿鎺ユ妸杩欐鏂囨湰浣滀负涓婃父杈撳叆銆?{refs}`;
+}
+
+async function createGeneration(body, db, user) {
+  const model =
+    db.models.find((item) => item.id === body.modelId) || db.models[0];
+  const prompt = String(body.prompt || "").trim();
+  const referenceAssets = Array.isArray(body.referenceAssets)
+    ? body.referenceAssets.map((asset) => ({
+        refName: String(asset.refName || ""),
+        displayName: String(asset.displayName || ""),
+        originalName: String(asset.originalName || ""),
+        type: String(asset.type || "asset"),
+        title: String(asset.title || ""),
+        role: String(asset.role || ""),
+        seedanceRole: String(asset.seedanceRole || ""),
+        instruction: String(asset.instruction || ""),
+        mimeType: String(asset.mimeType || ""),
+        size: Number(asset.size || 0),
+        source: String(asset.source || ""),
+      }))
+    : [];
+  const mode = body.mode || "image";
+  let output;
+  if (mode === "image") {
+    output = await callImageGeneration(body, model.title);
+  } else if (mode === "text") {
+    output =
+      body.node?.type === "script"
+        ? await callSeedancePromptTextGeneration(body)
+        : await callPlainTextGeneration(body);
+  } else if (mode === "video-face-restore") {
+    output = await callVideoFaceRestoreGeneration(body);
+  } else if (mode === "video-face-swap") {
+    output = await callComfyUIFaceSwapGeneration(body);
+  } else if (mode === "video") {
+    output = await callSeedanceVideoGeneration({
+      ...body,
+      safetyIdentifier: body.safetyIdentifier || arkSafetyIdentifier(user),
+    });
+  } else {
+    output = {
+      image:
+        db.previewImages[Math.floor(Math.random() * db.previewImages.length)],
+      provider: "mock",
+      engine: "mock-training",
+      usage: null,
+    };
+  }
+
+  return {
+    id: crypto.randomUUID(),
+    userId: user?.id || "guest",
+    prompt,
+    mode,
+    workflowMode: String(body.workflowMode || ""),
+    node: body.node || null,
+    referenceAssets,
+    modelId: model.id,
+    modelName: model.title,
+    strength: Number(body.strength || 72),
+    faceRestoreParams:
+      mode === "video-face-restore" || mode === "video-face-swap"
+        ? {
+            fidelity: clampNumber(body.faceRestoreFidelity, 50, 0, 100),
+            scale: clampNumber(body.faceRestoreScale, 1.25, 1, 2),
+            padding: clampNumber(body.faceRestorePadding, 0.12, 0, 0.35),
+            feather: clampNumber(body.faceSwapFeather, 22, 2, 50),
+            colorMatch: clampNumber(body.faceSwapColorMatch, 75, 0, 100),
+          }
+        : null,
+    size: normalizeImageSize(body.size),
+    quality: normalizeImageQuality(body.quality),
+    seedanceParams:
+      mode === "video"
+        ? {
+            ratio: normalizeSeedanceRatio(body.aspectRatio),
+            resolution: normalizeSeedanceResolution(body.resolution),
+            duration: normalizeSeedanceDuration(body.duration),
+            generateAudio: optionalBoolean(body.generateAudio),
+            watermark: optionalBoolean(body.watermark),
+            returnLastFrame: optionalBoolean(body.returnLastFrame),
+            cameraFixed: optionalBoolean(body.cameraFixed),
+            seed:
+              body.seed !== undefined && body.seed !== ""
+                ? Number(body.seed)
+                : null,
+            serviceTier: String(body.serviceTier || ""),
+            draft: optionalBoolean(body.draft),
+            draftTaskId: String(body.draftTaskId || ""),
+            webSearch: optionalBoolean(body.webSearch),
+            callbackUrl: String(body.callbackUrl || ""),
+            executionExpiresAfter: String(body.executionExpiresAfter || ""),
+          }
+        : null,
+    image: output.image,
+    text: output.text || "",
+    videoUrl: output.videoUrl || "",
+    lastFrameUrl: output.lastFrameUrl || "",
+    taskId: output.taskId || "",
+    provider: output.provider,
+    engine: output.engine,
+    referenceInputSupported: Boolean(output.referenceInputSupported),
+    referenceWarning: output.referenceWarning || "",
+    usage: output.usage,
+    status: "completed",
+    createdAt: new Date().toISOString(),
+  };
+}
+
+function publicGenerationJob(job, user = null) {
+  return {
+    id: job.id,
+    status: job.status,
+    mode: job.mode,
+    promptId: job.promptId || "",
+    message: job.message || "",
+    progress: job.progress || null,
+    error: job.error || "",
+    generation: job.generation || null,
+    elapsedMs: Date.now() - job.startedAt,
+    createdAt: job.createdAt,
+    updatedAt: job.updatedAt,
+    user: user ? publicUser(user) : undefined,
+  };
+}
+
+async function refreshGenerationJobProgress(job) {
+  if (!job || job.status !== "running") return job;
+  if (!["video-face-restore", "video-face-swap"].includes(job.mode)) return job;
+  const progress = await comfyLogProgress();
+  if (progress) {
+    job.progress = progress;
+    job.updatedAt = new Date().toISOString();
+  }
+  return job;
+}
+
+function startGenerationJob({ body, db, user, cost }) {
+  const job = {
+    id: crypto.randomUUID(),
+    userId: user.id,
+    mode: body.mode || "image",
+    status: "queued",
+    message: "宸叉彁浜わ紝姝ｅ湪鍑嗗绱犳潗",
+    promptId: "",
+    progress: null,
+    error: "",
+    generation: null,
+    startedAt: Date.now(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  generationJobs.set(job.id, job);
+
+  setTimeout(async () => {
+    job.status = "running";
+    job.message =
+      job.mode === "video" ? "姝ｅ湪鍑嗗 Seedance 2.0 璇锋眰" : "姝ｅ湪涓婁紶绱犳潗鍒?ComfyUI";
+    job.progress = {
+      label: "鍑嗗绱犳潗",
+      current: 0,
+      total: 1,
+      percent: 1,
+      rate: "",
+    };
+    job.updatedAt = new Date().toISOString();
+    try {
+      const generation = await createGeneration(
+        { ...body, __jobId: job.id },
+        db,
+        user,
+      );
+      if (job.status === "cancelled") {
+        user.credits += cost;
+        await writeDb(db);
+        return;
+      }
+      db.generations.unshift(generation);
+      await writeDb(db);
+      job.status = "completed";
+      job.message = "鐢熸垚瀹屾垚";
+      job.progress = {
+        label: "鐢熸垚瀹屾垚",
+        current: 1,
+        total: 1,
+        percent: 100,
+        rate: "",
+      };
+      job.generation = generation;
+      job.updatedAt = new Date().toISOString();
+    } catch (error) {
+      user.credits += cost;
+      await writeDb(db);
+      job.status = "failed";
+      job.error = error.message;
+      job.message = `鐢熸垚澶辫触锛?{error.message}`;
+      job.updatedAt = new Date().toISOString();
+    }
+  }, 0);
+
+  return job;
+}
+
+function createOrder(plan, user, method, provider = method) {
+  const now = new Date().toISOString();
+  return {
+    id: crypto.randomUUID(),
+    orderNo: `MH${Date.now()}${Math.floor(Math.random() * 900 + 100)}`,
+    userId: user.id,
+    planId: plan.id,
+    planName: plan.name,
+    amount: plan.price,
+    currency: PAYMENT_CURRENCY.toUpperCase(),
+    credits: plan.credits,
+    method,
+    provider,
+    status: "pending",
+    checkoutUrl: "",
+    providerSessionId: "",
+    providerPaymentId: "",
+    paidAt: "",
+    creditedAt: "",
+    createdAt: now,
+    updatedAt: now,
+  };
+}
+
+function createTestPaymentPlan() {
+  return {
+    id: "test-0-01",
+    name: "Payment Test",
+    price: 0.01,
+    credits: 1,
+  };
+}
+
+function paymentReturnUrl(req, pathName) {
+  const publicBaseUrl = (process.env.PUBLIC_BASE_URL || "").replace(/\/$/, "");
+  if (publicBaseUrl) return `${publicBaseUrl}${pathName}`;
+  return absoluteUrl(req, pathName);
+}
+
+function paymentProviderEnabled(method) {
+  const providers = PAYMENT_PROVIDER.split(/[,;\s]+/).filter(Boolean);
+  return providers.includes(method);
+}
+
+async function createStripeCheckoutSession(req, order, user) {
+  if (!STRIPE_SECRET_KEY) {
+    throw new Error("缂哄皯 STRIPE_SECRET_KEY锛屾棤娉曞垱寤虹湡瀹炴敮浠樿鍗?);
+  }
+  const amount = Math.round(Number(order.amount || 0) * 100);
+  if (!Number.isFinite(amount) || amount <= 0)
+    throw new Error("璁㈠崟閲戦蹇呴』澶т簬 0");
+  const fields = {
+    mode: "payment",
+    success_url: paymentReturnUrl(
+      req,
+      `/#/pricing?payment=success&order=${encodeURIComponent(order.id)}`,
+    ),
+    cancel_url: paymentReturnUrl(
+      req,
+      `/#/pricing?payment=cancel&order=${encodeURIComponent(order.id)}`,
+    ),
+    client_reference_id: order.id,
+    "customer_email": user.email || "",
+    "line_items[0][quantity]": "1",
+    "line_items[0][price_data][currency]": PAYMENT_CURRENCY,
+    "line_items[0][price_data][unit_amount]": String(amount),
+    "line_items[0][price_data][product_data][name]": `${order.planName} 绠楀姏鐐筦,
+    "line_items[0][price_data][product_data][description]": `${order.credits} 绠楀姏鐐瑰厖鍊糮,
+    "metadata[orderId]": order.id,
+    "metadata[orderNo]": order.orderNo,
+    "metadata[userId]": user.id,
+    "metadata[planId]": order.planId,
+  };
+  const response = await requestFormJsonDirect(
+    "https://api.stripe.com/v1/checkout/sessions",
+    fields,
+    { Authorization: `Bearer ${STRIPE_SECRET_KEY}` },
+  );
+  if (!response.ok) {
+    const message =
+      response.json?.error?.message ||
+      response.text ||
+      `Stripe Checkout 鍒涘缓澶辫触锛欻TTP ${response.status}`;
+    throw new Error(message);
+  }
+  order.providerSessionId = response.json.id;
+  order.checkoutUrl = response.json.url || "";
+  order.updatedAt = new Date().toISOString();
+  if (!order.checkoutUrl) throw new Error("Stripe 鏈繑鍥炴敮浠橀摼鎺?);
+  return response.json;
+}
+
+function alipayTimestamp() {
+  return new Date()
+    .toISOString()
+    .replace("T", " ")
+    .replace(/\.\d{3}Z$/, "");
+}
+
+function alipaySignParams(params) {
+  return Object.keys(params)
+    .filter((key) => params[key] !== undefined && params[key] !== "" && key !== "sign")
+    .sort()
+    .map((key) => `${key}=${params[key]}`)
+    .join("&");
+}
+
+function rsaPrivateSign(content, privateKey) {
+  return crypto.createSign("RSA-SHA256").update(content, "utf8").sign(privateKey, "base64");
+}
+
+function rsaPublicVerify(content, signature, publicKey) {
+  return crypto
+    .createVerify("RSA-SHA256")
+    .update(content, "utf8")
+    .verify(publicKey, signature, "base64");
+}
+
+function alipayConfigIssues() {
+  const issues = [];
+  if (!ALIPAY_APP_ID) {
+    issues.push("缂哄皯 ALIPAY_APP_ID");
+  } else if (
+    !/^\d{10,32}$/.test(ALIPAY_APP_ID) ||
+    /BEGIN|PRIVATE KEY|PUBLIC KEY|MII[A-Za-z0-9+/=]{20}/.test(ALIPAY_APP_ID)
+  ) {
+    issues.push("ALIPAY_APP_ID 鏍煎紡涓嶅锛屽簲濉啓鏀粯瀹濆紑鏀惧钩鍙板簲鐢?App ID锛屼笉鏄瘑閽ュ唴瀹?);
+  }
+  if (!ALIPAY_PRIVATE_KEY) {
+    issues.push("缂哄皯 ALIPAY_PRIVATE_KEY");
+  } else if (!/-----BEGIN (RSA )?PRIVATE KEY-----/.test(ALIPAY_PRIVATE_KEY)) {
+    issues.push("ALIPAY_PRIVATE_KEY 鏍煎紡涓嶅锛屽簲濉啓搴旂敤绉侀挜");
+  } else {
+    try {
+      crypto.createPrivateKey(ALIPAY_PRIVATE_KEY);
+    } catch {
+      issues.push("ALIPAY_PRIVATE_KEY 鏃犳硶瑙ｆ瀽锛岃妫€鏌ユ槸鍚︽贩鍏?App ID 鎴栧鍒朵簡閿欒鐨勫簲鐢ㄧ閽?);
+    }
+  }
+  if (!ALIPAY_PUBLIC_KEY) {
+    issues.push("缂哄皯 ALIPAY_PUBLIC_KEY");
+  } else if (!/-----BEGIN PUBLIC KEY-----/.test(ALIPAY_PUBLIC_KEY)) {
+    issues.push("ALIPAY_PUBLIC_KEY 鏍煎紡涓嶅锛屽簲濉啓鏀粯瀹濆叕閽?);
+  } else {
+    try {
+      crypto.createPublicKey(ALIPAY_PUBLIC_KEY);
+    } catch {
+      issues.push("ALIPAY_PUBLIC_KEY 鏃犳硶瑙ｆ瀽锛岃妫€鏌ユ槸鍚﹀～鍐欐敮浠樺疂鍏挜鑰屼笉鏄簲鐢ㄥ叕閽?);
+    }
+  }
+  return issues;
+}
+
+function createAlipayPagePay(req, order) {
+  const configIssues = alipayConfigIssues();
+  if (configIssues.length)
+    throw new Error(`鏀粯瀹濋厤缃棤鏁堬細${configIssues.join("锛?)}`);
+  const params = {
+    app_id: ALIPAY_APP_ID,
+    method: "alipay.trade.page.pay",
+    charset: "utf-8",
+    sign_type: "RSA2",
+    timestamp: alipayTimestamp(),
+    version: "1.0",
+    notify_url: paymentReturnUrl(req, "/api/payments/alipay/notify"),
+    return_url: paymentReturnUrl(
+      req,
+      `/#/pricing?payment=return&order=${encodeURIComponent(order.id)}`,
+    ),
+    biz_content: JSON.stringify({
+      out_trade_no: order.orderNo,
+      product_code: "FAST_INSTANT_TRADE_PAY",
+      total_amount: Number(order.amount).toFixed(2),
+      subject: `${order.planName} 绠楀姏鐐筦,
+      body: `${order.credits} 绠楀姏鐐瑰厖鍊糮,
+      passback_params: order.id,
+    }),
+  };
+  params.sign = rsaPrivateSign(alipaySignParams(params), ALIPAY_PRIVATE_KEY);
+  order.checkoutUrl = `${ALIPAY_GATEWAY}?${new URLSearchParams(params).toString()}`;
+  order.updatedAt = new Date().toISOString();
+  return { checkoutUrl: order.checkoutUrl };
+}
+
+function verifyAlipayNotify(params) {
+  if (!ALIPAY_PUBLIC_KEY) throw new Error("缂哄皯 ALIPAY_PUBLIC_KEY锛屾棤娉曢獙璇佹敮浠樺疂閫氱煡");
+  const signature = params.sign || "";
+  if (!signature) throw new Error("鏀粯瀹濋€氱煡缂哄皯 sign");
+  const content = alipaySignParams(params);
+  if (!rsaPublicVerify(content, signature, ALIPAY_PUBLIC_KEY))
+    throw new Error("鏀粯瀹濋€氱煡楠岀澶辫触");
+  return true;
+}
+
+function wechatPayPrivateKey() {
+  if (WECHAT_PAY_PRIVATE_KEY) return WECHAT_PAY_PRIVATE_KEY;
+  const keyPath = (process.env.WECHAT_PAY_PRIVATE_KEY_PATH || "").trim();
+  if (keyPath && fsNative.existsSync(keyPath)) {
+    return fsNative.readFileSync(keyPath, "utf8");
+  }
+  return "";
+}
+
+function wechatAuthorization(method, pathname, body) {
+  const privateKey = wechatPayPrivateKey();
+  if (
+    !WECHAT_PAY_APP_ID ||
+    !WECHAT_PAY_MCH_ID ||
+    !WECHAT_PAY_MCH_SERIAL_NO ||
+    !privateKey
+  ) {
+    throw new Error(
+      "缂哄皯寰俊鏀粯鍟嗘埛閰嶇疆锛歐ECHAT_PAY_APP_ID / WECHAT_PAY_MCH_ID / WECHAT_PAY_MCH_SERIAL_NO / WECHAT_PAY_PRIVATE_KEY",
+    );
+  }
+  const nonce = crypto.randomBytes(16).toString("hex");
+  const timestamp = String(Math.floor(Date.now() / 1000));
+  const message = `${method}\n${pathname}\n${timestamp}\n${nonce}\n${body}\n`;
+  const signature = rsaPrivateSign(message, privateKey);
+  return `WECHATPAY2-SHA256-RSA2048 mchid="${WECHAT_PAY_MCH_ID}",nonce_str="${nonce}",timestamp="${timestamp}",serial_no="${WECHAT_PAY_MCH_SERIAL_NO}",signature="${signature}"`;
+}
+
+async function createWechatNativePayment(req, order) {
+  const pathname = "/v3/pay/transactions/native";
+  const payload = {
+    appid: WECHAT_PAY_APP_ID,
+    mchid: WECHAT_PAY_MCH_ID,
+    description: `${order.planName} 绠楀姏鐐筦,
+    out_trade_no: order.orderNo,
+    notify_url: paymentReturnUrl(req, "/api/payments/wechat/notify"),
+    amount: {
+      total: Math.round(Number(order.amount || 0) * 100),
+      currency: "CNY",
+    },
+    attach: order.id,
+  };
+  const body = JSON.stringify(payload);
+  const response = await requestJsonBodyDirect(
+    `https://api.mch.weixin.qq.com${pathname}`,
+    body,
+    {
+      Authorization: wechatAuthorization("POST", pathname, body),
+      Accept: "application/json",
+    },
+  );
+  if (!response.ok) {
+    const message =
+      response.json?.message ||
+      response.json?.code ||
+      response.text ||
+      `寰俊鏀粯涓嬪崟澶辫触锛欻TTP ${response.status}`;
+    throw new Error(message);
+  }
+  order.qrText = response.json.code_url || "";
+  if (!order.qrText) throw new Error("寰俊鏀粯鏈繑鍥?code_url");
+  order.qrImage = await QRCode.toDataURL(order.qrText, { margin: 1, width: 240 });
+  order.updatedAt = new Date().toISOString();
+  return { qrText: order.qrText, qrImage: order.qrImage };
+}
+
+function verifyWechatNotifySignature(req, rawBody) {
+  if (!WECHAT_PAY_PLATFORM_CERT_PEM) {
+    throw new Error("缂哄皯 WECHAT_PAY_PLATFORM_CERT_PEM锛屾棤娉曢獙璇佸井淇℃敮浠橀€氱煡");
+  }
+  const timestamp = req.headers["wechatpay-timestamp"];
+  const nonce = req.headers["wechatpay-nonce"];
+  const signature = req.headers["wechatpay-signature"];
+  if (!timestamp || !nonce || !signature)
+    throw new Error("寰俊鏀粯閫氱煡缂哄皯绛惧悕澶?);
+  const message = `${timestamp}\n${nonce}\n${rawBody.toString("utf8")}\n`;
+  if (!rsaPublicVerify(message, signature, WECHAT_PAY_PLATFORM_CERT_PEM))
+    throw new Error("寰俊鏀粯閫氱煡楠岀澶辫触");
+  return true;
+}
+
+function decryptWechatResource(resource) {
+  if (!WECHAT_PAY_API_V3_KEY) throw new Error("缂哄皯 WECHAT_PAY_API_V3_KEY锛屾棤娉曡В瀵嗗井淇￠€氱煡");
+  const key = Buffer.from(WECHAT_PAY_API_V3_KEY, "utf8");
+  const nonce = Buffer.from(resource.nonce || "", "utf8");
+  const ciphertext = Buffer.from(resource.ciphertext || "", "base64");
+  const associatedData = Buffer.from(resource.associated_data || "", "utf8");
+  const authTag = ciphertext.slice(ciphertext.length - 16);
+  const encrypted = ciphertext.slice(0, ciphertext.length - 16);
+  const decipher = crypto.createDecipheriv("aes-256-gcm", key, nonce);
+  decipher.setAuthTag(authTag);
+  decipher.setAAD(associatedData);
+  const decrypted = Buffer.concat([decipher.update(encrypted), decipher.final()]);
+  return JSON.parse(decrypted.toString("utf8"));
+}
+
+function parseStripeSignature(signatureHeader) {
+  const parts = String(signatureHeader || "").split(",");
+  const result = { signatures: [] };
+  for (const part of parts) {
+    const [key, value] = part.split("=");
+    if (key === "t") result.timestamp = value;
+    if (key === "v1") result.signatures.push(value);
+  }
+  return result;
+}
+
+function verifyStripeWebhook(rawBody, signatureHeader) {
+  if (!STRIPE_WEBHOOK_SECRET) {
+    throw new Error("缂哄皯 STRIPE_WEBHOOK_SECRET锛屾棤娉曢獙绛?Stripe Webhook");
+  }
+  const parsed = parseStripeSignature(signatureHeader);
+  if (!parsed.timestamp || !parsed.signatures.length)
+    throw new Error("Stripe Webhook 绛惧悕鏍煎紡鏃犳晥");
+  const signedPayload = `${parsed.timestamp}.${rawBody.toString("utf8")}`;
+  const expected = crypto
+    .createHmac("sha256", STRIPE_WEBHOOK_SECRET)
+    .update(signedPayload)
+    .digest("hex");
+  const valid = parsed.signatures.some((signature) => {
+    const left = Buffer.from(signature, "hex");
+    const right = Buffer.from(expected, "hex");
+    return left.length === right.length && crypto.timingSafeEqual(left, right);
+  });
+  if (!valid) throw new Error("Stripe Webhook 绛惧悕楠岃瘉澶辫触");
+  return JSON.parse(rawBody.toString("utf8"));
+}
+
+function applyPaidOrder(db, order, payment = {}) {
+  if (!order) throw new Error("璁㈠崟涓嶅瓨鍦?);
+  if (order.status === "paid" && order.creditedAt) return { credited: false };
+  const user = db.users.find((item) => item.id === order.userId);
+  if (!user) throw new Error("璁㈠崟鐢ㄦ埛涓嶅瓨鍦?);
+  const { wallet } = ensureUserInfrastructure(db, user);
+  const now = new Date().toISOString();
+  order.status = "paid";
+  order.providerPaymentId =
+    payment.payment_intent || payment.paymentIntent || order.providerPaymentId || "";
+  order.paidAt = order.paidAt || now;
+  order.creditedAt = order.creditedAt || now;
+  order.updatedAt = now;
+  user.credits = Number(user.credits || 0) + Number(order.credits || 0);
+  user.plan = order.planName || user.plan;
+  wallet.balance = Number(wallet.balance || 0) + Number(order.amount || 0);
+  wallet.updatedAt = now;
+  return { credited: true, user, wallet };
+}
+
+async function createPaymentForOrder(req, order, user, method) {
+  if (method === "alipay") createAlipayPagePay(req, order);
+  else if (method === "wechat") await createWechatNativePayment(req, order);
+  else await createStripeCheckoutSession(req, order, user);
+}
+
+function absoluteUrl(req, pathname) {
+  if (/^https?:\/\//i.test(pathname)) return pathname;
+  const proto = req.headers["x-forwarded-proto"] || "http";
+  return `${proto}://${req.headers.host}${pathname}`;
+}
+
+async function handleExternalApi(req, res, url) {
+  const db = await readDb();
+  ensureCollections(db);
+
+  if (req.method === "GET" && url.pathname === "/v1/quota") {
+    const apiKey = requirePlatformApiKey(req, res, db, "billing:read");
+    if (!apiKey) return;
+    sendJson(res, 200, {
+      object: "quota",
+      apiKey: publicApiKey(apiKey),
+      quota: quotaSummary(apiKey),
+    });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/v1/models") {
+    const apiKey = requirePlatformApiKey(
+      req,
+      res,
+      db,
+      "models:read",
+      "models:list",
+    );
+    if (!apiKey) return;
+    consumeApiQuota(apiKey, "models:list");
+    await writeDb(db);
+    const textModels = (API_CAPABILITIES.text.models || []).map((model) => ({
+      id: model.id,
+      object: "model",
+      name: model.label,
+      category: "text",
+      provider: model.provider,
+      capabilities: model.capabilities?.modes || ["text-to-text"],
+    }));
+    sendJson(res, 200, {
+      object: "list",
+      data: [
+        ...textModels,
+        ...db.models.map((model) => ({
+          id: model.id,
+          object: "model",
+          name: model.title,
+          category: model.category,
+          provider: "dreamehub",
+          capabilities: model.category === "video" ? ["video"] : ["image"],
+        })),
+      ],
+      quota: quotaSummary(apiKey).endpoints["models:list"],
+    });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/v1/image-models") {
+    const apiKey = requirePlatformApiKey(
+      req,
+      res,
+      db,
+      "models:read",
+      "models:list",
+    );
+    if (!apiKey) return;
+    consumeApiQuota(apiKey, "models:list");
+    await writeDb(db);
+    sendJson(res, 200, {
+      object: "list",
+      data: IMAGE_MODEL_REGISTRY.map((model) => ({
+        id: model.id,
+        object: "image_model",
+        provider: model.provider,
+        name: model.label,
+        description: model.description,
+        requiresKey: model.requiresKey,
+        sizes: model.sizes,
+        qualities: model.qualities,
+        capabilities: model.capabilities,
+      })),
+      quota: quotaSummary(apiKey).endpoints["models:list"],
+    });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/v1/images/generations") {
+    const apiKey = requirePlatformApiKey(
+      req,
+      res,
+      db,
+      "images:create",
+      "images:generations",
+    );
+    if (!apiKey) return;
+
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+    if (!String(body.prompt || "").trim())
+      return sendError(res, 422, "prompt 涓嶈兘涓虹┖");
+
+    let output;
+    try {
+      output = await callImageGeneration(
+        {
+          ...body,
+          imageModel: body.model || body.imageModel || "openai:gpt-image-2",
+          size: normalizeImageSize(body.size),
+          quality: normalizeImageQuality(body.quality),
+        },
+        "External API",
+      );
+    } catch (error) {
+      return sendError(
+        res,
+        process.env.OPENAI_API_KEY ? 502 : 503,
+        error.message,
+      );
+    }
+
+    consumeApiQuota(apiKey, "images:generations");
+    db.generations.unshift({
+      id: crypto.randomUUID(),
+      userId: apiKey.userId,
+      workspaceId: apiKey.workspaceId,
+      apiKeyId: apiKey.id,
+      prompt: String(body.prompt || "").trim(),
+      mode: "image",
+      modelId: body.modelId || null,
+      modelName: "External API",
+      strength: Number(body.strength || 72),
+      size: normalizeImageSize(body.size),
+      quality: normalizeImageQuality(body.quality),
+      image: output.image,
+      provider: output.provider,
+      engine: output.engine,
+      usage: output.usage,
+      status: "completed",
+      source: "platform-api",
+      createdAt: new Date().toISOString(),
+    });
+    await writeDb(db);
+
+    sendJson(res, 200, {
+      id: crypto.randomUUID(),
+      object: "image.generation",
+      created: Math.floor(Date.now() / 1000),
+      model: output.engine,
+      data: [
+        {
+          url: absoluteUrl(req, output.image),
+        },
+      ],
+      usage: output.usage,
+      quota: {
+        ...quotaSummary(apiKey).endpoints["images:generations"],
+        all: quotaSummary(apiKey),
+      },
+    });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/v1/chat/completions") {
+    const apiKey = requirePlatformApiKey(
+      req,
+      res,
+      db,
+      "chat:create",
+      "chat:completions",
+    );
+    if (!apiKey) return;
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+    const messages = Array.isArray(body.messages) ? body.messages : [];
+    const lastUserMessage = chatMessageText(
+      [...messages].reverse().find((item) => item.role === "user")?.content ||
+        "",
+    );
+    if (!String(lastUserMessage).trim())
+      return sendError(res, 422, "messages 涓嚦灏戦渶瑕佷竴鏉?user 娑堟伅");
+    const model = body.model || "dreamehub-free-chat";
+    let responseId = `chatcmpl_${crypto.randomUUID()}`;
+    let responseModel = model;
+    let content = "";
+    let usage = null;
+    try {
+      if (
+        model === "seedance-prompt-zh" ||
+        model === "seedance-prompt-zh-openai"
+      ) {
+        const output = await callSeedancePromptTextGeneration({
+          prompt: lastUserMessage,
+          model,
+        });
+        content = output.text;
+        usage = output.usage;
+      } else if (
+        model === "openai-chat" ||
+        String(model).startsWith("openai:")
+      ) {
+        const output = await callOpenAIChatCompletion(body);
+        responseId = output.id;
+        responseModel = output.model;
+        content = output.content;
+        usage = output.usage;
+      } else {
+        const output = await callPollinationsChatCompletion(body);
+        responseId = output.id;
+        responseModel = output.model;
+        content = output.content;
+        usage = output.usage;
+      }
+    } catch (error) {
+      return sendError(
+        res,
+        String(model).includes("openai") && !process.env.OPENAI_API_KEY
+          ? 503
+          : 502,
+        error.message,
+      );
+    }
+    consumeApiQuota(apiKey, "chat:completions");
+    await writeDb(db);
+    sendJson(res, 200, {
+      id: responseId,
+      object: "chat.completion",
+      created: Math.floor(Date.now() / 1000),
+      model: responseModel,
+      choices: [
+        {
+          index: 0,
+          message: {
+            role: "assistant",
+            content,
+          },
+          finish_reason: "stop",
+        },
+      ],
+      usage,
+      quota: quotaSummary(apiKey).endpoints["chat:completions"],
+    });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/v1/workflows/run") {
+    const apiKey = requirePlatformApiKey(
+      req,
+      res,
+      db,
+      "workflows:run",
+      "workflows:run",
+    );
+    if (!apiKey) return;
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+    const workflow =
+      db.workflows.find((item) => item.id === body.workflowId) ||
+      db.workflows[0];
+    consumeApiQuota(apiKey, "workflows:run");
+    await writeDb(db);
+    sendJson(res, 200, {
+      id: `wfrun_${crypto.randomUUID()}`,
+      object: "workflow.run",
+      workflow: {
+        id: workflow.id,
+        title: workflow.title,
+        nodes: workflow.nodes,
+        activeNode: workflow.activeNode,
+      },
+      input: body.input || {},
+      status: "completed",
+      output: {
+        summary: `${workflow.title} 宸插畬鎴愭ā鎷熻繍琛宍,
+        nextAction: "鍙皢璇ユ帴鍙ｆ帴鍏ョ湡瀹炲伐浣滄祦鎵ц鍣?,
+      },
+      quota: quotaSummary(apiKey).endpoints["workflows:run"],
+    });
+    return;
+  }
+
+  sendError(res, 404, "External API route not found");
+}
+
+async function handleApi(req, res, url) {
+  const db = await readDb();
+  ensureCollections(db);
+
+  if (
+    req.method === "POST" &&
+    url.pathname === "/api/payments/stripe/webhook"
+  ) {
+    let event;
+    try {
+      const rawBody = await readRawBody(req);
+      event = verifyStripeWebhook(rawBody, req.headers["stripe-signature"]);
+    } catch (error) {
+      return sendError(res, 400, error.message);
+    }
+
+    if (event.type === "checkout.session.completed") {
+      const session = event.data?.object || {};
+      const orderId = session.metadata?.orderId || session.client_reference_id;
+      const order = db.orders.find(
+        (item) =>
+          item.id === orderId ||
+          item.providerSessionId === session.id ||
+          item.orderNo === session.metadata?.orderNo,
+      );
+      if (!order) return sendError(res, 404, "鏀粯璁㈠崟涓嶅瓨鍦?);
+      try {
+        applyPaidOrder(db, order, session);
+        await writeDb(db);
+      } catch (error) {
+        return sendError(res, 422, error.message);
+      }
+    }
+
+    sendJson(res, 200, { received: true });
+    return;
+  }
+
+  if (
+    req.method === "POST" &&
+    url.pathname === "/api/payments/alipay/notify"
+  ) {
+    try {
+      const params = await readFormBody(req);
+      verifyAlipayNotify(params);
+      if (["TRADE_SUCCESS", "TRADE_FINISHED"].includes(params.trade_status)) {
+        const order = db.orders.find((item) => item.orderNo === params.out_trade_no);
+        if (!order) {
+          res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+          res.end("failure");
+          return;
+        }
+        if (Math.abs(Number(params.total_amount || 0) - Number(order.amount || 0)) > 0.01) {
+          throw new Error("鏀粯瀹濋€氱煡閲戦涓庤鍗曚笉涓€鑷?);
+        }
+        applyPaidOrder(db, order, {
+          payment_intent: params.trade_no,
+          channel: "alipay",
+        });
+        order.provider = "alipay";
+        await writeDb(db);
+      }
+      res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+      res.end("success");
+    } catch (error) {
+      console.error(error);
+      res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+      res.end("failure");
+    }
+    return;
+  }
+
+  if (
+    req.method === "POST" &&
+    url.pathname === "/api/payments/wechat/notify"
+  ) {
+    try {
+      const rawBody = await readRawBody(req);
+      verifyWechatNotifySignature(req, rawBody);
+      const event = JSON.parse(rawBody.toString("utf8"));
+      const transaction = decryptWechatResource(event.resource || {});
+      if (transaction.trade_state === "SUCCESS") {
+        const order = db.orders.find(
+          (item) => item.orderNo === transaction.out_trade_no,
+        );
+        if (!order) throw new Error("寰俊鏀粯璁㈠崟涓嶅瓨鍦?);
+        const paidAmount = Number(transaction.amount?.total || 0);
+        const expectedAmount = Math.round(Number(order.amount || 0) * 100);
+        if (paidAmount !== expectedAmount) throw new Error("寰俊鏀粯閫氱煡閲戦涓庤鍗曚笉涓€鑷?);
+        applyPaidOrder(db, order, {
+          payment_intent: transaction.transaction_id,
+          channel: "wechat",
+        });
+        order.provider = "wechat";
+        await writeDb(db);
+      }
+      sendJson(res, 200, { code: "SUCCESS", message: "鎴愬姛" });
+    } catch (error) {
+      console.error(error);
+      sendJson(res, 500, { code: "FAIL", message: error.message });
+    }
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/bootstrap") {
+    const user = currentUser(req, db);
+    if (user) {
+      const infrastructure = ensureUserInfrastructure(db, user);
+      if (infrastructure.created) await writeDb(db);
+    }
+    sendJson(res, 200, {
+      stats: db.stats,
+      user: publicUser(user),
+      models: db.models,
+      imageModels: IMAGE_MODEL_REGISTRY,
+      capabilities: API_CAPABILITIES,
+      workflows: db.workflows,
+    });
+    return;
+  }
+
+  if (
+    req.method === "POST" &&
+    url.pathname === "/api/auth/verification/start"
+  ) {
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+
+    if (body.channel === "phone")
+      return sendError(res, 410, "鎵嬫満楠岃瘉鍏ュ彛宸插叧闂紝璇蜂娇鐢ㄩ偖绠遍獙璇?);
+    const channel = "email";
+    const target = String(body.email || body.target || "")
+      .trim()
+      .toLowerCase();
+
+    if (!target) return sendError(res, 422, "閭涓嶈兘涓虹┖");
+
+    const code = String(Math.floor(100000 + Math.random() * 900000));
+    let delivery;
+    try {
+      delivery = await sendVerificationCode(channel, target, code);
+    } catch (error) {
+      return sendError(res, 503, error.message);
+    }
+
+    const verification = {
+      id: crypto.randomUUID(),
+      channel,
+      target,
+      code,
+      status: "pending",
+      attempts: 0,
+      provider: delivery.provider,
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+      createdAt: new Date().toISOString(),
+    };
+    db.verificationRequests.unshift(verification);
+    await writeDb(db);
+    const response = {
+      verificationId: verification.id,
+      expiresAt: verification.expiresAt,
+      provider: delivery.provider,
+      message: "閭楠岃瘉鐮佸凡鍙戦€?,
+    };
+    if (delivery.devCode) response.devCode = delivery.devCode;
+    sendJson(res, 201, response);
+    return;
+  }
+
+  if (
+    req.method === "POST" &&
+    url.pathname === "/api/auth/verification/confirm"
+  ) {
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+
+    const verification = db.verificationRequests.find(
+      (item) => item.id === body.verificationId,
+    );
+    if (!verification) return sendError(res, 404, "楠岃瘉璇锋眰涓嶅瓨鍦?);
+    if (verification.status !== "pending")
+      return sendError(res, 409, "璇ラ獙璇佽姹傚凡澶勭悊");
+    if (new Date(verification.expiresAt).getTime() < Date.now()) {
+      verification.status = "expired";
+      await writeDb(db);
+      return sendError(res, 410, "楠岃瘉鐮佸凡杩囨湡");
+    }
+
+    verification.attempts += 1;
+    if (String(body.code || "").trim() !== verification.code) {
+      await writeDb(db);
+      return sendError(res, 422, "楠岃瘉鐮佷笉姝ｇ‘");
+    }
+
+    verification.status = "verified";
+    verification.verifiedAt = new Date().toISOString();
+    verification.verificationToken = crypto.randomUUID();
+    await writeDb(db);
+    sendJson(res, 200, {
+      verificationToken: verification.verificationToken,
+      channel: verification.channel,
+      target: verification.target,
+    });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/auth/login") {
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+
+    const email = String(body.email || "")
+      .trim()
+      .toLowerCase();
+    const user = db.users.find(
+      (item) => item.email === email && item.password === body.password,
+    );
+    if (!user) return sendError(res, 401, "閭鎴栧瘑鐮佷笉姝ｇ‘");
+
+    const session = {
+      token: crypto.randomUUID(),
+      userId: user.id,
+      createdAt: new Date().toISOString(),
+    };
+    db.sessions.unshift(session);
+    await upsertDbItems("sessions", session);
+    sendJson(res, 200, { token: session.token, user: publicUser(user) });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/auth/register") {
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+
+    const name = String(body.name || "").trim();
+    const email = String(body.email || "")
+      .trim()
+      .toLowerCase();
+    const password = String(body.password || "");
+    const verificationToken = String(body.verificationToken || "");
+
+    if (!name || !email || password.length < 6) {
+      return sendError(res, 422, "璇峰～鍐欏悕绉般€侀偖绠卞拰鑷冲皯 6 浣嶅瘑鐮?);
+    }
+    const verification = db.verificationRequests.find(
+      (item) =>
+        item.verificationToken === verificationToken &&
+        item.status === "verified" &&
+        item.channel === "email" &&
+        item.target === email,
+    );
+    if (!verification) {
+      return sendError(res, 403, "璇峰厛瀹屾垚閭楠岃瘉");
+    }
+    if (db.users.some((item) => item.email === email)) {
+      return sendError(res, 409, "璇ラ偖绠卞凡娉ㄥ唽");
+    }
+
+    const user = {
+      id: crypto.randomUUID(),
+      name,
+      email,
+      phone: "",
+      password,
+      avatar: "浼氬憳涓績",
+      role: "creator",
+      plan: "Free",
+      credits: 0,
+      createdAt: new Date().toISOString(),
+    };
+    const { workspace, wallet } = ensureUserInfrastructure(db, user);
+    const session = {
+      token: crypto.randomUUID(),
+      userId: user.id,
+      createdAt: new Date().toISOString(),
+    };
+    verification.status = "consumed";
+    verification.consumedAt = new Date().toISOString();
+    db.users.push(user);
+    db.sessions.unshift(session);
+    await writeDb(db);
+    sendJson(res, 201, {
+      token: session.token,
+      user: publicUser(user),
+      workspace: publicWorkspace(workspace),
+      wallet: publicWallet(wallet),
+    });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/auth/me") {
+    const user = currentUser(req, db);
+    if (!user) return sendError(res, 401, "璇峰厛鐧诲綍鍚庝娇鐢ㄥ垱浣滃姛鑳?);
+    if (user) {
+      ensureUserInfrastructure(db, user);
+      await writeDb(db);
+    }
+    sendJson(res, 200, { user: publicUser(user) });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/auth/logout") {
+    const token = getToken(req);
+    db.sessions = db.sessions.filter((item) => item.token !== token);
+    await writeDb(db);
+    sendJson(res, 200, { ok: true });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/workspaces") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const { workspace } = ensureUserInfrastructure(db, user);
+    await writeDb(db);
+    sendJson(res, 200, {
+      workspaces: [publicWorkspace(workspace)],
+      current: publicWorkspace(workspace),
+    });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/wallet") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const { wallet } = ensureUserInfrastructure(db, user);
+    await writeDb(db);
+    sendJson(res, 200, { wallet: publicWallet(wallet) });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/api-keys") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const { workspace } = ensureUserInfrastructure(db, user);
+    const apiKeys = db.apiKeys
+      .filter((item) => item.workspaceId === workspace.id)
+      .map(publicApiKey);
+    await writeDb(db);
+    sendJson(res, 200, { apiKeys });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/api-keys") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+
+    const { workspace } = ensureUserInfrastructure(db, user);
+    const name = String(body.name || "").trim();
+    if (!name) return sendError(res, 422, "API Key 鍚嶇О涓嶈兘涓虹┖");
+
+    const secret = `dh_live_${crypto.randomBytes(24).toString("base64url")}`;
+    const freeQuota = parseFreeQuotas(body.freeQuota);
+    const apiKey = {
+      id: crypto.randomUUID(),
+      userId: user.id,
+      workspaceId: workspace.id,
+      name,
+      keyHash: hashSecret(secret),
+      maskedKey: maskApiKey(secret),
+      permissions: parsePermissions(body.permissions),
+      quota: Math.max(
+        0,
+        Number(
+          body.quota ||
+            Object.values(freeQuota).reduce((sum, item) => sum + item, 0),
+        ),
+      ),
+      used: 0,
+      freeQuota,
+      usage: Object.fromEntries(
+        Object.keys(freeQuota).map((endpoint) => [endpoint, 0]),
+      ),
+      ipWhitelist: parseIpWhitelist(body.ipWhitelist),
+      status: "active",
+      createdAt: new Date().toISOString(),
+      lastUsedAt: null,
+    };
+    db.apiKeys.unshift(apiKey);
+    await writeDb(db);
+    sendJson(res, 201, { apiKey: publicApiKey(apiKey), secret });
+    return;
+  }
+
+  const apiKeyRevokeMatch = url.pathname.match(
+    /^\/api\/api-keys\/([^/]+)\/revoke$/,
+  );
+  if (req.method === "POST" && apiKeyRevokeMatch) {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const { workspace } = ensureUserInfrastructure(db, user);
+    const apiKey = db.apiKeys.find(
+      (item) =>
+        item.id === apiKeyRevokeMatch[1] && item.workspaceId === workspace.id,
+    );
+    if (!apiKey) return sendError(res, 404, "API Key 涓嶅瓨鍦?);
+    apiKey.status = "revoked";
+    apiKey.revokedAt = new Date().toISOString();
+    await writeDb(db);
+    sendJson(res, 200, { apiKey: publicApiKey(apiKey) });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/models") {
+    const category = url.searchParams.get("category");
+    const models =
+      category && category !== "all"
+        ? db.models.filter((item) => item.category === category)
+        : db.models;
+    sendJson(res, 200, { models });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/image-models") {
+    sendJson(res, 200, { imageModels: IMAGE_MODEL_REGISTRY });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/capabilities") {
+    sendJson(res, 200, { capabilities: API_CAPABILITIES });
+    return;
+  }
+
+  const modelMatch = url.pathname.match(/^\/api\/models\/([^/]+)$/);
+  if (req.method === "GET" && modelMatch) {
+    const model = db.models.find((item) => item.id === modelMatch[1]);
+    if (!model) return sendError(res, 404, "妯″瀷涓嶅瓨鍦?);
+    sendJson(res, 200, { model });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/workflows") {
+    sendJson(res, 200, { workflows: db.workflows });
+    return;
+  }
+
+  const workflowMatch = url.pathname.match(/^\/api\/workflows\/([^/]+)$/);
+  if (req.method === "GET" && workflowMatch) {
+    const workflow = db.workflows.find((item) => item.id === workflowMatch[1]);
+    if (!workflow) return sendError(res, 404, "宸ヤ綔娴佷笉瀛樺湪");
+    sendJson(res, 200, { workflow });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/community") {
+    sendJson(res, 200, { works: db.communityWorks });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/commercial-video-chat") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    let chat = latestCommercialVideoChat(db, user);
+    if (!chat) {
+      chat = createCommercialVideoChat(user);
+      db.commercialVideoChats.unshift(chat);
+      await upsertDbItems("commercialVideoChats", chat);
+    }
+    sendJson(res, 200, { chat: await publicCommercialVideoChat(chat) });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/commercial-video-chat") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "Request body must be valid JSON");
+
+    let chat = latestCommercialVideoChat(db, user);
+    if (body.reset || !chat) {
+      chat = createCommercialVideoChat(user);
+      db.commercialVideoChats = db.commercialVideoChats.filter(
+        (item) => item.userId !== user.id,
+      );
+      db.commercialVideoChats.unshift(chat);
+    }
+
+    const message = String(body.message || "").trim();
+    if (message) {
+      const now = new Date().toISOString();
+      chat.messages.push({
+        id: crypto.randomUUID(),
+        role: "user",
+        content: message.slice(0, 6000),
+        createdAt: now,
+      });
+      if (!chat.mode) chat.mode = inferCommercialMode(message);
+      updateCommercialArtifacts(chat, message);
+      chat.stage = nextCommercialStage(chat);
+      const assistant = commercialAssistantText(chat, message);
+      chat.stage = nextCommercialStage(chat);
+      chat.messages.push({
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content: assistant,
+        createdAt: new Date().toISOString(),
+      });
+      chat.updatedAt = new Date().toISOString();
+      chat.title =
+        chat.artifacts?.marketingBrief?.productName ||
+        chat.artifacts?.brandGuidelines?.brandName ||
+        chat.title;
+    }
+
+    await upsertDbItems("commercialVideoChats", chat);
+    sendJson(res, 200, { chat: await publicCommercialVideoChat(chat) });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/canvas-workflows") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const { workflows, created } = ensureUserCanvasWorkflows(db, user);
+    if (created) await writeDb(db);
+    sendJson(res, 200, { workflows: workflows.map(publicCanvasWorkflow) });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/canvas-workflows") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const body = (await readBody(req)) || {};
+    const workflow = sanitizeCanvasWorkflowPayload(body, user, {});
+    if (
+      db.userWorkflows.some(
+        (item) => item.userId === user.id && item.id === workflow.id,
+      )
+    ) {
+      workflow.id = crypto.randomUUID();
+    }
+    db.userWorkflows.push(workflow);
+    await writeDb(db);
+    sendJson(res, 201, { workflow: publicCanvasWorkflow(workflow) });
+    return;
+  }
+
+  const canvasWorkflowMatch = url.pathname.match(
+    /^\/api\/canvas-workflows\/([^/]+)$/,
+  );
+  if (canvasWorkflowMatch) {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const workflowId = decodeURIComponent(canvasWorkflowMatch[1]);
+    const workflowIndex = db.userWorkflows.findIndex(
+      (item) => item.userId === user.id && item.id === workflowId,
+    );
+
+    if (req.method === "PUT") {
+      const body = (await readBody(req)) || {};
+      const existing =
+        workflowIndex >= 0
+          ? db.userWorkflows[workflowIndex]
+          : { id: workflowId, createdAt: new Date().toISOString() };
+      const workflow = sanitizeCanvasWorkflowPayload(body, user, existing);
+      if (workflowIndex >= 0) db.userWorkflows[workflowIndex] = workflow;
+      else db.userWorkflows.push(workflow);
+      await writeDb(db);
+      sendJson(res, 200, { workflow: publicCanvasWorkflow(workflow) });
+      return;
+    }
+
+    if (req.method === "DELETE") {
+      if (workflowIndex < 0) return sendError(res, 404, "宸ヤ綔娴佷笉瀛樺湪");
+      if (userCanvasWorkflows(db, user).length <= 1)
+        return sendError(res, 422, "鑷冲皯淇濈暀涓€涓伐浣滄祦");
+      const [removed] = db.userWorkflows.splice(workflowIndex, 1);
+      await writeDb(db);
+      sendJson(res, 200, { ok: true, workflow: publicCanvasWorkflow(removed) });
+      return;
+    }
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/generations") {
+    const user = currentUser(req, db);
+    if (!user) return sendError(res, 401, "璇峰厛鐧诲綍鍚庢煡鐪嬬敓鎴愬巻鍙?);
+    const generations = db.generations
+      .filter((item) => item.userId === user.id)
+      .sort(
+        (a, b) =>
+          new Date(b.createdAt || 0).getTime() -
+          new Date(a.createdAt || 0).getTime(),
+      );
+    sendJson(res, 200, { generations: generations.slice(0, 24) });
+    return;
+  }
+
+  const generationJobMatch = url.pathname.match(
+    /^\/api\/generation-jobs\/([^/]+)$/,
+  );
+  if (req.method === "GET" && generationJobMatch) {
+    const user = currentUser(req, db);
+    if (!user) return sendError(res, 401, "璇峰厛鐧诲綍鍚庢煡鐪嬬敓鎴愪换鍔?);
+    const job = generationJobs.get(generationJobMatch[1]);
+    if (!job || job.userId !== user.id)
+      return sendError(res, 404, "鐢熸垚浠诲姟涓嶅瓨鍦?);
+    await refreshGenerationJobProgress(job);
+    sendJson(res, 200, { job: publicGenerationJob(job, user) });
+    return;
+  }
+
+  if (req.method === "DELETE" && generationJobMatch) {
+    const user = currentUser(req, db);
+    if (!user) return sendError(res, 401, "璇峰厛鐧诲綍鍚庢搷浣滅敓鎴愪换鍔?);
+    const job = generationJobs.get(generationJobMatch[1]);
+    if (!job || job.userId !== user.id)
+      return sendError(res, 404, "鐢熸垚浠诲姟涓嶅瓨鍦?);
+    if (job.promptId && (SEEDANCE_PROVIDER === "ark" || SEEDANCE_PROVIDER === "volcengine")) {
+      const cancelResponse = await requestJsonMethodDirect(
+        `${SEEDANCE_BASE_URL}/contents/generations/tasks/${encodeURIComponent(job.promptId)}`,
+        "DELETE",
+        seedanceAuthorizationHeader(),
+      );
+      if (!cancelResponse.ok) {
+        return sendError(
+          res,
+          502,
+          cancelResponse.json?.error?.message ||
+            cancelResponse.json?.message ||
+            `瀹樻柟浠诲姟鍙栨秷澶辫触锛欻TTP ${cancelResponse.status}`,
+        );
+      }
+    }
+    job.status = "cancelled";
+    job.message = "浠诲姟宸插彇娑?;
+    job.updatedAt = new Date().toISOString();
+    sendJson(res, 200, { job: publicGenerationJob(job, user) });
+    return;
+  }
+
+	  if (req.method === "POST" && url.pathname === "/api/generations") {
+	    const body = await readBody(req);
+	    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+	    const mode = body.mode || "image";
+	    const imageModel =
+	      mode === "image" ? resolveImageModel(body.imageModel || body.model) : null;
+    const referenceAssetCount = Array.isArray(body.referenceAssets)
+      ? body.referenceAssets.length
+      : 0;
+	    if (
+      !String(body.prompt || "").trim() &&
+      !["video-face-restore", "video-face-swap"].includes(mode) &&
+      !(mode === "video" && (referenceAssetCount || body.draftTaskId))
+    )
+      return sendError(res, 422, "鎻愮ず璇嶄笉鑳戒负绌?);
+
+    if (mode === "video" && !SEEDANCE_API_KEY) {
+      return sendError(
+        res,
+        422,
+        "缂哄皯 SEEDANCE_API_KEY锛屾棤娉曞惎鐢?Seedance 2.0 瑙嗛鐢熸垚 API銆?,
+      );
+    }
+    if (mode === "video-face-restore" && !faceRestoreConfigured()) {
+      return sendError(
+        res,
+        422,
+        "缂哄皯 FACE_RESTORE_API_URL 鎴?ComfyUI 闈㈤儴淇閰嶇疆锛屾棤娉曞惎鐢ㄨ棰戦潰閮ㄩ珮娓呬慨澶嶃€?,
+      );
+    }
+    if (mode === "video-face-swap" && !faceSwapConfigured()) {
+      return sendError(
+        res,
+        422,
+        "缂哄皯 ComfyUI 瑙嗛鎹㈣劯宸ヤ綔娴侀厤缃紝鏃犳硶鍚敤瑙嗛鎹㈣劯銆?,
+      );
+    }
+    if (mode === "video-face-swap") {
+      const references = Array.isArray(body.referenceAssets)
+        ? body.referenceAssets
+        : [];
+      const hasImageReference = references.some(
+        (asset) => asset.type === "image",
+      );
+      const hasVideoReference =
+        references.some((asset) => asset.type === "video") ||
+        body.node?.type === "video";
+      if (!hasVideoReference)
+        return sendError(res, 422, "瑙嗛鎹㈣劯闇€瑕佷竴涓棰戠礌鏉愩€?);
+      if (!hasImageReference)
+        return sendError(res, 422, "瑙嗛鎹㈣劯闇€瑕佽繛鎺ユ垨涓婁紶涓€寮犲弬鑰冭劯鍥俱€?);
+    }
+    if (mode === "video") {
+      const seedanceError = validateSeedanceOfficialRequest(body);
+      if (seedanceError) return sendError(res, 422, seedanceError);
+	    }
+	    if (mode === "image") {
+	      const capabilities = imageModel.capabilities || {};
+      const references = Array.isArray(body.referenceAssets)
+        ? body.referenceAssets
+        : [];
+      const hasImageReference = references.some(
+        (asset) => asset.type === "image",
+      );
+      const hasVideoReference = references.some(
+        (asset) => asset.type === "video",
+      );
+      const hasAudioReference = references.some(
+        (asset) => asset.type === "audio",
+      );
+      if (hasImageReference && !capabilities.supportsReferenceImage)
+        return sendError(
+          res,
+          422,
+          `${imageModel.label} 褰撳墠鐪熷疄鎺ュ彛涓嶆敮鎸佸浘鐗囧弬鑰冭緭鍏ャ€俙,
+        );
+      if (hasVideoReference && !capabilities.supportsReferenceVideo)
+        return sendError(
+          res,
+          422,
+          `${imageModel.label} 褰撳墠鐪熷疄鎺ュ彛涓嶆敮鎸佽棰戝弬鑰冭緭鍏ャ€俙,
+        );
+      if (hasAudioReference && !capabilities.supportsReferenceAudio)
+        return sendError(
+          res,
+          422,
+          `${imageModel.label} 褰撳墠鐪熷疄鎺ュ彛涓嶆敮鎸侀煶棰戝弬鑰冭緭鍏ャ€俙,
+        );
+    }
+
+    const user = currentUser(req, db);
+    if (!user) return sendError(res, 401, "璇峰厛鐧诲綍鍚庝娇鐢ㄥ垱浣滃姛鑳?);
+    const quote = generationBillingQuote(body, imageModel);
+    const cost = quote.credits;
+    if (user.credits < cost)
+      return sendError(
+        res,
+        402,
+        `绠楀姏鐐逛笉瓒筹紝鏈闇€瑕?${cost} 鐐癸紝褰撳墠鍓╀綑 ${user.credits} 鐐筦,
+      );
+    user.credits -= cost;
+
+    if (ASYNC_GENERATION_MODES.has(mode)) {
+      const job = startGenerationJob({ body, db, user, cost });
+      await writeDb(db);
+      sendJson(res, 202, {
+        job: publicGenerationJob(job, user),
+        user: publicUser(user),
+        billing: quote,
+      });
+      return;
+    }
+
+    let generation;
+    try {
+      generation = await createGeneration(body, db, user);
+    } catch (error) {
+      user.credits += cost;
+      return sendError(
+        res,
+        process.env.OPENAI_API_KEY ? 502 : 503,
+        error.message,
+      );
+    }
+    db.generations.unshift(generation);
+    await writeDb(db);
+    sendJson(res, 201, { generation, user: publicUser(user), billing: quote });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/plans") {
+    if (!db.plans.length) {
+      db.plans = defaultPlans();
+      await writeDb(db);
+    }
+    const plans = billablePlans(db).map(publicPlan);
+    sendJson(res, 200, {
+      plans,
+      currency: PAYMENT_CURRENCY.toUpperCase(),
+      minCreditPrice: CREDIT_MIN_CNY,
+    });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/orders") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+    const orders = db.orders
+      .filter((item) => item.userId === user.id)
+      .map(publicOrder);
+    sendJson(res, 200, { orders });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/orders/test-payment") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+
+    const method = String(body.method || "alipay").trim().toLowerCase();
+    if (!["alipay", "wechat", "stripe"].includes(method)) {
+      return sendError(res, 422, "涓嶆敮鎸佺殑鏀粯鏂瑰紡");
+    }
+    if (!paymentProviderEnabled(method)) {
+      return sendError(res, 503, `褰撳墠鏈惎鐢?${method} 鏀粯锛岃妫€鏌?PAYMENT_PROVIDER`);
+    }
+
+    const order = createOrder(createTestPaymentPlan(), user, method);
+    order.testPayment = true;
+    try {
+      await createPaymentForOrder(req, order, user, method);
+    } catch (error) {
+      return sendError(res, 502, error.message);
+    }
+    db.orders.unshift(order);
+    await upsertDbItems("orders", order);
+    sendJson(res, 201, {
+      order: publicOrder(order),
+      checkoutUrl: order.checkoutUrl,
+      qrText: order.qrText || "",
+      qrImage: order.qrImage || "",
+      testPayment: true,
+      user: publicUser(user),
+    });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/orders") {
+    const user = requireUser(req, res, db);
+    if (!user) return;
+
+    const body = await readBody(req);
+    if (!body) return sendError(res, 400, "璇锋眰浣撳繀椤绘槸鍚堟硶 JSON");
+
+    const plan = billablePlans(db).find((item) => item.id === body.planId);
+    if (!plan) return sendError(res, 404, "濂楅涓嶅瓨鍦?);
+    if (!isPlanProfitable(plan)) {
+      return sendError(
+        res,
+        422,
+        `濂楅鍗曠偣鍞环杩囦綆锛屽凡闃绘鐪熷疄鏀舵銆傝鎻愰珮 ${plan.name} 浠锋牸鎴栭檷浣庣Н鍒嗘暟閲忋€俙,
+      );
+    }
+
+    const method = String(body.method || "alipay").trim().toLowerCase();
+    if (!["alipay", "wechat", "stripe"].includes(method)) {
+      return sendError(res, 422, "涓嶆敮鎸佺殑鏀粯鏂瑰紡");
+    }
+    if (!paymentProviderEnabled(method)) {
+      return sendError(res, 503, `褰撳墠鏈惎鐢?${method} 鏀粯锛岃妫€鏌?PAYMENT_PROVIDER`);
+    }
+    const order = createOrder(plan, user, method);
+    try {
+      await createPaymentForOrder(req, order, user, method);
+    } catch (error) {
+      return sendError(res, 502, error.message);
+    }
+    db.orders.unshift(order);
+    await upsertDbItems("orders", order);
+    sendJson(res, 201, {
+      order: publicOrder(order),
+      checkoutUrl: order.checkoutUrl,
+      qrText: order.qrText || "",
+      qrImage: order.qrImage || "",
+      user: publicUser(user),
+    });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/stats") {
+    sendJson(res, 200, { stats: db.stats });
+    return;
+  }
+
+  sendError(res, 404, "API route not found");
+}
+
+async function serveStatic(req, res, url) {
+  const requestedPath =
+    url.pathname === "/" ? "/index.html" : decodeURIComponent(url.pathname);
+  const filePath = path.normalize(path.join(PUBLIC_DIR, requestedPath));
+
+  if (
+    filePath !== PUBLIC_DIR &&
+    !filePath.startsWith(`${PUBLIC_DIR}${path.sep}`)
+  ) {
+    sendError(res, 403, "Forbidden");
+    return;
+  }
+
+  try {
+    const stat = await fs.stat(filePath);
+    if (!stat.isFile()) return sendError(res, 404, "Static file not found");
+    const ext = path.extname(filePath);
+    const contentType = mimeTypes[ext] || "application/octet-stream";
+    const etag = `"${stat.size}-${Math.floor(stat.mtimeMs)}"`;
+    const baseHeaders = {
+      "Accept-Ranges": "bytes",
+      "Cache-Control": staticCacheControl(filePath),
+      "Content-Type": contentType,
+      "Last-Modified": stat.mtime.toUTCString(),
+      ETag: etag,
+    };
+
+    if (
+      req.headers["if-none-match"] === etag ||
+      (req.headers["if-modified-since"] &&
+        new Date(req.headers["if-modified-since"]).getTime() >=
+          Math.floor(stat.mtimeMs))
+    ) {
+      res.writeHead(304, baseHeaders);
+      res.end();
+      return;
+    }
+
+    const range = parseStaticRange(req.headers.range, stat.size);
+    if (range?.invalid) {
+      res.writeHead(416, {
+        ...baseHeaders,
+        "Content-Range": `bytes */${stat.size}`,
+      });
+      res.end();
+      return;
+    }
+
+    if (range) {
+      const contentLength = range.end - range.start + 1;
+      res.writeHead(206, {
+        ...baseHeaders,
+        "Content-Length": contentLength,
+        "Content-Range": `bytes ${range.start}-${range.end}/${stat.size}`,
+      });
+      if (req.method === "HEAD") return res.end();
+      fsNative
+        .createReadStream(filePath, { start: range.start, end: range.end })
+        .pipe(res);
+      return;
+    }
+
+    res.writeHead(200, {
+      ...baseHeaders,
+      "Content-Length": stat.size,
+    });
+    if (req.method === "HEAD") return res.end();
+    fsNative.createReadStream(filePath).pipe(res);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      const fallback = await fs.readFile(path.join(PUBLIC_DIR, "index.html"));
+      res.writeHead(200, {
+        "Content-Type": mimeTypes[".html"],
+        "Cache-Control": "no-store",
+      });
+      res.end(fallback);
+      return;
+    }
+    sendError(res, 500, "Static file error");
+  }
+}
+
+function staticCacheControl(filePath) {
+  const ext = path.extname(filePath);
+  if (ext === ".html") return "no-store";
+  if (ext === ".js" || ext === ".css") return "public, max-age=0, must-revalidate";
+  if (
+    filePath.includes(`${path.sep}assets${path.sep}`) ||
+    filePath.includes(`${path.sep}generated${path.sep}`)
+  ) {
+    return "public, max-age=604800";
+  }
+  return "public, max-age=300";
+}
+
+function parseStaticRange(rangeHeader, size) {
+  if (!rangeHeader) return null;
+  const match = String(rangeHeader).match(/^bytes=(\d*)-(\d*)$/);
+  if (!match) return { invalid: true };
+
+  const [, startRaw, endRaw] = match;
+  let start = startRaw === "" ? null : Number(startRaw);
+  let end = endRaw === "" ? null : Number(endRaw);
+
+  if (start === null && end === null) return { invalid: true };
+  if (start === null) {
+    const suffixLength = end;
+    if (!Number.isFinite(suffixLength) || suffixLength <= 0)
+      return { invalid: true };
+    start = Math.max(0, size - suffixLength);
+    end = size - 1;
+  } else {
+    if (!Number.isFinite(start) || start < 0) return { invalid: true };
+    end = end === null ? size - 1 : end;
+  }
+
+  if (!Number.isFinite(end) || end < start || start >= size)
+    return { invalid: true };
+  return { start, end: Math.min(end, size - 1) };
+}
+
+const server = http.createServer(async (req, res) => {
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  try {
+    if (req.method === "GET" && url.pathname === "/healthz") {
+      let databaseError = "";
+      try {
+        await checkPostgresHealth();
+      } catch (error) {
+        databaseError = error.code || error.message;
+      }
+
+      sendJson(res, databaseError ? 503 : 200, {
+        ok: !databaseError,
+        storage: LOCAL_MEMORY_DB ? "memory" : "postgres",
+        postgresConfigured: Boolean(process.env.DATABASE_URL),
+        localStorage: false,
+        ...(databaseError ? { databaseError } : {}),
+        time: new Date().toISOString(),
+      });
+      return;
+    }
+
+    if (url.pathname.startsWith("/v1/")) {
+      await handleExternalApi(req, res, url);
+      return;
+    }
+
+    if (url.pathname.startsWith("/api/")) {
+      await handleApi(req, res, url);
+      return;
+    }
+    await serveStatic(req, res, url);
+  } catch (error) {
+    console.error(error);
+    sendError(res, 500, "Server error");
+  }
+});
+
+async function startServer() {
+  try {
+    await readDb();
+  } catch (error) {
+    console.error(`Database warmup failed: ${error.message}`);
+  }
+
+  server.listen(PORT, () => {
+    console.log(`DreameHub full-stack app running at http://localhost:${PORT}`);
+  });
+}
+
+startServer();
+
+process.on("SIGINT", async () => {
+  await closePostgres();
+  process.exit(0);
+});
+
+process.on("SIGTERM", async () => {
+  await closePostgres();
+  process.exit(0);
+});

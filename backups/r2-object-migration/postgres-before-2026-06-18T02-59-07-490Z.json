@@ -1,0 +1,2822 @@
+{
+  "stats": {
+    "calls": "0",
+    "works": "0",
+    "models": "0",
+    "creators": "0"
+  },
+  "previewImages": [
+    "/assets/gpt-image-2-promo.png",
+    "/assets/dreame-logo.png"
+  ],
+  "users": [
+    {
+      "id": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "name": "睿小头",
+      "plan": "Free",
+      "role": "creator",
+      "email": "ruixiaotou@icloud.com",
+      "phone": "",
+      "avatar": "会员中心",
+      "credits": 9126,
+      "createdAt": "2026-06-08T06:39:08.967Z",
+      "passwordHash": "scrypt$ycuzGgjRZYEWNU0O51XZvg$lpbM_z27wQ0DjskvZuo5fad1x5w5kc_e81rxfIY79X_R-hauMaUNUNZCtk10PlA8BENDbm9sRmFcQey3qQdWXw",
+      "passwordUpdatedAt": "2026-06-17T05:58:38.875Z"
+    }
+  ],
+  "sessions": [
+    {
+      "token": "f98e3c85-a760-44a3-835c-3e29cabc3b03",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-17T08:01:19.856Z",
+      "expiresAt": "2026-07-17T08:01:19.856Z"
+    },
+    {
+      "token": "e5d55279-b948-464f-b1ff-3de218906b96",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-10T09:48:52.278Z",
+      "expiresAt": "2026-07-10T09:48:52.278Z"
+    },
+    {
+      "id": "b65347bb-7df3-41d8-ac00-1c8959b1979e",
+      "token": "039b05d9-3427-4e69-b676-763df0f986a9",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-09 05:57:01.154635+00",
+      "expiresAt": "2026-07-09T05:57:01.154Z"
+    },
+    {
+      "id": "523ddeeb-5fa6-4432-baa2-4ccbf137d321",
+      "token": "d0efcefa-f65c-40a4-b447-945f9adcb809",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-09 05:57:21.39284+00",
+      "expiresAt": "2026-07-09T05:57:21.392Z"
+    },
+    {
+      "token": "bdd836cb-72ae-4bb3-ab73-b8fb385b5d84",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-09T05:41:31.709Z",
+      "expiresAt": "2026-07-09T05:41:31.709Z"
+    },
+    {
+      "token": "c672d8df-c4ce-41f0-bbe2-e3a67dfdc4ad",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-09T03:38:26.614Z",
+      "expiresAt": "2026-07-09T03:38:26.614Z"
+    },
+    {
+      "token": "db17fa03-0cb2-4860-a99b-74b0c2ee2473",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-08T07:25:37.953Z",
+      "expiresAt": "2026-07-08T07:25:37.953Z"
+    },
+    {
+      "token": "882a20d1-d5ab-42d2-b6c9-b21e86b77dbc",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-08T06:39:08.967Z",
+      "expiresAt": "2026-07-08T06:39:08.967Z"
+    },
+    {
+      "token": "e87f1fb3-a330-4cd3-b2ae-85e249f8ed24",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-09T05:46:31.685Z",
+      "expiresAt": "2026-07-09T05:46:31.685Z"
+    },
+    {
+      "token": "ec92f61d-217f-4e08-838b-b333207ab6da",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-09T05:55:21.675Z",
+      "expiresAt": "2026-07-09T05:55:21.675Z"
+    },
+    {
+      "id": "8d7b33fb-02bb-47bc-9763-8346d227f135",
+      "token": "043f1d90-2ef6-428a-824a-53b7d7ac92f7",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-09 05:58:26.083807+00",
+      "expiresAt": "2026-07-09T05:58:26.083Z"
+    },
+    {
+      "token": "904c85ac-355a-46f7-bc9d-e68d32695ac9",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "createdAt": "2026-06-18T02:53:29.348Z",
+      "expiresAt": "2026-07-18T02:53:29.348Z"
+    }
+  ],
+  "verificationRequests": [
+    {
+      "id": "b9164e56-3dfe-4295-b65e-3bc3f8993e33",
+      "code": "399857",
+      "status": "consumed",
+      "target": "ruixiaotou@icloud.com",
+      "channel": "email",
+      "attempts": 1,
+      "provider": "gmail",
+      "createdAt": "2026-06-08T06:38:04.724Z",
+      "expiresAt": "2026-06-08T06:48:04.724Z",
+      "consumedAt": "2026-06-08T06:39:08.967Z",
+      "verifiedAt": "2026-06-08T06:38:50.730Z",
+      "verificationToken": "1fcbeb8a-ae85-44d4-a740-dfaca1355b32"
+    },
+    {
+      "id": "27400014-503d-4148-a430-4de381748614",
+      "code": "422857",
+      "status": "pending",
+      "target": "ruixiaotou@icloud.com",
+      "channel": "email",
+      "attempts": 0,
+      "provider": "dev",
+      "createdAt": "2026-06-08T05:19:39.382Z",
+      "expiresAt": "2026-06-08T05:29:39.382Z"
+    },
+    {
+      "id": "3b78141a-55aa-4636-9867-30ad79a50901",
+      "code": "495309",
+      "status": "pending",
+      "target": "ruixiaotou@icloud.com",
+      "channel": "email",
+      "attempts": 0,
+      "provider": "dev",
+      "createdAt": "2026-06-08T05:16:41.017Z",
+      "expiresAt": "2026-06-08T05:26:41.017Z"
+    }
+  ],
+  "workspaces": [
+    {
+      "id": "e4a05dcd-057f-46dc-8cd1-feb1d574a45f",
+      "name": "睿小头 的工作区",
+      "slug": "--1780900748967",
+      "ownerId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "projects": [
+        {
+          "id": "310934b7-c6f8-4b97-ae6a-7cce928432d7",
+          "name": "Default Project",
+          "createdAt": "2026-06-08T06:39:08.967Z",
+          "environment": "production"
+        }
+      ],
+      "createdAt": "2026-06-08T06:39:08.967Z",
+      "defaultProjectId": "310934b7-c6f8-4b97-ae6a-7cce928432d7"
+    }
+  ],
+  "wallets": [
+    {
+      "id": "43f8bd90-be51-45bb-9920-c62703eb156b",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "balance": 10000,
+      "currency": "CNY",
+      "createdAt": "2026-06-08T06:39:08.967Z",
+      "workspaceId": "e4a05dcd-057f-46dc-8cd1-feb1d574a45f",
+      "frozenBalance": 0
+    }
+  ],
+  "apiKeys": [
+    {
+      "id": "6c7a5da6-c562-4e96-98ae-6e5ed3563e8d",
+      "name": "Production Image API",
+      "used": 0,
+      "quota": 1000,
+      "usage": {
+        "models:list": 0,
+        "workflows:run": 0,
+        "chat:completions": 0,
+        "images:generations": 0
+      },
+      "status": "active",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "keyHash": "47689fecbc7af3292c829cbfb658d8e948277197d76bccabe890d98519d9583a",
+      "createdAt": "2026-06-08T06:39:43.873Z",
+      "freeQuota": {
+        "models:list": 1000,
+        "workflows:run": 30,
+        "chat:completions": 50,
+        "images:generations": 5
+      },
+      "maskedKey": "dh_live_4Q...xQse",
+      "lastUsedAt": null,
+      "ipWhitelist": [],
+      "permissions": [
+        "images:create",
+        "chat:create",
+        "videos:create",
+        "models:read",
+        "workflows:run",
+        "billing:read"
+      ],
+      "workspaceId": "e4a05dcd-057f-46dc-8cd1-feb1d574a45f"
+    }
+  ],
+  "orders": [
+    {
+      "id": "1510345f-1b30-4386-b107-5c905e4b5cd5",
+      "amount": 129,
+      "method": "alipay",
+      "paidAt": "",
+      "planId": "studio",
+      "status": "pending",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "credits": 1000,
+      "orderNo": "MH1780902968071766",
+      "currency": "CNY",
+      "planName": "Studio",
+      "provider": "alipay",
+      "createdAt": "2026-06-08T07:16:08.071Z",
+      "updatedAt": "2026-06-08T07:16:08.076Z",
+      "creditedAt": "",
+      "checkoutUrl": "https://openapi.alipay.com/gateway.do?app_id=2021006159616352&method=alipay.trade.page.pay&charset=utf-8&sign_type=RSA2&timestamp=2026-06-08+07%3A16%3A08&version=1.0&notify_url=https%3A%2F%2Fapp.dreameac.org%2Fapi%2Fpayments%2Falipay%2Fnotify&return_url=https%3A%2F%2Fapp.dreameac.org%2F%23%2Fpricing%3Fpayment%3Dreturn%26order%3D1510345f-1b30-4386-b107-5c905e4b5cd5&biz_content=%7B%22out_trade_no%22%3A%22MH1780902968071766%22%2C%22product_code%22%3A%22FAST_INSTANT_TRADE_PAY%22%2C%22total_amount%22%3A%22129.00%22%2C%22subject%22%3A%22Studio+%E7%AE%97%E5%8A%9B%E7%82%B9%22%2C%22body%22%3A%221000+%E7%AE%97%E5%8A%9B%E7%82%B9%E5%85%85%E5%80%BC%22%2C%22passback_params%22%3A%221510345f-1b30-4386-b107-5c905e4b5cd5%22%7D&sign=izRgloiCnTWapNCuTuQfrLGcIpbtgR51d%2FIjmS5LI3PjChWn5vJ%2BcRKmV%2BsYMEFTaBqCWdhjaZSd5faw3%2FZRTEiaNsYLWNzwzQklOHEQq9rgx21QY8sM9Vhg65RNTvdq5aKLY7BKeu2gFCPbXMVSjHDAsv%2Bq1Z4%2BYUh%2FaGHE4j%2FrdTPB5MSk0j2lvn9Is5Xc7D1%2BHpufOzoqjlCMgQseWr5vyj5%2BQKufxc4PrhB1bOWmfiD9bBHRNQwJQDlHFKH8ldAQCveSvmIQMUVpLimUXpvDJvDgT4mKK0bqcnW%2FAZnBl4fXLplRXXXsehoEstgXnRVaGNO32eUtiNrc0l49gA%3D%3D",
+      "providerPaymentId": "",
+      "providerSessionId": ""
+    },
+    {
+      "id": "4c4fbe77-25fb-4228-8e66-ae036298d6e2",
+      "amount": 0.01,
+      "method": "alipay",
+      "paidAt": "",
+      "planId": "test-0-01",
+      "status": "pending",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "credits": 1,
+      "orderNo": "MH1780903289287797",
+      "currency": "CNY",
+      "planName": "Payment Test",
+      "provider": "alipay",
+      "createdAt": "2026-06-08T07:21:29.287Z",
+      "updatedAt": "2026-06-08T07:21:29.291Z",
+      "creditedAt": "",
+      "checkoutUrl": "https://openapi.alipay.com/gateway.do?app_id=2021006159616352&method=alipay.trade.page.pay&charset=utf-8&sign_type=RSA2&timestamp=2026-06-08+07%3A21%3A29&version=1.0&notify_url=https%3A%2F%2Fapp.dreameac.org%2Fapi%2Fpayments%2Falipay%2Fnotify&return_url=https%3A%2F%2Fapp.dreameac.org%2F%23%2Fpricing%3Fpayment%3Dreturn%26order%3D4c4fbe77-25fb-4228-8e66-ae036298d6e2&biz_content=%7B%22out_trade_no%22%3A%22MH1780903289287797%22%2C%22product_code%22%3A%22FAST_INSTANT_TRADE_PAY%22%2C%22total_amount%22%3A%220.01%22%2C%22subject%22%3A%22Payment+Test+%E7%AE%97%E5%8A%9B%E7%82%B9%22%2C%22body%22%3A%221+%E7%AE%97%E5%8A%9B%E7%82%B9%E5%85%85%E5%80%BC%22%2C%22passback_params%22%3A%224c4fbe77-25fb-4228-8e66-ae036298d6e2%22%7D&sign=pISVO0ppKXkvOE8xh4Nem3%2BdsKy41E4GcPAJhZM0mNb8jdHCRaJrMTcR7jZWa36nPl4CIzoroz68HH8il7yp3HcC7lVN5JhL9gdwWPY8gr3YI3ThBZXu3CAlpk%2BehLRlutQpK%2FeqARKIIZx%2FUKOih4N5EOdaGKjall3O%2B2LH02TI%2Fspse%2BUnyh5AV%2B%2F0Dom8lg37UfDiMXfUIGYnogxGUYzkk06VKCU3ahZnAhTCSOCJPvvdF%2FTC1Vfg8QJR5AIy2U87DgUldyCRBRcSrWbZvujJ%2FgMdfFa7PLf1%2BJfJ0RnnS2qlx9A%2FVzsCRKJ0JFnb9C93hDnsXndnXfl%2F8jWN%2Fg%3D%3D",
+      "testPayment": true,
+      "providerPaymentId": "",
+      "providerSessionId": ""
+    },
+    {
+      "id": "11bf5857-0157-439c-b7e2-b3c82c451a6d",
+      "amount": 0.01,
+      "method": "alipay",
+      "paidAt": "",
+      "planId": "test-0-01",
+      "status": "pending",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "credits": 1,
+      "orderNo": "MH1780905251496376",
+      "currency": "CNY",
+      "planName": "Payment Test",
+      "provider": "alipay",
+      "createdAt": "2026-06-08T07:54:11.495Z",
+      "updatedAt": "2026-06-08T07:54:11.502Z",
+      "creditedAt": "",
+      "checkoutUrl": "https://openapi.alipay.com/gateway.do?app_id=2021006159616352&method=alipay.trade.page.pay&charset=utf-8&sign_type=RSA2&timestamp=2026-06-08+07%3A54%3A11&version=1.0&notify_url=https%3A%2F%2Fapp.dreameac.org%2Fapi%2Fpayments%2Falipay%2Fnotify&return_url=https%3A%2F%2Fapp.dreameac.org%2F%23%2Fpricing%3Fpayment%3Dreturn%26order%3D11bf5857-0157-439c-b7e2-b3c82c451a6d&biz_content=%7B%22out_trade_no%22%3A%22MH1780905251496376%22%2C%22product_code%22%3A%22FAST_INSTANT_TRADE_PAY%22%2C%22total_amount%22%3A%220.01%22%2C%22subject%22%3A%22Payment+Test+%E7%AE%97%E5%8A%9B%E7%82%B9%22%2C%22body%22%3A%221+%E7%AE%97%E5%8A%9B%E7%82%B9%E5%85%85%E5%80%BC%22%2C%22passback_params%22%3A%2211bf5857-0157-439c-b7e2-b3c82c451a6d%22%7D&sign=dcUDp1XG9MytjuN3SyV7teMoOF5OXpSPZDu5Ze9kroGDtMhuvB7NaEVsDsq2hEDTVRqpjMSqerK%2BuktNKvxI8EtsvA42iuHQX7rhLsCWibGyYZe2p0ejCWqPrLJY%2FiIjJ8lyLhQNGoDQ3BhS3DO0hDdIPm5Swc3ADq32Jpgw2Zc47G0xg6RGBRrbc4aWWXFKAEiBPc3Dg3e%2Fb01yHMac02RE%2BKjcRfmkkKiG3MEZu5KOFFTAELoW2Fd5cvVmRUP%2B5d3VHkiXUiJsfuqYzkerC9mrP2DlmtzsYG9Mm%2Bf4uKlZ2LCmkDfgH87atJXQo9s18DlGkxfYLmarhQZ0vkSuJA%3D%3D",
+      "testPayment": true,
+      "providerPaymentId": "",
+      "providerSessionId": ""
+    },
+    {
+      "id": "25f9795b-1a3d-4d07-b681-f4904d8ba580",
+      "amount": 129,
+      "method": "alipay",
+      "paidAt": "",
+      "planId": "studio",
+      "status": "pending",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "credits": 1000,
+      "orderNo": "MH1781675220867522",
+      "currency": "CNY",
+      "planName": "Studio",
+      "provider": "alipay",
+      "createdAt": "2026-06-17T05:47:00.867Z",
+      "updatedAt": "2026-06-17T05:47:00.889Z",
+      "creditedAt": "",
+      "checkoutUrl": "https://openapi.alipay.com/gateway.do?app_id=2021006159616352&method=alipay.trade.page.pay&charset=utf-8&sign_type=RSA2&timestamp=2026-06-17+05%3A47%3A00&version=1.0&notify_url=https%3A%2F%2Fapp.dreameac.org%2Fapi%2Fpayments%2Falipay%2Fnotify&return_url=https%3A%2F%2Fapp.dreameac.org%2F%23%2Fpricing%3Fpayment%3Dreturn%26order%3D25f9795b-1a3d-4d07-b681-f4904d8ba580&biz_content=%7B%22out_trade_no%22%3A%22MH1781675220867522%22%2C%22product_code%22%3A%22FAST_INSTANT_TRADE_PAY%22%2C%22total_amount%22%3A%22129.00%22%2C%22subject%22%3A%22Studio+%E7%AE%97%E5%8A%9B%E7%82%B9%22%2C%22body%22%3A%221000+%E7%AE%97%E5%8A%9B%E7%82%B9%E5%85%85%E5%80%BC%22%2C%22passback_params%22%3A%2225f9795b-1a3d-4d07-b681-f4904d8ba580%22%7D&sign=UVvooeVioMzApudan%2FW%2B5SdE9nicoQWxXJYI272l9nMcTARZtetdWxH%2BAHg8pwPpYisUTZ8qhiDtXqikv7BH%2FafHMO5kHahR1i1Ub5kMr1zMMKCqJK0E6HUY0BcB327Pvt4hpo5eDaoh3caiaAaHsYR2zfnd3bBbCKLU6aWMfNlvNV3ZlM9NXseHj6UxnPlUWt8BYHpAJL0AIJQOLwR9UI4gU2wbyuqKKgTp85PBU7MtmZkULmWtb%2B6cs4xLzf3YnC0i%2BgejO%2Bw5c21GIZXDTLjikFL9rbE6%2BxGGNTZcgSAyAwzjaJB67qasq9l6ZLNgxyaLGGbveFdQc7Wqcwc2Rg%3D%3D",
+      "providerPaymentId": "",
+      "providerSessionId": ""
+    }
+  ],
+  "generations": [
+    {
+      "id": "8c21052b-ed58-4e3c-bf40-ae416fbe52f4",
+      "mode": "video",
+      "node": {
+        "id": "node-1781674731896-d049c1f529c078",
+        "size": 0,
+        "type": "video",
+        "title": "视频节点",
+        "inputs": [
+          {
+            "id": "node-1781676809434-ff8e4dcc88b468",
+            "type": "image",
+            "title": "C罗.png",
+            "output": "image",
+            "content": "图片素材参考",
+            "hasSource": true
+          },
+          {
+            "id": "node-1781676853208-6698c83673ada8",
+            "type": "image",
+            "title": "X40.png",
+            "output": "image",
+            "content": "图片素材参考",
+            "hasSource": true
+          },
+          {
+            "id": "node-1781676859765-d041c0c1a6c768",
+            "type": "image",
+            "title": "球场场景.png",
+            "output": "image",
+            "content": "图片素材参考",
+            "hasSource": true
+          },
+          {
+            "id": "node-1781676866765-cbe0fdbc909008",
+            "type": "image",
+            "title": "室内场景.png",
+            "output": "image",
+            "content": "图片素材参考",
+            "hasSource": true
+          }
+        ],
+        "source": "",
+        "mimeType": "",
+        "semantic": {
+          "label": "视频输出",
+          "action": "video-generation",
+          "output": "video",
+          "accepts": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ]
+        },
+        "videoUrl": ""
+      },
+      "size": "auto",
+      "text": "",
+      "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/f6e0e185-66e4-46b9-96fa-8f291c301f1b.mp4",
+      "usage": null,
+      "engine": "doubao-seedance-2-0-260128",
+      "prompt": "参考资产：\n @3：灰色 DREAME 壁挂空调，正面、左右 45°、机械臂开启/关闭状态，金色腰线，清晰 DREAME logo，26.5℃显示屏。\n @3：DREAME 英文字标，保持清晰、不可变形。\n @1：Q版 7号足球球员角色，酒红色 DREAME 球衣，左右脚均衡，玩具质感，头身比例保持一致。\n @4：夜晚足球场，灯光、草地、球门、观众席、DREAME 广告牌。\n @5：高端室内空间，墙挂 DREAME 空调，暖灰色调，生活方式场景。\n主提示词\n使用 @1、@3、@4、@5作为全程视觉参考，生成一段高端商业广告短片，比例 9:56，时长 14 秒，电影级 3D 渲染，质感高级，运动流畅，品牌感强。\n视频主题： \n “左右均衡，丝滑掌控”。\n 将足球守门动作与空调双机械臂扫风融合。@1 Q版 7号球员具备左右脚均衡控球能力，空调内部左右机械臂也能像守门员双臂一样，分别控制左右送风区域，快速、精准、丝滑地完成左右区扫风与防守联动。\n分镜描述\n镜头 1｜室内启动，产品建立\n 从 @5 开始，镜头缓慢推进墙面上的 DREAME 空调。空调外观严格参考 @3，灰色金属机身、金色细腰线、右侧 26.5℃数字显示、左侧 DREAME logo 清晰可见。\n 空调下出风口缓慢打开，机械结构从内部平稳展开，机械臂处于关闭到开启的过渡状态，动作精密、阻尼感强。\n镜头 2｜足球场转场，守门概念出现\n 空调出风口中吹出一束蓝白色高级气流，气流化作球场灯光轨迹，画面自然转场到 @4 的夜晚足球场。\n 空调悬浮或安装在球门上方，像“智能守门核心”，保持产品外观真实比例，不要变形。球门前出现 Q版 7号球员角色，形象严格参考 @1，球衣、发型、比例、材质一致。\n镜头 3｜左脚射门，对应左区机械臂\n Q版 7号球员用左脚触球射门，金色足球从画面右侧向球门左上角飞去，带轻微运动残影。\n 空调左侧机械臂迅速但丝滑地展开，像守门员左臂扑救一样，带动左区导风叶片同步偏转。蓝白色气流形成左侧防守弧线，精准覆盖左半区，体现“左区独立操控”。\n镜头 4｜右脚射门，对应右区机械臂\n 球员立刻切换右脚射门，动作干净有力，体现左右脚均衡。足球向球门右下角飞去。\n 空调右侧机械臂快速响应，右区机械臂顺滑摆动，右侧导风叶片联动展开，气流形成右侧弧形屏障。左右机械臂动作互不干扰，响应精准，像守门员双臂分区防守。\n镜头 5｜左右联动，双机械臂守门\n 足球连续左右变向，空调内部双机械臂进行左右区独立扫风与同步联动。\n 左机械臂控制左区，右机械臂控制右区，中间区域柔和衔接，形成  120°-126° 大角度环抱式气流。\n 气流不要过于杂乱，要高级、通透、细腻，线条呈蓝白渐变，带轻微动态模糊和速度感。\n镜头 6｜品牌定格\n 最后镜头回到产品正面，空调机械臂缓慢收回或停留在开启状态，球员站在前景微笑，足球悬停在脚边。\n 背景融合室内与球场光影，DREAME logo 在产品上清晰可读，画面中央或左上角出现 @3 的 DREAME 字标。\n 整体定格为高端品牌海报感，不需要额外复杂文案。\n视觉风格要求\n高端 3D 商业广告质感，玩具收藏级角色渲染，产品材质真实，金属灰机身细腻，金色腰线清晰，DREAME logo 必须清晰准确。\n 足球场灯光具有电影感，草地真实，夜晚氛围高级。\n 空调机械臂动作要像守门员双臂一样灵活、精准、顺滑，体现左右区独立控制。\n Q版球员不要真人写实化，保持原创品牌角色风格，强调 7号球星感、左右脚均衡、控球稳定。\n运动与镜头\n镜头运动平稳，使用慢推、跟拍、快速切换和最后定格。\n 足球运动带轻微残影，但不要遮挡产品。\n 机械臂动作要有机械阻尼感，不能抖动，不能穿模，不能变形。\n 气流从空调出风口自然生成，方向与机械臂摆动一致。\n 产品始终保持正确结构：灰色面板、金色腰线、底部出风口、内部双机械臂、右侧显示屏、左侧 logo。\n负面提示词\n不要改变空调结构，不要让产品变形，不要改变 DREAME logo，不要出现错误文字，不要出现乱码，不要把机械臂做成普通风扇叶片，不要让机械臂断裂或穿模，不要让球员变成真人，不要出现真实明星脸，不要过度卡通低幼，不要廉价塑料质感，不要杂乱背景，不要过曝，不要水印，不要多余字幕，不要错误球衣号码，不要让足球遮挡 logo，不要让气流方向混乱。\n素材引用说明：\n- @1：图片参考「图片 1」，提交角色：reference_image，用户对该素材的说明：Q版 7号足球球员角色，酒红色 DREAME 球衣，左右脚均衡，玩具质感，头身比例保持一致。\n- @3：图片参考「图片 3」，提交角色：reference_image，用户对该素材的说明：灰色 DREAME 壁挂空调，正面、左右 45°、机械臂开启/关闭状态，金色腰线，清晰 DREAME logo，26.5℃显示屏。\n- @4：图片参考「图片 4」，提交角色：reference_image，用户对该素材的说明：夜晚足球场，灯光、草地、球门、观众席、DREAME 广告牌。\n- @5：图片参考「图片 5」，提交角色：reference_image，用户对该素材的说明：高端室内空间，墙挂 DREAME 空调，暖灰色调，生活方式场景。\n当前生成模式：全能参考",
+      "status": "completed",
+      "taskId": "cgt-20260617142355-6jsfp",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "modelId": "seedance-video",
+      "quality": "auto",
+      "provider": "ark",
+      "strength": 72,
+      "videoUrl": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/f6e0e185-66e4-46b9-96fa-8f291c301f1b.mp4",
+      "createdAt": "2026-06-17T06:31:23.699Z",
+      "modelName": "Doubao Seedance 2.0",
+      "lastFrameUrl": "",
+      "workflowMode": "全能参考",
+      "seedanceParams": {
+        "seed": null,
+        "draft": false,
+        "ratio": "16:9",
+        "duration": 14,
+        "watermark": false,
+        "webSearch": false,
+        "resolution": "720p",
+        "callbackUrl": "",
+        "cameraFixed": false,
+        "draftTaskId": "",
+        "serviceTier": "",
+        "generateAudio": false,
+        "returnLastFrame": false,
+        "executionExpiresAfter": ""
+      },
+      "referenceAssets": [
+        {
+          "role": "视觉参考素材",
+          "size": 1900340,
+          "type": "image",
+          "title": "C罗.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/ddca2e56-1008-4d9e-b44a-04411fca0e46.png",
+          "refName": "1",
+          "mimeType": "image/png",
+          "displayName": "图片 1",
+          "instruction": "Q版 7号足球球员角色，酒红色 DREAME 球衣，左右脚均衡，玩具质感，头身比例保持一致。",
+          "originalName": "C罗",
+          "seedanceRole": "reference_image"
+        },
+        {
+          "role": "视觉参考素材",
+          "size": 1395704,
+          "type": "image",
+          "title": "X40.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/21960b94-6e80-4fab-9d30-e59b5d629dc5.png",
+          "refName": "3",
+          "mimeType": "image/png",
+          "displayName": "图片 3",
+          "instruction": "灰色 DREAME 壁挂空调，正面、左右 45°、机械臂开启/关闭状态，金色腰线，清晰 DREAME logo，26.5℃显示屏。",
+          "originalName": "X40",
+          "seedanceRole": "reference_image"
+        },
+        {
+          "role": "视觉参考素材",
+          "size": 2203184,
+          "type": "image",
+          "title": "球场场景.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/185bf2cb-67a2-4558-b2d5-7832124ddee9.png",
+          "refName": "4",
+          "mimeType": "image/png",
+          "displayName": "图片 4",
+          "instruction": "夜晚足球场，灯光、草地、球门、观众席、DREAME 广告牌。",
+          "originalName": "球场场景",
+          "seedanceRole": "reference_image"
+        },
+        {
+          "role": "视觉参考素材",
+          "size": 1724315,
+          "type": "image",
+          "title": "室内场景.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/869954f2-64f6-42a8-bd0a-c3ed6e12a210.png",
+          "refName": "5",
+          "mimeType": "image/png",
+          "displayName": "图片 5",
+          "instruction": "高端室内空间，墙挂 DREAME 空调，暖灰色调，生活方式场景。",
+          "originalName": "室内场景",
+          "seedanceRole": "reference_image"
+        }
+      ],
+      "referenceWarning": "",
+      "faceRestoreParams": null,
+      "referenceInputSupported": true
+    },
+    {
+      "id": "8acb7f63-e03a-454a-aad5-49ee31f210b4",
+      "mode": "text",
+      "node": {
+        "id": "node-1781085694355-07bc2b8f49721",
+        "size": 0,
+        "type": "text",
+        "title": "文本",
+        "inputs": [],
+        "source": "",
+        "mimeType": "",
+        "semantic": {
+          "label": "文本输出",
+          "action": "text-to-text",
+          "output": "text",
+          "accepts": [
+            "text"
+          ]
+        },
+        "videoUrl": ""
+      },
+      "size": "auto",
+      "text": "当然可以！以下是一段适用于商品详情页的文案，内容围绕您提供的产品特点进行撰写，语言简洁明了、富有吸引力，适合用于电商平台或品牌官网的商品页面：\n\n---\n\n**360°不间断环绕送风 大空间面面俱到**\n\n普通天花机机身内部的送风口被隔断，风力不连续，送风效果大打折扣。**追觅全新环形出风天花机**，采用**360°不间断环绕送风**设计，**风口面积增大21%**（*对比无边角送风口的环形天花机），彻底打破传统送风局限。\n\n**环形出风技术**，让气流更均匀、更顺畅，有效改善边角气流死角问题，确保**房间每个角落都能被温柔覆盖**，告别冷热不均、吹头不吹身的困扰。\n\n无论是客厅、卧室还是办公室，**追觅环形出风天花机**都能带来**更舒适、更均匀的空气体验**，让每一口呼吸都更自然、更健康。\n\n---\n\n如需进一步扩展，比如加入产品参数、使用场景、用户评价或搭配推荐，也可以告诉我，我可以继续帮您完善内容。",
+      "usage": {
+        "eval_count": 258,
+        "prompt_eval_count": 124
+      },
+      "engine": "qwen3:14b:qwen3:14b",
+      "prompt": "我需要生成商品详情页：\n360°不间断环绕送风 大空间面面俱到\n普通天花机机身内部的送风口被隔断，不连续。追觅全新环形出风天花机，不间断的环形送风口，风口面积增大21%(*)，大空间舒适气流无死角。边角气流死角大为改善，气流可均匀送达房间各个角落，保证室内温度更均匀舒适\n *对比无边角送风口的环形天花机",
+      "status": "completed",
+      "taskId": "",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "modelId": "dreamehub-free-chat",
+      "quality": "auto",
+      "provider": "local",
+      "strength": 72,
+      "videoUrl": "",
+      "createdAt": "2026-06-10T10:02:56.886Z",
+      "modelName": "DreameHub Text",
+      "lastFrameUrl": "",
+      "workflowMode": "文生文",
+      "seedanceParams": null,
+      "referenceAssets": [],
+      "referenceWarning": "",
+      "faceRestoreParams": null,
+      "referenceInputSupported": false
+    },
+    {
+      "id": "65dca629-9dab-4bbe-81f5-878a3395e1ed",
+      "mode": "text",
+      "node": {
+        "id": "node-1781085694355-07bc2b8f49721",
+        "size": 0,
+        "type": "text",
+        "title": "文本",
+        "inputs": [],
+        "source": "",
+        "mimeType": "",
+        "semantic": {
+          "label": "文本输出",
+          "action": "text-to-text",
+          "output": "text",
+          "accepts": [
+            "text"
+          ]
+        },
+        "videoUrl": ""
+      },
+      "size": "auto",
+      "text": "当然可以！以下是一段适用于商品详情页的文案，内容围绕“**360°不间断环绕送风 大空间面面俱到**”这一卖点，语言简洁明了、富有吸引力，适合用于电商平台、官网等场景：\n\n---\n\n### ✅ **360°不间断环绕送风，大空间面面俱到**\n\n普通天花机的送风口往往被隔断，送风不连续，导致室内气流分布不均，边角处常出现“冷热不均”、“气流死角”等问题。追觅全新推出的**环形出风天花机**，打破传统设计，采用**不间断的环形送风口**，送风更流畅、更高效。\n\n🔹 **风口面积增大21%**（*对比无边角送风口的环形天花机），风量更足，送风距离更远，即使是大空间，也能实现**全方位均匀送风**。\n\n🔹 **无死角送风**，告别边角冷热不均的困扰，气流均匀覆盖整个房间，带来**更舒适、更自然的体感温度**。\n\n🔹 **高效节能**，智能温控系统，根据房间温度自动调节风速，节能省电，使用更安心。\n\n---\n\n**追觅环形出风天花机**，不只是一个空调，更是你家舒适生活的守护者。无论是客厅、卧室还是办公室，都能轻松实现**全屋无死角送风**，带来更均匀、更舒适的空气体验。\n\n---\n\n如需进一步优化，比如加入产品参数、使用场景图、用户评价等，也可以告诉我，我可以帮你进一步完善整页详情内容。",
+      "usage": {
+        "eval_count": 348,
+        "prompt_eval_count": 124
+      },
+      "engine": "qwen3:14b:qwen3:14b",
+      "prompt": "我需要生成商品详情页：\n360°不间断环绕送风 大空间面面俱到\n普通天花机机身内部的送风口被隔断，不连续。追觅全新环形出风天花机，不间断的环形送风口，风口面积增大21%(*)，大空间舒适气流无死角。边角气流死角大为改善，气流可均匀送达房间各个角落，保证室内温度更均匀舒适\n *对比无边角送风口的环形天花机",
+      "status": "completed",
+      "taskId": "",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "modelId": "dreamehub-free-chat",
+      "quality": "auto",
+      "provider": "local",
+      "strength": 72,
+      "videoUrl": "",
+      "createdAt": "2026-06-10T10:02:42.565Z",
+      "modelName": "DreameHub Text",
+      "lastFrameUrl": "",
+      "workflowMode": "文生文",
+      "seedanceParams": null,
+      "referenceAssets": [],
+      "referenceWarning": "",
+      "faceRestoreParams": null,
+      "referenceInputSupported": false
+    },
+    {
+      "id": "e7a0c0b1-2de8-4798-916c-f7178828c644",
+      "mode": "video",
+      "node": {
+        "id": "node-1780976634923-fa6c1fd72f4b58",
+        "size": 0,
+        "type": "video",
+        "title": "doubao-seedance-2-0-260128",
+        "inputs": [
+          {
+            "id": "node-1780976662077-584ccc9a82fd48",
+            "type": "image",
+            "title": "20260609-114414.jpg",
+            "output": "image",
+            "content": "20260609-114414.jpg",
+            "hasSource": true
+          },
+          {
+            "id": "node-1781252792326-a57cfd3e631ed",
+            "type": "image",
+            "title": "output.lin.png",
+            "output": "image",
+            "content": "output.lin.png",
+            "hasSource": true
+          }
+        ],
+        "source": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/doubao-seedance-2-0/02178123487283200000000000000000000ffffac1777f6988050.mp4?X-Tos-Algorithm=TOS4-HMAC-SHA256&X-Tos-Credential=AKLTYWJkZTExNjA1ZDUyNDc3YzhjNTM5OGIyNjBhNDcyOTQ%2F20260612%2Fcn-beijing%2Ftos%2Frequest&X-Tos-Date=20260612T033137Z&X-Tos-Expires=86400&X-Tos-Signature=89ca69fd092c53d9727ca242d92191273b5a3c393adc6c4e33070ace935ba0f4&X-Tos-SignedHeaders=host",
+        "mimeType": "video/mp4",
+        "semantic": {
+          "label": "视频输出",
+          "action": "video-generation",
+          "output": "video",
+          "accepts": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ]
+        },
+        "videoUrl": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/doubao-seedance-2-0/02178123487283200000000000000000000ffffac1777f6988050.mp4?X-Tos-Algorithm=TOS4-HMAC-SHA256&X-Tos-Credential=AKLTYWJkZTExNjA1ZDUyNDc3YzhjNTM5OGIyNjBhNDcyOTQ%2F20260612%2Fcn-beijing%2Ftos%2Frequest&X-Tos-Date=20260612T033137Z&X-Tos-Expires=86400&X-Tos-Signature=89ca69fd092c53d9727ca242d92191273b5a3c393adc6c4e33070ace935ba0f4&X-Tos-SignedHeaders=host"
+      },
+      "size": "auto",
+      "text": "",
+      "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/19cd6c23-0bb8-480d-a466-d04b73f9e94d.mp4",
+      "usage": null,
+      "engine": "doubao-seedance-2-0-260128",
+      "prompt": "全局参考：空调@4，场景@2\n开篇画面\n 卡通 C 罗刚结束室外高强度加练，满头大汗回到极简家装客厅，盛夏室温闷热，肌肉紧绷、情绪烦躁，连喝水都静不下心。\n\n产品登场（重点展示 X30 标志性双机械臂@4）\n C 罗抬手开启@4 空调，空调两侧仿生双机械臂缓缓向外舒展伸展（还原机器人多自由度灵擎关节™动作），135° 康达翼同步抬升，开启天幕制冷模式，冷风沿天花板 126° 广角平行铺展下沉，完美实现「冷不吹头」。\n \n分层植入卖点画面（动画细节可视化）\n \n \n气流特效：800m³/h 澎湃循环蓝色柔风铺满全屋，屏幕弹出微小数值动画「全屋温差 ±0.5℃」，房间各个角落同步降温，无冷热分层死角（送风距离是普通空调 6.6 倍）；\n \n静音细节：C 罗靠在沙发闭目放松，画面角落小字「18dB 静音运行」，搭配 AG 雾面玻璃机身极简特写；\n \nAI 分区控风：双机械臂左右独立摆动，一边送出柔风给 C 罗，一边微风循环全屋，呼应「一室双风感、分区独立控风」；\n \n洁净新风彩蛋：空调侧边新风模块透出淡白色柔光，示意 H13 滤网 + UV 除菌全链路净化，运动出汗后呼吸更清爽；\n \n超一级能效小字点缀：APF 5.42，长时间吹风省电无负担。\n \n \n情绪落点\n C 罗周身被环绕凉气流包裹，燥热瞬间消散，紧绷身体彻底放松，眼神冷静笃定，抬手把玩桌上足球。\n 字幕：双机械臂全域凉感，在家蓄满制胜状态\n \n创意转场（串联居家 & 球场，核心道具：空调机械臂吹出的足球形气流）\n \n镜头聚焦空调舒展的双机械臂，两道天幕冷风在空中缠绕、凝聚，化作一颗带冰晶纹路的透明足球；\n \n机械臂轻轻一推，冰晶足球冲破落地窗向外飞驰，沿途拖曳蓝色全域风轨迹；\n \n足球穿过城市街道、掠过烈日，落地瞬间镜头切换露天足球场，转场自然绑定「X30 送风气流 = 赛场决胜动能」。",
+      "status": "completed",
+      "taskId": "cgt-20260612173902-mdrdt",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "modelId": "seedance-video",
+      "quality": "auto",
+      "provider": "ark",
+      "strength": 72,
+      "videoUrl": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/19cd6c23-0bb8-480d-a466-d04b73f9e94d.mp4",
+      "createdAt": "2026-06-12T09:45:22.619Z",
+      "modelName": "Doubao Seedance 2.0",
+      "lastFrameUrl": "",
+      "workflowMode": "全能参考",
+      "seedanceParams": {
+        "seed": null,
+        "draft": false,
+        "ratio": "16:9",
+        "duration": 10,
+        "watermark": false,
+        "webSearch": false,
+        "resolution": "720p",
+        "callbackUrl": "",
+        "cameraFixed": false,
+        "draftTaskId": "",
+        "serviceTier": "",
+        "generateAudio": true,
+        "returnLastFrame": false,
+        "executionExpiresAfter": ""
+      },
+      "referenceAssets": [
+        {
+          "role": "人物外貌与服装细节参考",
+          "size": 406378,
+          "type": "image",
+          "title": "20260609-114414.jpg",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/migrated/data/69657536fe4071f66096123bb58c2cd1f71f545d78ad684a7170a114d7efab29.jpg",
+          "refName": "2",
+          "mimeType": "image/jpeg",
+          "displayName": "图片 1",
+          "instruction": "开篇画面",
+          "originalName": "20260609-114414",
+          "seedanceRole": "reference_image"
+        },
+        {
+          "role": "人物外貌与服装细节参考",
+          "size": 248792,
+          "type": "image",
+          "title": "output.lin.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/migrated/data/f1fe731876b49d0955694015db0f1da4515bdedaf5835ff967f145635ab0d712.png",
+          "refName": "4",
+          "mimeType": "image/png",
+          "displayName": "图片 2",
+          "instruction": "，场景",
+          "originalName": "outputlin",
+          "seedanceRole": "reference_image"
+        }
+      ],
+      "referenceWarning": "",
+      "faceRestoreParams": null,
+      "referenceInputSupported": true
+    },
+    {
+      "id": "32d2deb6-35ac-4507-81ab-7eeafbf2b6f6",
+      "mode": "video",
+      "node": {
+        "id": "node-1781252235005-92139a200c44d",
+        "size": 0,
+        "type": "video",
+        "title": "doubao-seedance-2-0-260128",
+        "inputs": [
+          {
+            "id": "node-1781252792326-a57cfd3e631ed",
+            "type": "image",
+            "title": "output.lin.png",
+            "output": "image",
+            "content": "output.lin.png",
+            "hasSource": true
+          },
+          {
+            "id": "node-1781255162894-61eefb429d3b1",
+            "type": "video",
+            "title": "02178123487283200000000000000000000ffffac1777f6988050.mp4",
+            "output": "video",
+            "content": "02178123487283200000000000000000000ffffac1777f6988050.mp4",
+            "hasSource": true
+          }
+        ],
+        "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/a60e299e-07e2-4b62-9377-bb11114584b1.mp4",
+        "mimeType": "video/mp4",
+        "semantic": {
+          "label": "视频输出",
+          "action": "video-generation",
+          "output": "video",
+          "accepts": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ]
+        },
+        "videoUrl": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/a60e299e-07e2-4b62-9377-bb11114584b1.mp4"
+      },
+      "size": "auto",
+      "text": "",
+      "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/977cc92b-c3e4-41b8-b96b-9af3e063b146.mp4",
+      "usage": null,
+      "engine": "doubao-seedance-2-0-260128",
+      "prompt": "@5 视频中的空调素材替换为@4 ，输出背景声音",
+      "status": "completed",
+      "taskId": "cgt-20260612172913-fq6n4",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "modelId": "seedance-video",
+      "quality": "auto",
+      "provider": "ark",
+      "strength": 72,
+      "videoUrl": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/977cc92b-c3e4-41b8-b96b-9af3e063b146.mp4",
+      "createdAt": "2026-06-12T09:34:13.922Z",
+      "modelName": "Doubao Seedance 2.0",
+      "lastFrameUrl": "",
+      "workflowMode": "全能参考",
+      "seedanceParams": {
+        "seed": null,
+        "draft": false,
+        "ratio": "16:9",
+        "duration": 5,
+        "watermark": false,
+        "webSearch": false,
+        "resolution": "720p",
+        "callbackUrl": "",
+        "cameraFixed": false,
+        "draftTaskId": "",
+        "serviceTier": "",
+        "generateAudio": true,
+        "returnLastFrame": false,
+        "executionExpiresAfter": ""
+      },
+      "referenceAssets": [
+        {
+          "role": "人物外貌与服装细节参考",
+          "size": 248792,
+          "type": "image",
+          "title": "output.lin.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/migrated/data/f1fe731876b49d0955694015db0f1da4515bdedaf5835ff967f145635ab0d712.png",
+          "refName": "4",
+          "mimeType": "image/png",
+          "displayName": "图片 2",
+          "instruction": "，输出背景声音",
+          "originalName": "outputlin",
+          "seedanceRole": "reference_image"
+        },
+        {
+          "role": "动作节奏与镜头运动参考",
+          "size": 2412235,
+          "type": "video",
+          "title": "02178123487283200000000000000000000ffffac1777f6988050.mp4",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/migrated/data/f71baf33789035576946a4fc5b8ed3c3a59740414430ea8673497be84b2626e4.mp4",
+          "refName": "5",
+          "mimeType": "video/mp4",
+          "displayName": "视频 3",
+          "instruction": "视频中的空调素材替换为",
+          "originalName": "021781234872832000000000",
+          "seedanceRole": "reference_video"
+        }
+      ],
+      "referenceWarning": "",
+      "faceRestoreParams": null,
+      "referenceInputSupported": true
+    },
+    {
+      "id": "f6158a35-6a35-4028-a93e-c601ceaec1f9",
+      "mode": "video",
+      "node": {
+        "id": "node-1781252235005-92139a200c44d",
+        "size": 0,
+        "type": "video",
+        "title": "视频节点",
+        "inputs": [
+          {
+            "id": "node-1781252792326-a57cfd3e631ed",
+            "type": "image",
+            "title": "output.lin.png",
+            "output": "image",
+            "content": "output.lin.png",
+            "hasSource": true
+          },
+          {
+            "id": "node-1781255162894-61eefb429d3b1",
+            "type": "video",
+            "title": "02178123487283200000000000000000000ffffac1777f6988050.mp4",
+            "output": "video",
+            "content": "02178123487283200000000000000000000ffffac1777f6988050.mp4",
+            "hasSource": true
+          }
+        ],
+        "source": "",
+        "mimeType": "",
+        "semantic": {
+          "label": "视频输出",
+          "action": "video-generation",
+          "output": "video",
+          "accepts": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ]
+        },
+        "videoUrl": ""
+      },
+      "size": "auto",
+      "text": "",
+      "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/a60e299e-07e2-4b62-9377-bb11114584b1.mp4",
+      "usage": null,
+      "engine": "doubao-seedance-2-0-260128",
+      "prompt": "优化之前生成的视频\n①之前生成的视频 空调素材按@3图片2调整\n②加上配音，体现出技术点",
+      "status": "completed",
+      "taskId": "cgt-20260612171655-ds5wb",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "modelId": "seedance-video",
+      "quality": "auto",
+      "provider": "ark",
+      "strength": 72,
+      "videoUrl": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/a60e299e-07e2-4b62-9377-bb11114584b1.mp4",
+      "createdAt": "2026-06-12T09:23:11.599Z",
+      "modelName": "Doubao Seedance 2.0",
+      "lastFrameUrl": "",
+      "workflowMode": "全能参考",
+      "seedanceParams": {
+        "seed": null,
+        "draft": false,
+        "ratio": "16:9",
+        "duration": 5,
+        "watermark": false,
+        "webSearch": false,
+        "resolution": "720p",
+        "callbackUrl": "",
+        "cameraFixed": false,
+        "draftTaskId": "",
+        "serviceTier": "",
+        "generateAudio": true,
+        "returnLastFrame": false,
+        "executionExpiresAfter": ""
+      },
+      "referenceAssets": [
+        {
+          "role": "人物外貌与服装细节参考",
+          "size": 248792,
+          "type": "image",
+          "title": "output.lin.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/migrated/data/f1fe731876b49d0955694015db0f1da4515bdedaf5835ff967f145635ab0d712.png",
+          "refName": "3",
+          "mimeType": "image/png",
+          "displayName": "图片 2",
+          "instruction": "图片2调整",
+          "originalName": "outputlin",
+          "seedanceRole": "reference_image"
+        },
+        {
+          "role": "动作节奏与镜头运动参考",
+          "size": 2412235,
+          "type": "video",
+          "title": "02178123487283200000000000000000000ffffac1777f6988050.mp4",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/migrated/data/f71baf33789035576946a4fc5b8ed3c3a59740414430ea8673497be84b2626e4.mp4",
+          "refName": "4",
+          "mimeType": "video/mp4",
+          "displayName": "视频 2",
+          "instruction": "",
+          "originalName": "021781234872832000000000",
+          "seedanceRole": "reference_video"
+        }
+      ],
+      "referenceWarning": "",
+      "faceRestoreParams": null,
+      "referenceInputSupported": true
+    },
+    {
+      "id": "1488c3e0-b60f-4fc9-9761-f222a9585af7",
+      "mode": "video",
+      "node": {
+        "id": "node-1780976634923-fa6c1fd72f4b58",
+        "size": 0,
+        "type": "video",
+        "title": "视频节点",
+        "inputs": [
+          {
+            "id": "node-1780976662077-584ccc9a82fd48",
+            "type": "image",
+            "title": "20260609-114414.jpg",
+            "output": "image",
+            "content": "20260609-114414.jpg",
+            "hasSource": true
+          }
+        ],
+        "source": "",
+        "mimeType": "",
+        "semantic": {
+          "label": "视频输出",
+          "action": "video-generation",
+          "output": "video",
+          "accepts": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ]
+        },
+        "videoUrl": ""
+      },
+      "size": "auto",
+      "text": "",
+      "image": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/doubao-seedance-2-0/02178123487283200000000000000000000ffffac1777f6988050.mp4?X-Tos-Algorithm=TOS4-HMAC-SHA256&X-Tos-Credential=AKLTYWJkZTExNjA1ZDUyNDc3YzhjNTM5OGIyNjBhNDcyOTQ%2F20260612%2Fcn-beijing%2Ftos%2Frequest&X-Tos-Date=20260612T033137Z&X-Tos-Expires=86400&X-Tos-Signature=89ca69fd092c53d9727ca242d92191273b5a3c393adc6c4e33070ace935ba0f4&X-Tos-SignedHeaders=host",
+      "usage": null,
+      "engine": "doubao-seedance-2-0-260128",
+      "prompt": "开篇画面\n 卡通 C 罗刚结束室外高强度加练，满头大汗回到极简家装客厅，盛夏室温闷热，肌肉紧绷、情绪烦躁，连喝水都静不下心。\n\n产品登场（重点展示 X30 标志性双机械臂）\n C 罗抬手开启追觅 X30 空调，空调两侧仿生双机械臂缓缓向外舒展伸展（还原机器人多自由度灵擎关节™动作），135° 康达翼同步抬升，开启天幕制冷模式，冷风沿天花板 126° 广角平行铺展下沉，完美实现「冷不吹头」。\n \n分层植入卖点画面（动画细节可视化）\n \n \n气流特效：800m³/h 澎湃循环蓝色柔风铺满全屋，屏幕弹出微小数值动画「全屋温差 ±0.5℃」，房间各个角落同步降温，无冷热分层死角（送风距离是普通空调 6.6 倍）；\n \n静音细节：C 罗靠在沙发闭目放松，画面角落小字「18dB 静音运行」，搭配 AG 雾面玻璃机身极简特写；\n \nAI 分区控风：双机械臂左右独立摆动，一边送出柔风给 C 罗，一边微风循环全屋，呼应「一室双风感、分区独立控风」；\n \n洁净新风彩蛋：空调侧边新风模块透出淡白色柔光，示意 H13 滤网 + UV 除菌全链路净化，运动出汗后呼吸更清爽；\n \n超一级能效小字点缀：APF 5.42，长时间吹风省电无负担。\n \n \n情绪落点\n C 罗周身被环绕凉气流包裹，燥热瞬间消散，紧绷身体彻底放松，眼神冷静笃定，抬手把玩桌上足球。\n 字幕：双机械臂全域凉感，在家蓄满制胜状态\n \n创意转场（串联居家 & 球场，核心道具：空调机械臂吹出的足球形气流）\n \n镜头聚焦空调舒展的双机械臂，两道天幕冷风在空中缠绕、凝聚，化作一颗带冰晶纹路的透明足球；\n \n机械臂轻轻一推，冰晶足球冲破落地窗向外飞驰，沿途拖曳蓝色全域风轨迹；\n \n足球穿过城市街道、掠过烈日，落地瞬间镜头切换露天足球场，转场自然绑定「X30 送风气流 = 赛场决胜动能」。",
+      "status": "completed",
+      "taskId": "cgt-20260612112550-hrssg",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "modelId": "seedance-video",
+      "quality": "auto",
+      "provider": "ark",
+      "strength": 72,
+      "videoUrl": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/doubao-seedance-2-0/02178123487283200000000000000000000ffffac1777f6988050.mp4?X-Tos-Algorithm=TOS4-HMAC-SHA256&X-Tos-Credential=AKLTYWJkZTExNjA1ZDUyNDc3YzhjNTM5OGIyNjBhNDcyOTQ%2F20260612%2Fcn-beijing%2Ftos%2Frequest&X-Tos-Date=20260612T033137Z&X-Tos-Expires=86400&X-Tos-Signature=89ca69fd092c53d9727ca242d92191273b5a3c393adc6c4e33070ace935ba0f4&X-Tos-SignedHeaders=host",
+      "createdAt": "2026-06-12T03:31:57.861Z",
+      "modelName": "Doubao Seedance 2.0",
+      "lastFrameUrl": "",
+      "workflowMode": "全能参考",
+      "seedanceParams": {
+        "seed": null,
+        "draft": false,
+        "ratio": "16:9",
+        "duration": 5,
+        "watermark": false,
+        "webSearch": false,
+        "resolution": "720p",
+        "callbackUrl": "",
+        "cameraFixed": false,
+        "draftTaskId": "",
+        "serviceTier": "",
+        "generateAudio": false,
+        "returnLastFrame": false,
+        "executionExpiresAfter": ""
+      },
+      "referenceAssets": [
+        {
+          "role": "人物外貌与服装细节参考",
+          "size": 406378,
+          "type": "image",
+          "title": "20260609-114414.jpg",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/migrated/data/69657536fe4071f66096123bb58c2cd1f71f545d78ad684a7170a114d7efab29.jpg",
+          "refName": "1",
+          "mimeType": "image/jpeg",
+          "displayName": "图片 1",
+          "instruction": "",
+          "originalName": "20260609-114414",
+          "seedanceRole": "reference_image"
+        }
+      ],
+      "referenceWarning": "",
+      "faceRestoreParams": null,
+      "referenceInputSupported": true
+    },
+    {
+      "id": "4374261f-c732-4510-b3a2-1feb46257eb7",
+      "mode": "text",
+      "node": {
+        "id": "node-1781085694355-07bc2b8f49721",
+        "size": 0,
+        "type": "text",
+        "title": "qwen3:14b:qwen3:14b",
+        "inputs": [],
+        "source": "",
+        "mimeType": "",
+        "semantic": {
+          "label": "文本输出",
+          "action": "text-to-text",
+          "output": "text",
+          "accepts": [
+            "text"
+          ]
+        },
+        "videoUrl": ""
+      },
+      "size": "auto",
+      "text": "当然可以！以下是为**天花机**（假设为**天花喷涂机**或**天花加工设备**）产品宣传视频的**脚本**和**内容结构建议**，供你参考。你可以根据实际产品特性、品牌风格、目标客户群体进行调整。\n\n---\n\n## 🎥 **天花机产品宣传视频脚本（时长建议：1-2分钟）**\n\n---\n\n### 🎬 **开场（0:00 - 0:10）**\n\n**画面**：快速切换天花机在工厂中高效工作的场景、工人操作机器的特写、成品天花的精美效果。\n\n**旁白/字幕**：\n> “创新科技，打造完美天花——XX天花机，让每一处细节都闪耀非凡。”\n\n---\n\n### 📌 **第一部分：产品介绍（0:10 - 0:40）**\n\n**画面**：\n- 展示天花机的外观设计、结构细节（如控制系统、喷头、移动装置等）。\n- 工人操作天花机的过程，突出“智能、高效、精准”。\n\n**旁白/字幕**：\n> “XX天花机，集智能控制、高效喷涂、精准加工于一体，适用于各种天花材料的喷涂与加工。”\n> “采用先进的自动控制系统，操作简单，效率提升50%以上。”\n> “适用于石膏板、PVC、铝扣板等多种天花材料，满足不同施工需求。”\n\n---\n\n### 🎯 **第二部分：核心优势（0:40 - 1:10）**\n\n**画面**：\n- 展示天花机在不同场景下的应用（如商场、办公室、酒店等）。\n- 对比传统人工喷涂与XX天花机的效果（如更均匀、更节省材料、更环保）。\n- 展示客户使用后的满意反馈或客户评价。\n\n**旁白/字幕**：\n> “相比传统工艺，XX天花机具备三大核心优势：**\n> **1. 高效节能：大幅提升施工效率，降低人工成本。**\n> **2. 精准均匀：自动喷涂技术，确保每一块天花均匀美观。**\n> **3. 环保耐用：采用环保材料，操作安全，设备寿命更长。**\n\n---\n\n### 💡 **第三部分：应用场景（1:10 - 1:40）**\n\n**画面**：\n- 展示天花机在大型建筑项目中的实际应用（如商业空间、住宅项目、学校、医院等）。\n- 工程师与客户沟通、设备调试、现场施工等画面。\n\n**旁白/字幕**：\n> “无论是大型商业空间，还是高端住宅项目，XX天花机都能完美胜任。”\n> “我们为建筑行业提供一站式解决方案，让施工更简单、品质更卓越。”\n\n---\n\n### 🏆 **结尾（1:40 - 2:00）**\n\n**画面**：\n- 产品LOGO、品牌标语、联系方式。\n- 全景展示天花机在施工现场的高效运作，工人微笑、客户满意。\n\n**旁白/字幕**：\n> “XX天花机，智造未来，成就卓越。”\n> “立即联系，开启您的高效施工新时代！”\n\n**联系方式**：\n> 咨询热线：XXX-XXXX-XXXX  \n> 官网：www.xxxx.com  \n> 地址：XXXX市XX区XX路XX号\n\n---\n\n## 🎯 **视频风格建议**：\n\n- **风格**：专业、科技感、现代感。\n- **色调**：以蓝色、银色为主，突出科技与效率。\n- **音乐**：轻快、积极向上的背景音乐，增强观看体验。\n- **画面节奏**：快节奏剪辑，突出产品亮点与应用场景。\n\n---\n\n## 📌 **可选附加内容**（如视频时长较长）：\n\n- 使用前后对比（如传统人工 vs XX天花机）\n- 客户见证（采访客户或工地负责人）\n- 技术参数展示（如功率、速度、适用材料等）\n- 售后服务介绍（如保修、技术支持、培训等）\n\n---\n\n如果你能提供更多关于产品的具体信息（如型号、功能、客户案例等），我可以帮你进一步定制脚本和视频内容。\n\n需要我帮你写成**分镜头脚本**或**视频文案**吗？也可以考虑是否需要**中英文双语版本**。",
+      "usage": {
+        "eval_count": 930,
+        "prompt_eval_count": 24
+      },
+      "engine": "qwen3:14b:qwen3:14b",
+      "prompt": "我需要生成天花机的产品宣传视频",
+      "status": "completed",
+      "taskId": "",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "modelId": "dreamehub-free-chat",
+      "quality": "auto",
+      "provider": "local",
+      "strength": 72,
+      "videoUrl": "",
+      "createdAt": "2026-06-10T10:05:40.256Z",
+      "modelName": "DreameHub Text",
+      "lastFrameUrl": "",
+      "workflowMode": "文生文",
+      "seedanceParams": null,
+      "referenceAssets": [],
+      "referenceWarning": "",
+      "faceRestoreParams": null,
+      "referenceInputSupported": false
+    }
+  ],
+  "models": [],
+  "workflows": [],
+  "communityWorks": [],
+  "plans": [
+    {
+      "id": "studio",
+      "name": "Studio",
+      "price": 129,
+      "period": "Team pack",
+      "credits": 1000,
+      "features": [
+        "1000 compute credits",
+        "Batch creation",
+        "Priority workspace use"
+      ]
+    },
+    {
+      "id": "creator",
+      "name": "Creator",
+      "price": 59,
+      "period": "Popular",
+      "credits": 420,
+      "features": [
+        "420 compute credits",
+        "Workflow templates",
+        "Generation history"
+      ]
+    },
+    {
+      "id": "starter",
+      "name": "Starter",
+      "price": 19,
+      "period": "Starter pack",
+      "credits": 120,
+      "features": [
+        "120 compute credits",
+        "Image and text generation",
+        "API key access"
+      ]
+    }
+  ],
+  "userWorkflows": [
+    {
+      "id": "free-canvas",
+      "cost": 0,
+      "icon": "＋",
+      "mode": "free",
+      "links": [
+        {
+          "id": "link-restore-1",
+          "to": "node-1781252235005-92139a200c44d",
+          "from": "node-1780976634923-fa6c1fd72f4b58"
+        },
+        {
+          "id": "link-restore-2",
+          "to": "node-1781252235005-92139a200c44d",
+          "from": "node-1780976662077-584ccc9a82fd48"
+        },
+        {
+          "id": "link-restore-3",
+          "to": "node-1781252235005-92139a200c44d",
+          "from": "node-1781252792326-a57cfd3e631ed"
+        },
+        {
+          "id": "link-restore-4",
+          "to": "node-1781252235005-92139a200c44d",
+          "from": "node-1781255162894-61eefb429d3b1"
+        }
+      ],
+      "nodes": [
+        {
+          "x": -138.97,
+          "y": 180,
+          "id": "node-1780976634923-fa6c1fd72f4b58",
+          "type": "video",
+          "label": "doubao-seedance-2-0-260128",
+          "title": "doubao-seedance-2-0-260128",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/19cd6c23-0bb8-480d-a466-d04b73f9e94d.mp4",
+          "content": "视频素材参考",
+          "videoUrl": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/19cd6c23-0bb8-480d-a466-d04b73f9e94d.mp4",
+          "mediaWidth": 638.97,
+          "aspectRatio": 1.7777777777777777,
+          "referenceStatus": "已恢复为参考素材节点"
+        },
+        {
+          "x": 580,
+          "y": 180,
+          "id": "node-1780976662077-584ccc9a82fd48",
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/canvas-media-836340209c9330e2676a.jpg",
+          "label": "20260609-114414.jpg",
+          "title": "20260609-114414.jpg",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/canvas-media-760f7fd40c72611624d2.jpg",
+          "content": "产品图片参考",
+          "mediaWidth": 260,
+          "aspectRatio": 3.1111,
+          "referenceStatus": "已恢复为参考素材节点"
+        },
+        {
+          "x": 580,
+          "y": 540,
+          "id": "node-1781252792326-a57cfd3e631ed",
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/canvas-media-4c4dc2ed63e64107cca5.png",
+          "label": "output.lin.png",
+          "title": "output.lin.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/canvas-media-5a8512d7618baa83bee0.png",
+          "content": "替换目标图片参考",
+          "mediaWidth": 260,
+          "aspectRatio": 1,
+          "referenceStatus": "已恢复为参考素材节点"
+        },
+        {
+          "x": 965.89,
+          "y": -95.22,
+          "id": "node-1781255162894-61eefb429d3b1",
+          "role": "动作节奏与镜头运动参考",
+          "size": 2412235,
+          "type": "video",
+          "label": "02178123487283200000000000000000000ffffac1777f6988050.mp4",
+          "title": "02178123487283200000000000000000000ffffac1777f6988050.mp4",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/canvas-media-f85c9f86b768ce61031d.mp4",
+          "content": "本地上传视频参考",
+          "videoUrl": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/canvas-media-f85c9f86b768ce61031d.mp4",
+          "mediaWidth": 422.22,
+          "aspectRatio": 1.7777777777777777,
+          "uploadSummary": "02178123487283200000000000000000000ffffac1777f6988050.mp4 ? 2355.7 KB",
+          "referenceStatus": "已恢复为参考素材节点"
+        },
+        {
+          "x": 1310.07,
+          "y": 713.08,
+          "id": "node-1781252235005-92139a200c44d",
+          "type": "video",
+          "label": "doubao-seedance-2-0-260128",
+          "title": "doubao-seedance-2-0-260128",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/977cc92b-c3e4-41b8-b96b-9af3e063b146.mp4",
+          "content": "@视频中的空调素材替换为@4 ，输出背景声音",
+          "videoUrl": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/977cc92b-c3e4-41b8-b96b-9af3e063b146.mp4",
+          "mediaWidth": 465.63,
+          "aspectRatio": 1.7777777777777777,
+          "referenceStatus": "已作为模型输入提交 2 个参考素材"
+        },
+        {
+          "x": 1781.132075471698,
+          "y": 185.66037735849056,
+          "id": "node-1781665370511-b9b0935cb13f9",
+          "type": "video",
+          "label": "视频",
+          "title": "视频节点",
+          "content": ""
+        }
+      ],
+      "title": "自由画布",
+      "accent": "cyan",
+      "prompt": "",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "subtitle": "自由添加文本、图片、视频与音频节点，通过连线决定生成上下文。",
+      "createdAt": "2026-06-08T06:39:32.748Z",
+      "updatedAt": "2026-06-17T07:38:44.905Z",
+      "modelLabel": "自由节点",
+      "batchOutputs": [],
+      "composerKind": "free"
+    },
+    {
+      "id": "c56bf005-6906-4fb8-a861-934a027f0eb1",
+      "cost": 0,
+      "icon": "＋",
+      "mode": "free",
+      "links": [
+        {
+          "to": "node-1781582302235-fe156bcac95e4",
+          "from": "node-1781582302235-44fe3839af8cc8"
+        },
+        {
+          "to": "node-1781582302235-f6e6497b5dfb3",
+          "from": "node-1781582302235-fe156bcac95e4"
+        },
+        {
+          "to": "node-1781582302235-3431f36cbe2eb",
+          "from": "node-1781582302235-f6e6497b5dfb3"
+        },
+        {
+          "to": "node-1781582302235-b85f98fa4116f",
+          "from": "node-1781582302235-3431f36cbe2eb"
+        },
+        {
+          "to": "node-1781582302235-fe156bcac95e4",
+          "from": "node-1781582302235-192436f60cc35"
+        },
+        {
+          "to": "node-1781582302235-b85f98fa4116f",
+          "from": "node-1781582302235-192436f60cc35"
+        },
+        {
+          "to": "node-1781582302235-fe156bcac95e4",
+          "from": "node-1781582302235-a14e677f1c84a"
+        },
+        {
+          "to": "node-1781582302235-b85f98fa4116f",
+          "from": "node-1781582302235-a14e677f1c84a"
+        }
+      ],
+      "nodes": [
+        {
+          "x": 180,
+          "y": 220,
+          "id": "node-1781582302235-44fe3839af8cc8",
+          "type": "text",
+          "label": "营销简报",
+          "title": "营销简报",
+          "content": "商业视频对话式生成方案\n品牌：Dreame\n产品：追觅3P天花机\n受众：消费者\n核心卖点：澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\n行动号召：立即购买\n品牌色：黑金\n参考素材：ChatGPT Image 2026年6月8日 17_08_10.png、天花机.png\n\n脚本\n1. 产品全景展示\n欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\n\n2. 核心卖点展示\n澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\n\n3. CTA结尾\n立即购买，享受Dreame带来的极致体验。\n\n镜头清单\nshot-01：展示产品外观和整体设计。\n运镜：全景镜头\n画面意图：突出产品外观和品牌标识\n\nshot-02：展示产品功能和性能特点。\n运镜：特写镜头\n画面意图：突出产品功能和性能特点\n\nshot-03：展示产品使用场景和购买信息。\n运镜：中景镜头\n画面意图：突出产品使用场景和购买信息\n\n分镜提示词\nshot-01 start\n展示产品外观和整体设计，突出品牌标识。\n\nshot-02 mid\n展示产品功能和性能特点，突出技术优势。\n\nshot-03 end\n展示产品使用场景和购买信息，引导用户立即购买。\n\n生成模式建议\nstoryboard-01：i2v，用户已确认使用图像到视频模式，符合当前工作流需求。"
+        },
+        {
+          "x": 180,
+          "y": 520,
+          "id": "node-1781582302235-192436f60cc35",
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/cd24b739-f421-47a5-8d9c-3181625a364f.png",
+          "label": "参考图 1",
+          "title": "ChatGPT Image 2026年6月8日 17_08_10.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/cd24b739-f421-47a5-8d9c-3181625a364f.png",
+          "content": "从对话式生成页面上传的参考素材。",
+          "mimeType": "image/png",
+          "aspectRatio": 1.3333
+        },
+        {
+          "x": 205,
+          "y": 964.0625,
+          "id": "node-1781582302235-a14e677f1c84a",
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/749dffba-fb78-4fb1-aeda-47a78c2b1c9f.png",
+          "label": "参考图 2",
+          "title": "天花机.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/749dffba-fb78-4fb1-aeda-47a78c2b1c9f.png",
+          "content": "从对话式生成页面上传的参考素材。",
+          "mimeType": "image/png",
+          "aspectRatio": 1
+        },
+        {
+          "x": 560,
+          "y": 220,
+          "id": "node-1781582302235-fe156bcac95e4",
+          "type": "script",
+          "label": "脚本",
+          "title": "脚本",
+          "content": "1. 产品全景展示\n欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\n\n2. 核心卖点展示\n澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\n\n3. CTA结尾\n立即购买，享受Dreame带来的极致体验。"
+        },
+        {
+          "x": 940,
+          "y": 220,
+          "id": "node-1781582302235-f6e6497b5dfb3",
+          "type": "text",
+          "label": "镜头清单",
+          "title": "镜头清单",
+          "content": "shot-01：展示产品外观和整体设计。\n运镜：全景镜头\n画面意图：突出产品外观和品牌标识\n\nshot-02：展示产品功能和性能特点。\n运镜：特写镜头\n画面意图：突出产品功能和性能特点\n\nshot-03：展示产品使用场景和购买信息。\n运镜：中景镜头\n画面意图：突出产品使用场景和购买信息"
+        },
+        {
+          "x": 1320,
+          "y": 220,
+          "id": "node-1781582302235-3431f36cbe2eb",
+          "type": "text",
+          "label": "分镜提示词",
+          "title": "分镜提示词",
+          "content": "shot-01 start\n展示产品外观和整体设计，突出品牌标识。\n\nshot-02 mid\n展示产品功能和性能特点，突出技术优势。\n\nshot-03 end\n展示产品使用场景和购买信息，引导用户立即购买。"
+        },
+        {
+          "x": 1700,
+          "y": 220,
+          "id": "node-1781582302235-b85f98fa4116f",
+          "type": "video",
+          "label": "视频输出",
+          "title": "视频输出",
+          "content": "shot-01 start\n展示产品外观和整体设计，突出品牌标识。\n\nshot-02 mid\n展示产品功能和性能特点，突出技术优势。\n\nshot-03 end\n展示产品使用场景和购买信息，引导用户立即购买。\n\n生成模式确认\nstoryboard-01：i2v，用户已确认使用图像到视频模式，符合当前工作流需求。，状态：待确认"
+        }
+      ],
+      "title": "商业视频方案",
+      "accent": "cyan",
+      "prompt": "",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "subtitle": "由对话式生成工作流导入",
+      "createdAt": "2026-06-16T02:43:37.929Z",
+      "updatedAt": "2026-06-17T01:27:52.060Z",
+      "modelLabel": "自由节点",
+      "batchOutputs": [],
+      "composerKind": "free"
+    },
+    {
+      "id": "1781683412409-74925b6464a9a",
+      "cost": 0,
+      "icon": "＋",
+      "mode": "free",
+      "links": [
+        {
+          "to": "node-1781683412410-68f7a4ac32e6f8",
+          "from": "node-1781683412410-6b78680bb09548"
+        },
+        {
+          "to": "node-1781683412410-cf9ae46747b1d8",
+          "from": "node-1781683412410-68f7a4ac32e6f8"
+        },
+        {
+          "to": "node-1781683412410-1e8e934fb8fe4",
+          "from": "node-1781683412410-cf9ae46747b1d8"
+        },
+        {
+          "to": "node-1781683412410-db827af71ed718",
+          "from": "node-1781683412410-1e8e934fb8fe4"
+        },
+        {
+          "to": "node-1781683412410-68f7a4ac32e6f8",
+          "from": "node-1781683412410-837a6d9eecc098"
+        },
+        {
+          "to": "node-1781683412410-db827af71ed718",
+          "from": "node-1781683412410-837a6d9eecc098"
+        },
+        {
+          "to": "node-1781683412410-68f7a4ac32e6f8",
+          "from": "node-1781683412410-63072097e0ac1"
+        },
+        {
+          "to": "node-1781683412410-db827af71ed718",
+          "from": "node-1781683412410-63072097e0ac1"
+        }
+      ],
+      "nodes": [
+        {
+          "x": 180,
+          "y": 220,
+          "id": "node-1781683412410-6b78680bb09548",
+          "type": "text",
+          "label": "营销简报",
+          "title": "营销简报",
+          "content": "商业视频对话式生成方案\n品牌：Dreame\n产品：追觅3P天花机\n受众：消费者\n核心卖点：澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\n行动号召：立即购买\n品牌色：黑金\n参考素材：ChatGPT Image 2026年6月8日 17_08_10.png、天花机.png\n\n脚本\n1. 产品全景展示\n欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\n\n2. 核心卖点展示\n澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\n\n3. CTA结尾\n立即购买，享受Dreame带来的极致体验。\n\n镜头清单\nshot-01：展示产品外观和整体设计。\n运镜：全景镜头\n画面意图：突出产品外观和品牌标识\n\nshot-02：展示产品功能和性能特点。\n运镜：特写镜头\n画面意图：突出产品功能和性能特点\n\nshot-03：展示产品使用场景和购买信息。\n运镜：中景镜头\n画面意图：突出产品使用场景和购买信息\n\n分镜提示词\nshot-01 start\n展示产品外观和整体设计，突出品牌标识。\n\nshot-02 mid\n展示产品功能和性能特点，突出技术优势。\n\nshot-03 end\n展示产品使用场景和购买信息，引导用户立即购买。\n\n生成模式建议\nstoryboard-01：i2v，用户已确认使用图像到视频模式，符合当前工作流需求。"
+        },
+        {
+          "x": 180,
+          "y": 520,
+          "id": "node-1781683412410-837a6d9eecc098",
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/cd24b739-f421-47a5-8d9c-3181625a364f.png",
+          "label": "参考图 1",
+          "title": "ChatGPT Image 2026年6月8日 17_08_10.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/cd24b739-f421-47a5-8d9c-3181625a364f.png",
+          "content": "从对话式生成页面上传的参考素材。",
+          "mimeType": "image/png",
+          "aspectRatio": 1.3333
+        },
+        {
+          "x": 180,
+          "y": 750,
+          "id": "node-1781683412410-63072097e0ac1",
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/749dffba-fb78-4fb1-aeda-47a78c2b1c9f.png",
+          "label": "参考图 2",
+          "title": "天花机.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/749dffba-fb78-4fb1-aeda-47a78c2b1c9f.png",
+          "content": "从对话式生成页面上传的参考素材。",
+          "mimeType": "image/png",
+          "aspectRatio": 1
+        },
+        {
+          "x": 560,
+          "y": 220,
+          "id": "node-1781683412410-68f7a4ac32e6f8",
+          "type": "script",
+          "label": "脚本",
+          "title": "脚本",
+          "content": "1. 产品全景展示\n欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\n\n2. 核心卖点展示\n澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\n\n3. CTA结尾\n立即购买，享受Dreame带来的极致体验。"
+        },
+        {
+          "x": 940,
+          "y": 220,
+          "id": "node-1781683412410-cf9ae46747b1d8",
+          "type": "text",
+          "label": "镜头清单",
+          "title": "镜头清单",
+          "content": "shot-01：展示产品外观和整体设计。\n运镜：全景镜头\n画面意图：突出产品外观和品牌标识\n\nshot-02：展示产品功能和性能特点。\n运镜：特写镜头\n画面意图：突出产品功能和性能特点\n\nshot-03：展示产品使用场景和购买信息。\n运镜：中景镜头\n画面意图：突出产品使用场景和购买信息"
+        },
+        {
+          "x": 1320,
+          "y": 220,
+          "id": "node-1781683412410-1e8e934fb8fe4",
+          "type": "text",
+          "label": "分镜提示词",
+          "title": "分镜提示词",
+          "content": "shot-01 start\n展示产品外观和整体设计，突出品牌标识。\n\nshot-02 mid\n展示产品功能和性能特点，突出技术优势。\n\nshot-03 end\n展示产品使用场景和购买信息，引导用户立即购买。"
+        },
+        {
+          "x": 1700,
+          "y": 220,
+          "id": "node-1781683412410-db827af71ed718",
+          "type": "video",
+          "label": "视频输出",
+          "title": "视频输出",
+          "content": "shot-01 start\n展示产品外观和整体设计，突出品牌标识。\n\nshot-02 mid\n展示产品功能和性能特点，突出技术优势。\n\nshot-03 end\n展示产品使用场景和购买信息，引导用户立即购买。\n\n生成模式确认\nstoryboard-01：i2v，用户已确认使用图像到视频模式，符合当前工作流需求。，状态：待确认"
+        }
+      ],
+      "title": "商业视频方案",
+      "accent": "cyan",
+      "prompt": "",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "subtitle": "由对话式生成工作流导入",
+      "createdAt": "2026-06-17T08:03:32.409Z",
+      "updatedAt": "2026-06-17T08:03:32.870Z",
+      "modelLabel": "自由节点",
+      "batchOutputs": [],
+      "composerKind": "free"
+    },
+    {
+      "id": "38ac4245-39ba-4e06-84dd-558b9951785c",
+      "cost": 0,
+      "icon": "＋",
+      "mode": "free",
+      "links": [
+        {
+          "to": "node-1781674731896-d049c1f529c078",
+          "from": "node-1781676809434-ff8e4dcc88b468"
+        },
+        {
+          "to": "node-1781674731896-d049c1f529c078",
+          "from": "node-1781676853208-6698c83673ada8"
+        },
+        {
+          "to": "node-1781674731896-d049c1f529c078",
+          "from": "node-1781676859765-d041c0c1a6c768"
+        },
+        {
+          "to": "node-1781674731896-d049c1f529c078",
+          "from": "node-1781676866765-cbe0fdbc909008"
+        },
+        {
+          "to": "node-1781678744835-974b4f4ccfa838",
+          "from": "node-1781676809434-ff8e4dcc88b468"
+        },
+        {
+          "to": "node-1781678744835-974b4f4ccfa838",
+          "from": "node-1781676859765-d041c0c1a6c768"
+        },
+        {
+          "to": "node-1781678744835-974b4f4ccfa838",
+          "from": "node-1781676853208-6698c83673ada8"
+        },
+        {
+          "to": "node-1781678744835-974b4f4ccfa838",
+          "from": "node-1781679011599-526b6e08a363d"
+        }
+      ],
+      "nodes": [
+        {
+          "x": -160.97560975609758,
+          "y": 319.0243902439025,
+          "id": "node-1781674731896-d049c1f529c078",
+          "type": "video",
+          "image": "",
+          "label": "视频",
+          "model": "Doubao Seedance 2.0",
+          "title": "doubao-seedance-2-0-260128",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/f6e0e185-66e4-46b9-96fa-8f291c301f1b.mp4",
+          "content": "参考资产：\n @3：灰色 DREAME 壁挂空调，正面、左右 45°、机械臂开启/关闭状态，金色腰线，清晰 DREAME logo，26.5℃显示屏。\n @3：DREAME 英文字标，保持清晰、不可变形。\n @1：Q版 7号足球球员角色，酒红色 DREAME 球衣，左右脚均衡，玩具质感，头身比例保持一致。\n @4：夜晚足球场，灯光、草地、球门、观众席、DREAME 广告牌。\n @5：高端室内空间，墙挂 DREAME 空调，暖灰色调，生活方式场景。\n主提示词\n使用 @1、@3、@4、@5作为全程视觉参考，生成一段高端商业广告短片，比例 9:56，时长 14 秒，电影级 3D 渲染，质感高级，运动流畅，品牌感强。\n视频主题： \n “左右均衡，丝滑掌控”。\n 将足球守门动作与空调双机械臂扫风融合。@1 Q版 7号球员具备左右脚均衡控球能力，空调内部左右机械臂也能像守门员双臂一样，分别控制左右送风区域，快速、精准、丝滑地完成左右区扫风与防守联动。\n分镜描述\n镜头 1｜室内启动，产品建立\n 从 @5 开始，镜头缓慢推进墙面上的 DREAME 空调。空调外观严格参考 @3，灰色金属机身、金色细腰线、右侧 26.5℃数字显示、左侧 DREAME logo 清晰可见。\n 空调下出风口缓慢打开，机械结构从内部平稳展开，机械臂处于关闭到开启的过渡状态，动作精密、阻尼感强。\n镜头 2｜足球场转场，守门概念出现\n 空调出风口中吹出一束蓝白色高级气流，气流化作球场灯光轨迹，画面自然转场到 @4 的夜晚足球场。\n 空调悬浮或安装在球门上方，像“智能守门核心”，保持产品外观真实比例，不要变形。球门前出现 Q版 7号球员角色，形象严格参考 @1，球衣、发型、比例、材质一致。\n镜头 3｜左脚射门，对应左区机械臂\n Q版 7号球员用左脚触球射门，金色足球从画面右侧向球门左上角飞去，带轻微运动残影。\n 空调左侧机械臂迅速但丝滑地展开，像守门员左臂扑救一样，带动左区导风叶片同步偏转。蓝白色气流形成左侧防守弧线，精准覆盖左半区，体现“左区独立操控”。\n镜头 4｜右脚射门，对应右区机械臂\n 球员立刻切换右脚射门，动作干净有力，体现左右脚均衡。足球向球门右下角飞去。\n 空调右侧机械臂快速响应，右区机械臂顺滑摆动，右侧导风叶片联动展开，气流形成右侧弧形屏障。左右机械臂动作互不干扰，响应精准，像守门员双臂分区防守。\n镜头 5｜左右联动，双机械臂守门\n 足球连续左右变向，空调内部双机械臂进行左右区独立扫风与同步联动。\n 左机械臂控制左区，右机械臂控制右区，中间区域柔和衔接，形成  120°-126° 大角度环抱式气流。\n 气流不要过于杂乱，要高级、通透、细腻，线条呈蓝白渐变，带轻微动态模糊和速度感。\n镜头 6｜品牌定格\n 最后镜头回到产品正面，空调机械臂缓慢收回或停留在开启状态，球员站在前景微笑，足球悬停在脚边。\n 背景融合室内与球场光影，DREAME logo 在产品上清晰可读，画面中央或左上角出现 @3 的 DREAME 字标。\n 整体定格为高端品牌海报感，不需要额外复杂文案。\n视觉风格要求\n高端 3D 商业广告质感，玩具收藏级角色渲染，产品材质真实，金属灰机身细腻，金色腰线清晰，DREAME logo 必须清晰准确。\n 足球场灯光具有电影感，草地真实，夜晚氛围高级。\n 空调机械臂动作要像守门员双臂一样灵活、精准、顺滑，体现左右区独立控制。\n Q版球员不要真人写实化，保持原创品牌角色风格，强调 7号球星感、左右脚均衡、控球稳定。\n运动与镜头\n镜头运动平稳，使用慢推、跟拍、快速切换和最后定格。\n 足球运动带轻微残影，但不要遮挡产品。\n 机械臂动作要有机械阻尼感，不能抖动，不能穿模，不能变形。\n 气流从空调出风口自然生成，方向与机械臂摆动一致。\n 产品始终保持正确结构：灰色面板、金色腰线、底部出风口、内部双机械臂、右侧显示屏、左侧 logo。\n负面提示词\n不要改变空调结构，不要让产品变形，不要改变 DREAME logo，不要出现错误文字，不要出现乱码，不要把机械臂做成普通风扇叶片，不要让机械臂断裂或穿模，不要让球员变成真人，不要出现真实明星脸，不要过度卡通低幼，不要廉价塑料质感，不要杂乱背景，不要过曝，不要水印，不要多余字幕，不要错误球衣号码，不要让足球遮挡 logo，不要让气流方向混乱。\n素材引用说明：\n- @1：图片参考「图片 1」，提交角色：reference_image，用户对该素材的说明：Q版 7号足球球员角色，酒红色 DREAME 球衣，左右脚均衡，玩具质感，头身比例保持一致。\n- @3：图片参考「图片 3」，提交角色：reference_image，用户对该素材的说明：灰色 DREAME 壁挂空调，正面、左右 45°、机械臂开启/关闭状态，金色腰线，清晰 DREAME logo，26.5℃显示屏。\n- @4：图片参考「图片 4」，提交角色：reference_image，用户对该素材的说明：夜晚足球场，灯光、草地、球门、观众席、DREAME 广告牌。\n- @5：图片参考「图片 5」，提交角色：reference_image，用户对该素材的说明：高端室内空间，墙挂 DREAME 空调，暖灰色调，生活方式场景。\n当前生成模式：全能参考",
+          "mimeType": "video/mp4",
+          "videoUrl": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/f6e0e185-66e4-46b9-96fa-8f291c301f1b.mp4",
+          "aspectRatio": 1.7778,
+          "referenceInputs": [
+            {
+              "role": "视觉参考素材",
+              "size": 1900340,
+              "type": "image",
+              "title": "C罗.png",
+              "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/ddca2e56-1008-4d9e-b44a-04411fca0e46.png",
+              "refName": "1",
+              "mimeType": "image/png",
+              "displayName": "图片 1",
+              "instruction": "Q版 7号足球球员角色，酒红色 DREAME 球衣，左右脚均衡，玩具质感，头身比例保持一致。",
+              "originalName": "C罗",
+              "seedanceRole": "reference_image"
+            },
+            {
+              "role": "视觉参考素材",
+              "size": 1395704,
+              "type": "image",
+              "title": "X40.png",
+              "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/21960b94-6e80-4fab-9d30-e59b5d629dc5.png",
+              "refName": "3",
+              "mimeType": "image/png",
+              "displayName": "图片 3",
+              "instruction": "灰色 DREAME 壁挂空调，正面、左右 45°、机械臂开启/关闭状态，金色腰线，清晰 DREAME logo，26.5℃显示屏。",
+              "originalName": "X40",
+              "seedanceRole": "reference_image"
+            },
+            {
+              "role": "视觉参考素材",
+              "size": 2203184,
+              "type": "image",
+              "title": "球场场景.png",
+              "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/185bf2cb-67a2-4558-b2d5-7832124ddee9.png",
+              "refName": "4",
+              "mimeType": "image/png",
+              "displayName": "图片 4",
+              "instruction": "夜晚足球场，灯光、草地、球门、观众席、DREAME 广告牌。",
+              "originalName": "球场场景",
+              "seedanceRole": "reference_image"
+            },
+            {
+              "role": "视觉参考素材",
+              "size": 1724315,
+              "type": "image",
+              "title": "室内场景.png",
+              "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/869954f2-64f6-42a8-bd0a-c3ed6e12a210.png",
+              "refName": "5",
+              "mimeType": "image/png",
+              "displayName": "图片 5",
+              "instruction": "高端室内空间，墙挂 DREAME 空调，暖灰色调，生活方式场景。",
+              "originalName": "室内场景",
+              "seedanceRole": "reference_image"
+            }
+          ],
+          "referenceStatus": "已作为模型输入提交 4 个参考素材"
+        },
+        {
+          "x": -1533.1707317073171,
+          "y": -295.60975609756105,
+          "id": "node-1781676809434-ff8e4dcc88b468",
+          "role": "视觉参考素材",
+          "size": 1900340,
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/ddca2e56-1008-4d9e-b44a-04411fca0e46.png",
+          "label": "上传图片",
+          "title": "C罗.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/ddca2e56-1008-4d9e-b44a-04411fca0e46.png",
+          "content": "图片素材参考",
+          "audioUrl": "",
+          "mimeType": "image/png",
+          "videoUrl": "",
+          "aspectRatio": 0.8003,
+          "uploadStatus": "uploaded",
+          "uploadSummary": "C罗.png · 1855.8 KB",
+          "referenceStatus": "素材已上传并同步"
+        },
+        {
+          "x": -1674.6341463414633,
+          "y": 516.5853658536586,
+          "id": "node-1781676853208-6698c83673ada8",
+          "role": "视觉参考素材",
+          "size": 1395704,
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/21960b94-6e80-4fab-9d30-e59b5d629dc5.png",
+          "label": "上传图片",
+          "title": "X40.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/21960b94-6e80-4fab-9d30-e59b5d629dc5.png",
+          "content": "图片素材参考",
+          "audioUrl": "",
+          "mimeType": "image/png",
+          "videoUrl": "",
+          "aspectRatio": 1,
+          "uploadStatus": "uploaded",
+          "uploadSummary": "X40.png · 1363.0 KB",
+          "referenceStatus": "素材已上传并同步"
+        },
+        {
+          "x": -1060,
+          "y": 482.43902439024396,
+          "id": "node-1781676859765-d041c0c1a6c768",
+          "role": "视觉参考素材",
+          "size": 2203184,
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/185bf2cb-67a2-4558-b2d5-7832124ddee9.png",
+          "label": "上传图片",
+          "title": "球场场景.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/185bf2cb-67a2-4558-b2d5-7832124ddee9.png",
+          "content": "图片素材参考",
+          "audioUrl": "",
+          "mimeType": "image/png",
+          "videoUrl": "",
+          "aspectRatio": 0.8003,
+          "uploadStatus": "uploaded",
+          "uploadSummary": "球场场景.png · 2151.5 KB",
+          "referenceStatus": "素材已上传并同步"
+        },
+        {
+          "x": -1755.121951219512,
+          "y": 1270.2439024390246,
+          "id": "node-1781676866765-cbe0fdbc909008",
+          "role": "视觉参考素材",
+          "size": 1724315,
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/869954f2-64f6-42a8-bd0a-c3ed6e12a210.png",
+          "label": "上传图片",
+          "title": "室内场景.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/869954f2-64f6-42a8-bd0a-c3ed6e12a210.png",
+          "content": "图片素材参考",
+          "audioUrl": "",
+          "mimeType": "image/png",
+          "videoUrl": "",
+          "aspectRatio": 1.2496,
+          "uploadStatus": "uploaded",
+          "uploadSummary": "室内场景.png · 1683.9 KB",
+          "referenceStatus": "素材已上传并同步"
+        },
+        {
+          "x": -816.8316831683169,
+          "y": -627.9207920792079,
+          "id": "node-1781678731254-582210b4f6639",
+          "role": "视觉参考素材",
+          "size": 1660616,
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/463f8ad3-0bd9-43f0-a74d-c4db76ea7b83.png",
+          "label": "上传图片",
+          "title": "Dreame Boy.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/463f8ad3-0bd9-43f0-a74d-c4db76ea7b83.png",
+          "content": "图片素材参考",
+          "audioUrl": "",
+          "mimeType": "image/png",
+          "videoUrl": "",
+          "aspectRatio": 0.8003,
+          "uploadStatus": "uploaded",
+          "uploadSummary": "Dreame Boy.png · 1621.7 KB",
+          "referenceStatus": "素材已上传并同步"
+        },
+        {
+          "x": 388.29268292682923,
+          "y": -580,
+          "id": "node-1781678744835-974b4f4ccfa838",
+          "type": "video",
+          "label": "视频",
+          "title": "视频节点",
+          "content": "参考资产：\n@2：Q版 7号足球球员角色，酒红色 DREAME 球衣，玩具质感，头身比例保持一致，具备左右脚均衡控球能力。\n@7：DREAME 英文logo，保持清晰、不可变形。\n@3：灰色 DREAME 壁挂空调产品资产，包含正面、左右 45°、机械臂开启/关闭状态，金色腰线，清晰 DREAME logo，26.5℃显示屏。\n@4：夜晚足球场环境资产，包含灯光、草地、球门、观众席、DREAME 广告牌。\n\n生成一段高端 3D 商业广告短片，时长 15 秒。\n主题：左右均衡，丝滑掌控。\n核心表达：C罗式左右脚均衡控球能力，对应追觅空调双机械臂左右分区送风能力。球员左脚、右脚都能精准控球；空调左机械臂、右机械臂也能像守门员双臂一样，分别精准控制左右送风区域，实现左右区丝滑操控。\n\n镜头 1｜左脚射门，左机械臂扑救\n\n@1 Q版 7号球员从画面右侧带球切入，身体微微左倾，支撑脚站稳后，明确使用左脚内脚背完成一记有力射门。\n金色足球从球员脚下被踢出后，沿着清晰抛物线高速飞向球门左上区域，足球在空中带有轻微自旋与金属高光反射，运动轨迹明确、干净，不要模糊成光团。\n镜头需要清楚看到：足球离脚瞬间、飞行中段、逼近球门左上死角 三个连续状态。\n\n当足球飞向球门左上角时，安装在球门上方的 DREAME 空调立即响应。\n左侧机械臂像守门员左臂扑救一样快速伸展，运动方向与足球飞行方向一致，向左上方摆动并拦截来球。\n左区导风叶片同步偏转，蓝白色气流沿着机械臂扑救方向展开，形成一道清晰的左侧弧线防守轨迹。\n重点表现：机械臂不是抽象摆动，而是明确“扑向足球落点”，足球与机械臂之间存在清楚的攻防关系。\n最终视觉效果是：左脚射门 → 足球飞向左上死角 → 左机械臂扑救拦截左区。\n\n镜头 2｜右脚射门，右机械臂扑救\n\n球员在完成第一次进攻后快速调整重心，换到另一侧推进，明确使用右脚完成第二次射门。\n这一次足球从球员脚边被踢出后，低平、快速地飞向球门右下角，路线更贴近草地，具有明显的低射感。\n足球表面保持金色金属质感，飞行时带有轻微滚转与速度残影，但必须保持球体轮廓清晰，观众能清楚判断足球朝球门右下角飞去。\n\n当足球逼近球门右下区域时，空调右侧机械臂立即像守门员右臂一样向右下方向扑救。\n右区机械臂动作要顺滑、精准，像高水平守门扑救一样一步到位。\n右区导风叶片同步联动打开，蓝白渐变气流沿着右侧机械臂的扑救路径生成，形成清晰的右下防守弧线。\n重点表现：机械臂扑救是对足球飞行路径的准确响应，不是无目的扫动。\n最终视觉关系为：右脚射门 → 足球飞向右下角 → 右机械臂扑救右区。\n\n镜头 3｜连续变向射门，双机械臂左右联动守门\n\n球员开始更具压迫感的连续进攻，使用左右脚交替触球，让足球连续向左、向右、再向中路快速变向。\n足球每次变向都应清晰可读：\n\n一次飞向球门左侧\n一次飞向球门右侧\n一次从中路高速逼近球门中央\n\n足球的速度逐渐加快，带有连续残影，但每一个落点方向都必须明确，不能混成杂乱光效。\n镜头中要清楚表现出 “足球不断改变射门方向，机械臂同步追踪扑救” 的关系。\n\n空调内部双机械臂开始高频但稳定地联动响应：\n\n足球飞向左侧时，左机械臂主导扑救\n足球飞向右侧时，右机械臂主导扑救\n足球飞向中路时，左右机械臂同时展开，形成双臂合围式防守\n\n左机械臂控制左区，右机械臂控制右区，中间区域柔和衔接。\n蓝白气流随着足球路线实时变化，形成 120°-126° 大角度环抱式守门防线。\n要让观众感觉到：足球像射门测试，机械臂像真正守门员双臂一样，根据来球方向做出左右分区扑救。\n",
+          "activeGenerationJob": {
+            "id": "640ca054-9a1a-4041-8ba5-a3b4413e5611",
+            "mode": "video",
+            "error": "",
+            "status": "running",
+            "message": "Seedance 2.0 正在生成视频",
+            "progress": {
+              "rate": "",
+              "label": "等待 Seedance 2.0 返回视频",
+              "total": 120,
+              "current": 7,
+              "percent": 6
+            },
+            "promptId": "cgt-20260618104246-m652c",
+            "elapsedMs": 297476,
+            "updatedAt": "2026-06-18T02:43:32.476Z"
+          }
+        },
+        {
+          "x": -2277.0731707317077,
+          "y": -210.7317073170732,
+          "id": "node-1781679011599-526b6e08a363d",
+          "role": "视觉参考素材",
+          "size": 728293,
+          "type": "image",
+          "image": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/6ee09baf-aa67-4ebb-8203-d8e30cbc941d.png",
+          "label": "上传图片",
+          "title": "logo.png",
+          "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/6ee09baf-aa67-4ebb-8203-d8e30cbc941d.png",
+          "content": "图片素材参考",
+          "audioUrl": "",
+          "mimeType": "image/png",
+          "videoUrl": "",
+          "aspectRatio": 1,
+          "uploadStatus": "uploaded",
+          "uploadSummary": "logo.png · 711.2 KB",
+          "referenceStatus": "素材已上传并同步"
+        }
+      ],
+      "title": "未命名工作流",
+      "accent": "cyan",
+      "prompt": "",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "subtitle": "自由添加文本、图片、视频与音频节点，通过连线决定生成上下文。",
+      "createdAt": "2026-06-17T05:38:38.131Z",
+      "updatedAt": "2026-06-18T02:45:05.728Z",
+      "modelLabel": "自由节点",
+      "batchOutputs": [],
+      "composerKind": "free"
+    },
+    {
+      "id": "1781683420055-ec6623e9b14628",
+      "cost": 0,
+      "icon": "＋",
+      "mode": "free",
+      "links": [],
+      "nodes": [
+        {
+          "x": -525.8620689655173,
+          "y": 286.8965517241379,
+          "id": "node-1781683428051-a8adff332185b",
+          "type": "text",
+          "label": "文本",
+          "title": "文本",
+          "content": "双击节点或点击编辑按钮，可直接修改这里的内容。"
+        }
+      ],
+      "title": "未命名工作流",
+      "accent": "cyan",
+      "prompt": "",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "subtitle": "自由添加文本、图片、视频与音频节点，通过连线决定生成上下文。",
+      "createdAt": "2026-06-17T08:03:40.055Z",
+      "updatedAt": "2026-06-17T08:03:49.809Z",
+      "modelLabel": "自由节点",
+      "batchOutputs": [],
+      "composerKind": "free"
+    }
+  ],
+  "commercialVideoChats": [
+    {
+      "id": "8ca6f542-446c-4b7d-bd97-8bf1f24bbf6d",
+      "mode": "commercial_campaign",
+      "stage": "review",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "messages": [
+        {
+          "role": "assistant",
+          "content": "请告诉我工作流模式、品牌、产品、目标受众、核心卖点和行动号召。可以自然描述，也可以使用标签：品牌：、产品：、受众：、卖点：、CTA：。",
+          "createdAt": "2026-06-11T00:57:41.123Z"
+        },
+        {
+          "role": "user",
+          "content": "产品名称：追觅3P天花机\n产品类别：天花机\n目标受众：消费者\n- 卖点1，【劲】澎湃大风量，强劲级全域覆盖\n- 卖点2，【强】大制冷制热量，快速冷暖，大空间匀温\n- 卖点3，【省】APF3.87/3.69，全直流变频，宽工况稳定运行（没有优势），智能节能算法\n- 卖点4，【适】360°环绕送风，送风无死角，大空间匀温\n\nCTA:立即购买",
+          "createdAt": "2026-06-11T00:57:51.848Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已记录产品名称、类别、目标受众、核心卖点和行动号召。接下来需要您提供品牌名称、品牌语气、主色调和必须保留的视觉元素，以便继续推进工作流。",
+          "createdAt": "2026-06-11T00:58:57.884Z",
+          "missingFields": [
+            "品牌名称",
+            "品牌语气",
+            "主色调",
+            "必须保留的视觉元素"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "品牌名称：Dreame\n品牌语气：科技\n主色调：黑金\n必须保留视觉元素：Dreame logo",
+          "createdAt": "2026-06-11T01:06:49.723Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已记录品牌名称、品牌语气、主色调和必须保留的视觉元素。接下来需要您确认视频生成模式（如：文本到视频、图像到视频、首尾帧生成、参考视频生成等），以便继续推进工作流。",
+          "createdAt": "2026-06-11T01:07:13.450Z",
+          "missingFields": [
+            "视频生成模式"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "图像到视频",
+          "createdAt": "2026-06-11T01:07:47.646Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已确认视频生成模式为图像到视频。现在需要生成视频脚本，以确保内容符合品牌调性、产品卖点和目标受众需求。请提供脚本的初步构思或允许我根据已有信息自动生成。",
+          "createdAt": "2026-06-11T01:08:04.911Z",
+          "missingFields": [
+            "脚本内容"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "根据已有信息生成",
+          "createdAt": "2026-06-11T01:09:36.013Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已根据已有信息生成视频脚本，内容符合品牌调性、产品卖点和目标受众需求。接下来需要生成镜头清单，以确保视频制作的视觉和叙事逻辑完整。请确认是否继续。",
+          "createdAt": "2026-06-11T01:10:02.587Z",
+          "missingFields": []
+        },
+        {
+          "role": "user",
+          "content": "继续",
+          "createdAt": "2026-06-11T01:12:22.605Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已生成视频脚本，现在需要生成镜头清单，以确保视频制作的视觉和叙事逻辑完整。请确认是否继续。",
+          "createdAt": "2026-06-11T01:13:10.328Z",
+          "missingFields": []
+        },
+        {
+          "role": "user",
+          "content": "继续",
+          "createdAt": "2026-06-11T01:15:33.837Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已生成视频脚本，现在开始生成镜头清单，以确保视频制作的视觉和叙事逻辑完整。请确认是否继续。",
+          "createdAt": "2026-06-11T01:16:50.315Z",
+          "missingFields": []
+        },
+        {
+          "role": "user",
+          "content": "继续",
+          "createdAt": "2026-06-11T01:18:13.013Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已生成镜头清单，内容涵盖产品全景展示、核心卖点展示和行动号召结尾，确保视频制作的视觉和叙事逻辑完整。下一步需要您确认是否继续生成分镜提示（Storyboard Prompts）或进行其他操作。",
+          "createdAt": "2026-06-11T01:18:56.685Z",
+          "missingFields": []
+        },
+        {
+          "role": "user",
+          "content": "继续生成",
+          "createdAt": "2026-06-11T01:19:29.390Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已生成分镜提示（Storyboard Prompts），内容与镜头清单对应，确保视频制作的视觉和叙事逻辑完整。下一步需要您确认是否继续生成视频生成模式（如：文本到视频、图像到视频、首尾帧生成、参考视频生成等）或进行其他操作。",
+          "createdAt": "2026-06-11T01:20:20.102Z",
+          "missingFields": [
+            "视频生成模式"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "图像到视频",
+          "createdAt": "2026-06-11T01:20:50.878Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已确认视频生成模式为图像到视频（i2v）。下一步需要您提供用于生成视频的参考图像或图像描述，以便继续推进工作流。",
+          "createdAt": "2026-06-11T01:21:41.104Z",
+          "missingFields": [
+            "参考图像或图像描述"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "请参考上传图片，继续推进商业视频工作流。",
+          "createdAt": "2026-06-12T02:08:07.301Z",
+          "attachments": [
+            {
+              "id": "edbdf4c6-055a-475d-936f-9f8a66e0e121",
+              "name": "天花机.png",
+              "size": 5445333,
+              "type": "image",
+              "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/749dffba-fb78-4fb1-aeda-47a78c2b1c9f.png",
+              "mimeType": "image/png",
+              "createdAt": "2026-06-12T02:08:07.301Z"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": "参考场景",
+          "createdAt": "2026-06-16T02:35:52.202Z",
+          "attachments": [
+            {
+              "id": "ccd441c0-d4ee-4a1a-afb7-03b1f7f4194d",
+              "name": "ChatGPT Image 2026年6月8日 17_08_10.png",
+              "size": 2190331,
+              "type": "image",
+              "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/cd24b739-f421-47a5-8d9c-3181625a364f.png",
+              "mimeType": "image/png",
+              "createdAt": "2026-06-16T02:35:52.202Z"
+            }
+          ]
+        }
+      ],
+      "artifacts": {
+        "script": [
+          {
+            "id": "scene-01",
+            "text": "欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。",
+            "title": "产品全景展示",
+            "durationEstimate": 5
+          },
+          {
+            "id": "scene-02",
+            "text": "澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。",
+            "title": "核心卖点展示",
+            "durationEstimate": 10
+          },
+          {
+            "id": "scene-03",
+            "text": "立即购买，享受Dreame带来的极致体验。",
+            "title": "CTA结尾",
+            "durationEstimate": 5
+          }
+        ],
+        "shotList": [
+          {
+            "id": "shot-01",
+            "camera": "全景镜头",
+            "sceneId": "scene-01",
+            "summary": "展示产品外观和整体设计。",
+            "visualIntent": "突出产品外观和品牌标识"
+          },
+          {
+            "id": "shot-02",
+            "camera": "特写镜头",
+            "sceneId": "scene-02",
+            "summary": "展示产品功能和性能特点。",
+            "visualIntent": "突出产品功能和性能特点"
+          },
+          {
+            "id": "shot-03",
+            "camera": "中景镜头",
+            "sceneId": "scene-03",
+            "summary": "展示产品使用场景和购买信息。",
+            "visualIntent": "突出产品使用场景和购买信息"
+          }
+        ],
+        "modelOutputs": [
+          {
+            "text": "{\n  \"mode\": \"commercial_campaign\",\n  \"stage\": \"generation_mode\",\n  \"assistant\": \"已确认视频生成模式为图像到视频（i2v）。下一步需要您提供用于生成视频的参考图像或图像描述，以便继续推进工作流。\",\n  \"missingFields\": [\n    \"参考图像或图像描述\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"科技\",\n      \"colors\": {\n        \"primary\": [\"黑金\"]\n      },\n      \"mustKeep\": [\"Dreame logo\"]\n    },\n    \"marketingBrief\": {\n      \"productName\": \"追觅3P天花机\",\n      \"productCategory\": \"天花机\",\n      \"targetAudience\": \"消费者\",\n      \"coreBenefit\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"产品全景展示\",\n        \"text\": \"欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\",\n        \"durationEstimate\": 5\n      },\n      {\n        \"id\": \"scene-02\",\n        \"title\": \"核心卖点展示\",\n        \"text\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\",\n        \"durationEstimate\": 10\n      },\n      {\n        \"id\": \"scene-03\",\n        \"title\": \"CTA结尾\",\n        \"text\": \"立即购买，享受Dreame带来的极致体验。\",\n        \"durationEstimate\": 5\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"展示产品外观和整体设计。\",\n        \"camera\": \"全景镜头\",\n        \"visualIntent\": \"突出产品外观和品牌标识\"\n      },\n      {\n        \"id\": \"shot-02\",\n        \"sceneId\": \"scene-02\",\n        \"summary\": \"展示产品功能和性能特点。\",\n        \"camera\": \"特写镜头\",\n        \"visualIntent\": \"突出产品功能和性能特点\"\n      },\n      {\n        \"id\": \"shot-03\",\n        \"sceneId\": \"scene-03\",\n        \"summary\": \"展示产品使用场景和购买信息。\",\n        \"camera\": \"中景镜头\",\n        \"visualIntent\": \"突出产品使用场景和购买信息\"\n      }\n    ],\n    \"storyboardPrompts\": [\n      {\n        \"id\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"timing\": \"start\",\n        \"prompt\": \"展示产品外观和整体设计，突出品牌标识。\"\n      },\n      {\n        \"id\": \"storyboard-02\",\n        \"shotId\": \"shot-02\",\n        \"timing\": \"mid\",\n        \"prompt\": \"展示产品功能和性能特点，突出技术优势。\"\n      },\n      {\n        \"id\": \"storyboard-03\",\n        \"shotId\": \"shot-03\",\n        \"timing\": \"end\",\n        \"prompt\": \"展示产品使用场景和购买信息，引导用户立即购买。\"\n      }\n    ],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"i2v\",\n        \"reason\": \"用户已确认使用图像到视频模式，符合当前工作流需求。\",\n        \"requiresUserConfirmation\": false\n      }\n    ],\n    \"reviewChecklist\": [\n      \"确认参考图像或图像描述是否符合品牌调性和产品卖点。\",\n      \"确认镜头清单和分镜提示是否完整。\",\n      \"确认视频生成模式是否正确。\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-11T01:21:41.104Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"commercial_campaign\",\n  \"stage\": \"storyboard\",\n  \"assistant\": \"已生成分镜提示（Storyboard Prompts），内容与镜头清单对应，确保视频制作的视觉和叙事逻辑完整。下一步需要您确认是否继续生成视频生成模式（如：文本到视频、图像到视频、首尾帧生成、参考视频生成等）或进行其他操作。\",\n  \"missingFields\": [\n    \"视频生成模式\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"科技\",\n      \"colors\": {\n        \"primary\": [\"黑金\"]\n      },\n      \"mustKeep\": [\"Dreame logo\"]\n    },\n    \"marketingBrief\": {\n      \"productName\": \"追觅3P天花机\",\n      \"productCategory\": \"天花机\",\n      \"targetAudience\": \"消费者\",\n      \"coreBenefit\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"产品全景展示\",\n        \"text\": \"欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\",\n        \"durationEstimate\": 5\n      },\n      {\n        \"id\": \"scene-02\",\n        \"title\": \"核心卖点展示\",\n        \"text\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\",\n        \"durationEstimate\": 10\n      },\n      {\n        \"id\": \"scene-03\",\n        \"title\": \"CTA结尾\",\n        \"text\": \"立即购买，享受Dreame带来的极致体验。\",\n        \"durationEstimate\": 5\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"展示追觅3P天花机的外观和整体设计。\",\n        \"camera\": \"全景镜头\",\n        \"visualIntent\": \"突出产品的高端感和科技感\"\n      },\n      {\n        \"id\": \"shot-02\",\n        \"sceneId\": \"scene-02\",\n        \"summary\": \"展示追觅3P天花机的风量、制冷制热效果和智能节能功能。\",\n        \"camera\": \"中景镜头\",\n        \"visualIntent\": \"清晰传达产品的核心卖点\"\n      },\n      {\n        \"id\": \"shot-03\",\n        \"sceneId\": \"scene-03\",\n        \"summary\": \"展示“立即购买”按钮或页面，引导用户行动。\",\n        \"camera\": \"特写镜头\",\n        \"visualIntent\": \"突出行动号召，增强用户购买意愿\"\n      }\n    ],\n    \"storyboardPrompts\": [\n      {\n        \"id\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"timing\": \"start\",\n        \"prompt\": \"镜头从远处缓慢推进，展示追觅3P天花机的外观和整体设计，突出产品的高端感和科技感。\"\n      },\n      {\n        \"id\": \"storyboard-02\",\n        \"shotId\": \"shot-02\",\n        \"timing\": \"mid\",\n        \"prompt\": \"镜头聚焦于产品细节，展示其风量、制冷制热效果和智能节能功能，清晰传达产品的核心卖点。\"\n      },\n      {\n        \"id\": \"storyboard-03\",\n        \"shotId\": \"shot-03\",\n        \"timing\": \"end\",\n        \"prompt\": \"镜头特写“立即购买”按钮或页面，引导用户行动，增强用户购买意愿。\"\n      }\n    ],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"i2v\",\n        \"reason\": \"用户已确认使用图像到视频模式，符合当前工作流需求。\",\n        \"requiresUserConfirmation\": false\n      }\n    ],\n    \"reviewChecklist\": [\n      \"确认分镜提示是否准确传达了产品卖点和品牌调性。\",\n      \"确认镜头清单是否与分镜提示一致，确保视频制作的视觉和叙事逻辑完整。\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-11T01:20:20.102Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"commercial_campaign\",\n  \"stage\": \"shot_list\",\n  \"assistant\": \"已生成镜头清单，内容涵盖产品全景展示、核心卖点展示和行动号召结尾，确保视频制作的视觉和叙事逻辑完整。下一步需要您确认是否继续生成分镜提示（Storyboard Prompts）或进行其他操作。\",\n  \"missingFields\": [],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"科技\",\n      \"colors\": {\n        \"primary\": [\"黑金\"]\n      },\n      \"mustKeep\": [\"Dreame logo\"]\n    },\n    \"marketingBrief\": {\n      \"productName\": \"追觅3P天花机\",\n      \"productCategory\": \"天花机\",\n      \"targetAudience\": \"消费者\",\n      \"coreBenefit\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"产品全景展示\",\n        \"text\": \"欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\",\n        \"durationEstimate\": 5\n      },\n      {\n        \"id\": \"scene-02\",\n        \"title\": \"核心卖点展示\",\n        \"text\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\",\n        \"durationEstimate\": 10\n      },\n      {\n        \"id\": \"scene-03\",\n        \"title\": \"CTA结尾\",\n        \"text\": \"立即购买，享受Dreame带来的极致体验。\",\n        \"durationEstimate\": 5\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"展示追觅3P天花机的外观设计和整体布局。\",\n        \"camera\": \"全景镜头\",\n        \"visualIntent\": \"突出产品的高端感和科技感\"\n      },\n      {\n        \"id\": \"shot-02\",\n        \"sceneId\": \"scene-02\",\n        \"summary\": \"展示产品运行时的风量和送风效果。\",\n        \"camera\": \"特写镜头\",\n        \"visualIntent\": \"突出产品的强劲性能和高效制冷制热能力\"\n      },\n      {\n        \"id\": \"shot-03\",\n        \"sceneId\": \"scene-02\",\n        \"summary\": \"展示产品的节能算法和智能控制功能。\",\n        \"camera\": \"中景镜头\",\n        \"visualIntent\": \"突出产品的智能化和节能特性\"\n      },\n      {\n        \"id\": \"shot-04\",\n        \"sceneId\": \"scene-03\",\n        \"summary\": \"展示产品购买链接和品牌标识。\",\n        \"camera\": \"近景镜头\",\n        \"visualIntent\": \"引导用户立即购买，强化品牌印象\"\n      }\n    ],\n    \"storyboardPrompts\": [],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"i2v\",\n        \"reason\": \"用户已确认使用图像到视频模式，符合当前工作流需求。\",\n        \"requiresUserConfirmation\": false\n      }\n    ],\n    \"reviewChecklist\": [\n      \"确认镜头清单是否符合品牌调性和产品卖点\",\n      \"确认镜头是否覆盖所有关键信息和视觉需求\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-11T01:18:56.685Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"commercial_campaign\",\n  \"stage\": \"shot_list\",\n  \"assistant\": \"已生成视频脚本，现在开始生成镜头清单，以确保视频制作的视觉和叙事逻辑完整。请确认是否继续。\",\n  \"missingFields\": [],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"科技\",\n      \"colors\": {\n        \"primary\": [\"黑金\"]\n      },\n      \"mustKeep\": [\"Dreame logo\"]\n    },\n    \"marketingBrief\": {\n      \"productName\": \"追觅3P天花机\",\n      \"productCategory\": \"天花机\",\n      \"targetAudience\": \"消费者\",\n      \"coreBenefit\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"产品全景展示\",\n        \"text\": \"欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\",\n        \"durationEstimate\": 5\n      },\n      {\n        \"id\": \"scene-02\",\n        \"title\": \"核心卖点展示\",\n        \"text\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\",\n        \"durationEstimate\": 10\n      },\n      {\n        \"id\": \"scene-03\",\n        \"title\": \"行动号召\",\n        \"text\": \"立即购买，享受Dreame带来的极致体验。\",\n        \"durationEstimate\": 5\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"展示产品外观和整体设计。\",\n        \"camera\": \"固定镜头\",\n        \"visualIntent\": \"突出产品的科技感和设计感\"\n      },\n      {\n        \"id\": \"shot-02\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"产品在实际环境中的使用场景。\",\n        \"camera\": \"移动镜头\",\n        \"visualIntent\": \"展示产品在实际使用中的效果\"\n      },\n      {\n        \"id\": \"shot-03\",\n        \"sceneId\": \"scene-02\",\n        \"summary\": \"展示产品的主要功能和性能。\",\n        \"camera\": \"特写镜头\",\n        \"visualIntent\": \"突出产品的核心卖点\"\n      },\n      {\n        \"id\": \"shot-04\",\n        \"sceneId\": \"scene-02\",\n        \"summary\": \"展示产品在不同环境下的表现。\",\n        \"camera\": \"广角镜头\",\n        \"visualIntent\": \"展示产品的适用范围和性能稳定性\"\n      },\n      {\n        \"id\": \"shot-05\",\n        \"sceneId\": \"scene-03\",\n        \"summary\": \"展示行动号召的视觉元素。\",\n        \"camera\": \"固定镜头\",\n        \"visualIntent\": \"突出行动号召的紧迫性和吸引力\"\n      }\n    ],\n    \"storyboardPrompts\": [\n      {\n        \"id\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"timing\": \"start\",\n        \"prompt\": \"展示产品外观和整体设计，突出科技感和设计感。\"\n      },\n      {\n        \"id\": \"storyboard-02\",\n        \"shotId\": \"shot-02\",\n        \"timing\": \"start\",\n        \"prompt\": \"产品在实际环境中的使用场景，展示产品在实际使用中的效果。\"\n      },\n      {\n        \"id\": \"storyboard-03\",\n        \"shotId\": \"shot-03\",\n        \"timing\": \"mid\",\n        \"prompt\": \"展示产品的主要功能和性能，突出产品的核心卖点。\"\n      },\n      {\n        \"id\": \"storyboard-04\",\n        \"shotId\": \"shot-04\",\n        \"timing\": \"mid\",\n        \"prompt\": \"展示产品在不同环境下的表现，展示产品的适用范围和性能稳定性。\"\n      },\n      {\n        \"id\": \"storyboard-05\",\n        \"shotId\": \"shot-05\",\n        \"timing\": \"end\",\n        \"prompt\": \"展示行动号召的视觉元素，突出行动号召的紧迫性和吸引力。\"\n      }\n    ],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"i2v\",\n        \"reason\": \"用户已确认使用图像到视频模式，符合当前工作流需求。\",\n        \"requiresUserConfirmation\": false\n      }\n    ],\n    \"reviewChecklist\": [\n      \"确认镜头清单是否符合品牌调性和产品卖点\",\n      \"确认镜头清单是否覆盖所有场景和功能展示\",\n      \"确认镜头清单是否符合视频生成模式要求\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-11T01:16:50.315Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"commercial_campaign\",\n  \"stage\": \"shot_list\",\n  \"assistant\": \"已生成视频脚本，现在需要生成镜头清单，以确保视频制作的视觉和叙事逻辑完整。请确认是否继续。\",\n  \"missingFields\": [],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"科技\",\n      \"colors\": {\n        \"primary\": [\"黑金\"]\n      },\n      \"mustKeep\": [\"Dreame logo\"]\n    },\n    \"marketingBrief\": {\n      \"productName\": \"追觅3P天花机\",\n      \"productCategory\": \"天花机\",\n      \"targetAudience\": \"消费者\",\n      \"coreBenefit\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"产品全景展示\",\n        \"text\": \"欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\",\n        \"durationEstimate\": 5\n      },\n      {\n        \"id\": \"scene-02\",\n        \"title\": \"核心卖点展示\",\n        \"text\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\",\n        \"durationEstimate\": 10\n      },\n      {\n        \"id\": \"scene-03\",\n        \"title\": \"CTA结尾\",\n        \"text\": \"立即购买，享受Dreame带来的极致体验。\",\n        \"durationEstimate\": 5\n      }\n    ],\n    \"shotList\": [],\n    \"storyboardPrompts\": [],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"i2v\",\n        \"reason\": \"用户已确认使用图像到视频模式，符合当前工作流需求。\",\n        \"requiresUserConfirmation\": false\n      }\n    ],\n    \"reviewChecklist\": []\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-11T01:13:10.328Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"commercial_campaign\",\n  \"stage\": \"script\",\n  \"assistant\": \"已根据已有信息生成视频脚本，内容符合品牌调性、产品卖点和目标受众需求。接下来需要生成镜头清单，以确保视频制作的视觉和叙事逻辑完整。请确认是否继续。\",\n  \"missingFields\": [],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"科技\",\n      \"colors\": {\n        \"primary\": [\n          \"黑金\"\n        ]\n      },\n      \"mustKeep\": [\n        \"Dreame logo\"\n      ]\n    },\n    \"marketingBrief\": {\n      \"productName\": \"追觅3P天花机\",\n      \"productCategory\": \"天花机\",\n      \"targetAudience\": \"消费者\",\n      \"coreBenefit\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"产品全景展示\",\n        \"text\": \"欢迎来到Dreame，体验追觅3P天花机带来的全新空气体验。\",\n        \"durationEstimate\": 5\n      },\n      {\n        \"id\": \"scene-02\",\n        \"title\": \"核心卖点展示\",\n        \"text\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温。\",\n        \"durationEstimate\": 10\n      },\n      {\n        \"id\": \"scene-03\",\n        \"title\": \"CTA结尾\",\n        \"text\": \"立即购买，享受Dreame带来的极致体验。\",\n        \"durationEstimate\": 5\n      }\n    ],\n    \"shotList\": [],\n    \"storyboardPrompts\": [],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"i2v\",\n        \"reason\": \"用户已确认使用图像到视频模式，符合当前工作流需求。\",\n        \"requiresUserConfirmation\": false\n      }\n    ],\n    \"reviewChecklist\": []\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-11T01:10:02.587Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"commercial_campaign\",\n  \"stage\": \"script\",\n  \"assistant\": \"已确认视频生成模式为图像到视频。现在需要生成视频脚本，以确保内容符合品牌调性、产品卖点和目标受众需求。请提供脚本的初步构思或允许我根据已有信息自动生成。\",\n  \"missingFields\": [\n    \"脚本内容\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"科技\",\n      \"colors\": {\n        \"primary\": [\n          \"黑金\"\n        ]\n      },\n      \"mustKeep\": [\n        \"Dreame logo\"\n      ]\n    },\n    \"marketingBrief\": {\n      \"productName\": \"追觅3P天花机\",\n      \"productCategory\": \"天花机\",\n      \"targetAudience\": \"消费者\",\n      \"coreBenefit\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [],\n    \"shotList\": [],\n    \"storyboardPrompts\": [],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"i2v\",\n        \"reason\": \"用户已确认使用图像到视频模式，符合当前工作流需求。\",\n        \"requiresUserConfirmation\": false\n      }\n    ],\n    \"reviewChecklist\": []\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-11T01:08:04.911Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"commercial_campaign\",\n  \"stage\": \"brand_guidelines\",\n  \"assistant\": \"已记录品牌名称、品牌语气、主色调和必须保留的视觉元素。接下来需要您确认视频生成模式（如：文本到视频、图像到视频、首尾帧生成、参考视频生成等），以便继续推进工作流。\",\n  \"missingFields\": [\n    \"视频生成模式\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"科技\",\n      \"colors\": {\n        \"primary\": [\"黑金\"]\n      },\n      \"mustKeep\": [\"Dreame logo\"]\n    },\n    \"marketingBrief\": {\n      \"productName\": \"追觅3P天花机\",\n      \"productCategory\": \"天花机\",\n      \"targetAudience\": \"消费者\",\n      \"coreBenefit\": \"澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.87/3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [],\n    \"shotList\": [],\n    \"storyboardPrompts\": [],\n    \"generationModes\": [],\n    \"reviewChecklist\": [],\n    \"modelOutputs\": []\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-11T01:07:13.450Z"
+          }
+        ],
+        "marketingBrief": {
+          "ctaCopy": "立即购买",
+          "updatedAt": "2026-06-16T02:35:52.205Z",
+          "coreBenefit": "澎湃大风量，强劲级全域覆盖；大制冷制热量，快速冷暖，大空间匀温；APF3.69，全直流变频，宽工况稳定运行，智能节能算法；360°环绕送风，送风无死角，大空间匀温",
+          "productName": "追觅3P天花机",
+          "targetAudience": "消费者",
+          "productCategory": "天花机"
+        },
+        "brandGuidelines": {
+          "tone": "科技",
+          "colors": {
+            "primary": [
+              "黑金"
+            ]
+          },
+          "mustKeep": [
+            "Dreame logo"
+          ],
+          "brandName": "Dreame",
+          "updatedAt": "2026-06-16T02:35:52.205Z"
+        },
+        "generationModes": [
+          {
+            "reason": "用户已确认使用图像到视频模式，符合当前工作流需求。",
+            "recommended": "i2v",
+            "storyboardId": "storyboard-01",
+            "requiresUserConfirmation": false
+          }
+        ],
+        "referenceAssets": [
+          {
+            "id": "ccd441c0-d4ee-4a1a-afb7-03b1f7f4194d",
+            "name": "ChatGPT Image 2026年6月8日 17_08_10.png",
+            "size": 2190331,
+            "type": "image",
+            "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/cd24b739-f421-47a5-8d9c-3181625a364f.png",
+            "mimeType": "image/png",
+            "createdAt": "2026-06-16T02:35:52.202Z"
+          },
+          {
+            "id": "edbdf4c6-055a-475d-936f-9f8a66e0e121",
+            "name": "天花机.png",
+            "size": 5445333,
+            "type": "image",
+            "source": "https://pub-f9a22ab94bae413ab6b91f0d9dbcafb7.r2.dev/generated/749dffba-fb78-4fb1-aeda-47a78c2b1c9f.png",
+            "mimeType": "image/png",
+            "createdAt": "2026-06-12T02:08:07.301Z"
+          }
+        ],
+        "reviewChecklist": [
+          "确认参考图像或图像描述是否符合品牌调性和产品卖点。",
+          "确认镜头清单和分镜提示是否完整。",
+          "确认视频生成模式是否正确。"
+        ],
+        "storyboardPrompts": [
+          {
+            "id": "storyboard-01",
+            "prompt": "展示产品外观和整体设计，突出品牌标识。",
+            "shotId": "shot-01",
+            "timing": "start"
+          },
+          {
+            "id": "storyboard-02",
+            "prompt": "展示产品功能和性能特点，突出技术优势。",
+            "shotId": "shot-02",
+            "timing": "mid"
+          },
+          {
+            "id": "storyboard-03",
+            "prompt": "展示产品使用场景和购买信息，引导用户立即购买。",
+            "shotId": "shot-03",
+            "timing": "end"
+          }
+        ]
+      },
+      "createdAt": "2026-06-11T00:57:41.123Z",
+      "updatedAt": "2026-06-11T01:21:41.104Z"
+    },
+    {
+      "id": "6ca01787-ea4a-45ff-a8b7-9425880c0412",
+      "mode": "multi_platform_campaign",
+      "stage": "review",
+      "title": "smart robot vacuum. Audience: busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "messages": [
+        {
+          "id": "0dcc5896-f9bc-40a4-835f-05d34aff4e53",
+          "role": "assistant",
+          "content": "Tell me what you want to advertise. I will guide the workflow from scope mode to brief, script, shot list, storyboard prompts, generation mode, review, and export.",
+          "createdAt": "2026-06-09T05:46:31.718Z"
+        },
+        {
+          "id": "c3e379b6-ac4c-477a-a7db-5f0b9f1a77d2",
+          "role": "user",
+          "content": "Brand: Dreame. Product: smart robot vacuum. Audience: busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms",
+          "createdAt": "2026-06-09T05:46:31.718Z"
+        },
+        {
+          "id": "e31e157c-198f-4620-a88f-baae38f4039c",
+          "role": "assistant",
+          "content": "Mode: multi_platform_campaign | Stage: script\nBrief locked for smart robot vacuum. Audience: busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms.\nDraft script, shot list, storyboard prompts, and generation-mode recommendations are ready in the artifact panel.\nNext action: confirm generation mode per shot, then upload/approve storyboard frames before any real paid video job.",
+          "createdAt": "2026-06-09T05:46:31.719Z"
+        }
+      ],
+      "artifacts": {
+        "script": [
+          {
+            "id": "scene-hook",
+            "text": "Open on smart robot vacuum. Audience: busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms solving a clear pain point for busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms.",
+            "title": "Hook",
+            "hookScene": true,
+            "durationEstimate": 4
+          },
+          {
+            "id": "scene-demo",
+            "text": "Show the product benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms. Keep product identity stable.",
+            "title": "Product demo",
+            "durationEstimate": 8
+          },
+          {
+            "id": "scene-cta",
+            "text": "End with Shop now. commercial campaign for multiple platforms.",
+            "title": "CTA",
+            "ctaScene": true,
+            "durationEstimate": 3
+          }
+        ],
+        "overlays": [],
+        "shotList": [
+          {
+            "id": "shot-01",
+            "sceneId": "scene-hook",
+            "summary": "Hero reveal with product clearly visible",
+            "duration": 4,
+            "aspectRatio": "16:9",
+            "generationMode": ""
+          },
+          {
+            "id": "shot-02",
+            "sceneId": "scene-demo",
+            "summary": "Feature demonstration with protected product details",
+            "duration": 8,
+            "aspectRatio": "16:9",
+            "generationMode": ""
+          },
+          {
+            "id": "shot-03",
+            "sceneId": "scene-cta",
+            "summary": "Final brand lockup and CTA",
+            "duration": 3,
+            "aspectRatio": "16:9",
+            "generationMode": ""
+          }
+        ],
+        "exportManifest": {},
+        "marketingBrief": {
+          "ctaCopy": "Shop now. commercial campaign for multiple platforms",
+          "updatedAt": "2026-06-09T05:46:31.718Z",
+          "coreBenefit": "hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms",
+          "productName": "smart robot vacuum. Audience: busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms",
+          "targetAudience": "busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms"
+        },
+        "brandGuidelines": {
+          "brandName": "Dreame. Product: smart robot vacuum. Audience: busy families. Benefit: hands-free clean floors. CTA: Shop now. commercia",
+          "updatedAt": "2026-06-09T05:46:31.718Z"
+        },
+        "generationModes": [
+          {
+            "reason": "Hero and CTA shots benefit from an approved starting composition.",
+            "shotId": "shot-01",
+            "confirmed": false,
+            "recommended": "i2v"
+          },
+          {
+            "reason": "Feature demo benefits from precise start and end states.",
+            "shotId": "shot-02",
+            "confirmed": false,
+            "recommended": "first_last"
+          },
+          {
+            "reason": "Hero and CTA shots benefit from an approved starting composition.",
+            "shotId": "shot-03",
+            "confirmed": false,
+            "recommended": "i2v"
+          }
+        ],
+        "reviewChecklist": [
+          {
+            "item": "Brand colors and logo rules checked",
+            "status": "pending"
+          },
+          {
+            "item": "Product identity preserved",
+            "status": "pending"
+          },
+          {
+            "item": "Claims and CTA reviewed",
+            "status": "pending"
+          },
+          {
+            "item": "Generation mode confirmed before video job",
+            "status": "pending"
+          }
+        ],
+        "storyboardPrompts": [
+          {
+            "id": "storyboard-1",
+            "prompt": "Frozen storyboard frame for Hero reveal with product clearly visible. Product: smart robot vacuum. Audience: busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms. Brand-safe commercial lighting. No motion blur, no product deformation.",
+            "shotId": "shot-01",
+            "timing": "start",
+            "reviewStatus": "draft"
+          },
+          {
+            "id": "storyboard-2",
+            "prompt": "Frozen storyboard frame for Feature demonstration with protected product details. Product: smart robot vacuum. Audience: busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms. Brand-safe commercial lighting. No motion blur, no product deformation.",
+            "shotId": "shot-02",
+            "timing": "mid",
+            "reviewStatus": "draft"
+          },
+          {
+            "id": "storyboard-3",
+            "prompt": "Frozen storyboard frame for Final brand lockup and CTA. Product: smart robot vacuum. Audience: busy families. Benefit: hands-free clean floors. CTA: Shop now. commercial campaign for multiple platforms. Brand-safe commercial lighting. No motion blur, no product deformation.",
+            "shotId": "shot-03",
+            "timing": "start",
+            "reviewStatus": "draft"
+          }
+        ]
+      },
+      "createdAt": "2026-06-09T05:46:31.718Z",
+      "updatedAt": "2026-06-09T05:46:31.719Z",
+      "skillSource": "SKILL_CommercialProductVideoWorkflow.md"
+    },
+    {
+      "id": "f746bfa5-7297-49f3-8cd7-83b89374eef6",
+      "mode": "multi_platform_campaign",
+      "stage": "review",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "messages": [
+        {
+          "role": "assistant",
+          "content": "Tell me the workflow mode, brand, product, audience, benefit, and CTA. You can write naturally or use labels like Brand:, Product:, Audience:, Benefit:, CTA:.",
+          "createdAt": "2026-06-09T05:57:25.986Z"
+        },
+        {
+          "role": "user",
+          "content": "Brand: Dreame Product: smart robot vacuum Audience: busy families Benefit: hands-free clean floors CTA: Shop now commercial campaign for multiple platforms",
+          "createdAt": "2026-06-09T05:57:25.987Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Drafted a multi_platform_campaign workflow using Commercial Product Marketing Video Workflow. I prepared the script, shot list, storyboard prompts, generation-mode recommendations, and review checklist. No paid generation was submitted. Confirm the generation mode before sending anything upstream.",
+          "createdAt": "2026-06-09T05:57:25.998Z"
+        }
+      ],
+      "artifacts": {
+        "script": [
+          {
+            "id": "scene-hook",
+            "text": "Open on smart robot vacuum solving a clear pain point for busy families.",
+            "title": "Hook",
+            "hookScene": true,
+            "durationEstimate": 4
+          },
+          {
+            "id": "scene-demo",
+            "text": "Show the product benefit: hands-free clean floors. Keep product identity stable.",
+            "title": "Product demo",
+            "durationEstimate": 8
+          },
+          {
+            "id": "scene-cta",
+            "text": "End with Shop now commercial campaign for multiple platforms.",
+            "title": "CTA",
+            "ctaScene": true,
+            "durationEstimate": 3
+          }
+        ],
+        "shotList": [
+          {
+            "id": "shot-01",
+            "camera": "slow push-in",
+            "sceneId": "scene-hook",
+            "summary": "Hero reveal with product clearly visible",
+            "visualIntent": "Make busy families immediately understand the problem."
+          },
+          {
+            "id": "shot-02",
+            "camera": "controlled product close-up",
+            "sceneId": "scene-demo",
+            "summary": "Feature demonstration with stable product identity",
+            "visualIntent": "hands-free clean floors"
+          },
+          {
+            "id": "shot-03",
+            "camera": "locked-off packshot",
+            "sceneId": "scene-cta",
+            "summary": "Clean branded end frame",
+            "visualIntent": "Shop now commercial campaign for multiple platforms"
+          }
+        ],
+        "marketingBrief": {
+          "ctaCopy": "Shop now commercial campaign for multiple platforms",
+          "updatedAt": "2026-06-09T05:57:25.997Z",
+          "coreBenefit": "hands-free clean floors",
+          "productName": "smart robot vacuum",
+          "targetAudience": "busy families",
+          "productCategory": ""
+        },
+        "brandGuidelines": {
+          "tone": "",
+          "colors": {
+            "primary": []
+          },
+          "mustKeep": [],
+          "brandName": "Dreame",
+          "updatedAt": "2026-06-09T05:57:25.997Z"
+        },
+        "generationModes": [
+          {
+            "reason": "Image-to-video keeps the product look consistent.",
+            "recommended": "i2v",
+            "storyboardId": "storyboard-1",
+            "requiresUserConfirmation": true
+          },
+          {
+            "reason": "Feature demo benefits from precise start and end states.",
+            "recommended": "first_last",
+            "storyboardId": "storyboard-2",
+            "requiresUserConfirmation": true
+          },
+          {
+            "reason": "Image-to-video keeps the product look consistent.",
+            "recommended": "i2v",
+            "storyboardId": "storyboard-3",
+            "requiresUserConfirmation": true
+          }
+        ],
+        "reviewChecklist": [
+          "Product identity remains stable across shots.",
+          "CTA is visible and matches the marketing brief.",
+          "No paid generation is submitted without explicit confirmation.",
+          "Exports are adapted per target platform before publishing."
+        ],
+        "storyboardPrompts": [
+          {
+            "id": "storyboard-1",
+            "prompt": "Hero reveal with product clearly visible. Product: smart robot vacuum. Audience: busy families. Brand-safe commercial lighting, clear product silhouette, no distorted logos, no identity drift.",
+            "shotId": "shot-01",
+            "timing": "start"
+          },
+          {
+            "id": "storyboard-2",
+            "prompt": "Feature demonstration with stable product identity. Product: smart robot vacuum. Audience: busy families. Brand-safe commercial lighting, clear product silhouette, no distorted logos, no identity drift.",
+            "shotId": "shot-02",
+            "timing": "mid"
+          },
+          {
+            "id": "storyboard-3",
+            "prompt": "Clean branded end frame. Product: smart robot vacuum. Audience: busy families. Brand-safe commercial lighting, clear product silhouette, no distorted logos, no identity drift.",
+            "shotId": "shot-03",
+            "timing": "start"
+          }
+        ]
+      },
+      "createdAt": "2026-06-09T05:57:25.986Z",
+      "updatedAt": "2026-06-09T05:57:25.998Z"
+    },
+    {
+      "id": "8c617b06-ec3b-4b6b-88aa-bd6f6ae4a1d5",
+      "mode": "multi_platform_campaign",
+      "stage": "review",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "messages": [
+        {
+          "role": "assistant",
+          "content": "Tell me the workflow mode, brand, product, audience, benefit, and CTA. You can write naturally or use labels like Brand:, Product:, Audience:, Benefit:, CTA:.",
+          "createdAt": "2026-06-09T05:59:01.611Z"
+        },
+        {
+          "role": "user",
+          "content": "Brand: Dreame Product: smart robot vacuum Audience: busy families Benefit: hands-free clean floors CTA: Shop now commercial campaign for multiple platforms",
+          "createdAt": "2026-06-09T05:59:01.611Z"
+        },
+        {
+          "role": "assistant",
+          "content": "Drafted a multi_platform_campaign workflow using Commercial Product Marketing Video Workflow. I prepared the script, shot list, storyboard prompts, generation-mode recommendations, and review checklist. No paid generation was submitted. Confirm the generation mode before sending anything upstream.",
+          "createdAt": "2026-06-09T05:59:01.613Z"
+        }
+      ],
+      "artifacts": {
+        "script": [
+          {
+            "id": "scene-hook",
+            "text": "Open on smart robot vacuum solving a clear pain point for busy families.",
+            "title": "Hook",
+            "hookScene": true,
+            "durationEstimate": 4
+          },
+          {
+            "id": "scene-demo",
+            "text": "Show the product benefit: hands-free clean floors. Keep product identity stable.",
+            "title": "Product demo",
+            "durationEstimate": 8
+          },
+          {
+            "id": "scene-cta",
+            "text": "End with Shop now commercial campaign for multiple platforms.",
+            "title": "CTA",
+            "ctaScene": true,
+            "durationEstimate": 3
+          }
+        ],
+        "shotList": [
+          {
+            "id": "shot-01",
+            "camera": "slow push-in",
+            "sceneId": "scene-hook",
+            "summary": "Hero reveal with product clearly visible",
+            "visualIntent": "Make busy families immediately understand the problem."
+          },
+          {
+            "id": "shot-02",
+            "camera": "controlled product close-up",
+            "sceneId": "scene-demo",
+            "summary": "Feature demonstration with stable product identity",
+            "visualIntent": "hands-free clean floors"
+          },
+          {
+            "id": "shot-03",
+            "camera": "locked-off packshot",
+            "sceneId": "scene-cta",
+            "summary": "Clean branded end frame",
+            "visualIntent": "Shop now commercial campaign for multiple platforms"
+          }
+        ],
+        "marketingBrief": {
+          "ctaCopy": "Shop now commercial campaign for multiple platforms",
+          "updatedAt": "2026-06-09T05:59:01.612Z",
+          "coreBenefit": "hands-free clean floors",
+          "productName": "smart robot vacuum",
+          "targetAudience": "busy families",
+          "productCategory": ""
+        },
+        "brandGuidelines": {
+          "tone": "",
+          "colors": {
+            "primary": []
+          },
+          "mustKeep": [],
+          "brandName": "Dreame",
+          "updatedAt": "2026-06-09T05:59:01.612Z"
+        },
+        "generationModes": [
+          {
+            "reason": "Image-to-video keeps the product look consistent.",
+            "recommended": "i2v",
+            "storyboardId": "storyboard-1",
+            "requiresUserConfirmation": true
+          },
+          {
+            "reason": "Feature demo benefits from precise start and end states.",
+            "recommended": "first_last",
+            "storyboardId": "storyboard-2",
+            "requiresUserConfirmation": true
+          },
+          {
+            "reason": "Image-to-video keeps the product look consistent.",
+            "recommended": "i2v",
+            "storyboardId": "storyboard-3",
+            "requiresUserConfirmation": true
+          }
+        ],
+        "reviewChecklist": [
+          "Product identity remains stable across shots.",
+          "CTA is visible and matches the marketing brief.",
+          "No paid generation is submitted without explicit confirmation.",
+          "Exports are adapted per target platform before publishing."
+        ],
+        "storyboardPrompts": [
+          {
+            "id": "storyboard-1",
+            "prompt": "Hero reveal with product clearly visible. Product: smart robot vacuum. Audience: busy families. Brand-safe commercial lighting, clear product silhouette, no distorted logos, no identity drift.",
+            "shotId": "shot-01",
+            "timing": "start"
+          },
+          {
+            "id": "storyboard-2",
+            "prompt": "Feature demonstration with stable product identity. Product: smart robot vacuum. Audience: busy families. Brand-safe commercial lighting, clear product silhouette, no distorted logos, no identity drift.",
+            "shotId": "shot-02",
+            "timing": "mid"
+          },
+          {
+            "id": "storyboard-3",
+            "prompt": "Clean branded end frame. Product: smart robot vacuum. Audience: busy families. Brand-safe commercial lighting, clear product silhouette, no distorted logos, no identity drift.",
+            "shotId": "shot-03",
+            "timing": "start"
+          }
+        ]
+      },
+      "createdAt": "2026-06-09T05:59:01.611Z",
+      "updatedAt": "2026-06-09T05:59:01.613Z"
+    },
+    {
+      "id": "d3701457-eb20-45ce-a6a8-7be3e370ad40",
+      "mode": "product_demo",
+      "stage": "marketing_brief",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "messages": [
+        {
+          "role": "assistant",
+          "content": "请告诉我工作流模式、品牌、产品、目标受众、核心卖点和行动号召。可以自然描述，也可以使用标签：品牌：、产品：、受众：、卖点：、CTA：。",
+          "createdAt": "2026-06-09T11:40:49.185Z"
+        },
+        {
+          "role": "user",
+          "content": "我需要生成天花机的商业宣传视频",
+          "createdAt": "2026-06-10T11:01:11.679Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "好的，您需要生成天花机的商业宣传视频。为了更好地推进工作流，我需要您提供以下信息：品牌名称、产品类别、目标受众、核心卖点和行动号召（CTA）。这些信息将帮助我们构建完整的营销简报。",
+          "createdAt": "2026-06-10T11:02:20.172Z",
+          "missingFields": [
+            "品牌名称",
+            "产品类别",
+            "目标受众",
+            "核心卖点",
+            "行动号召（CTA）"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "品牌名称：Dreame\n产品类别：空调天花机\n目标受众：大众消费者",
+          "createdAt": "2026-06-10T11:56:22.025Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已记录品牌名称为 Dreame，产品类别为 空调天花机，目标受众为 大众消费者。下一步需要您提供核心卖点和行动号召（CTA），以便我们继续推进工作流。",
+          "createdAt": "2026-06-10T11:56:53.247Z",
+          "missingFields": [
+            "核心卖点",
+            "行动号召（CTA）"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "- 卖点1，【劲】澎湃大风量，强劲级全域覆盖\n  - 卖点2，【强】大制冷制热量，快速冷暖，大空间匀温\n  - 卖点3，【省】APF3.87/3.69，全直流变频，宽工况稳定运行（没有优势），智能节能算法\n  - 卖点4，【适】360°环绕送风，送风无死角，大空间匀温\n\nCTA:立即购买",
+          "createdAt": "2026-06-10T11:58:04.351Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已记录核心卖点和行动号召（CTA）。下一步需要您提供品牌指南（如品牌语气、主色调、必须保留的元素等），以便我们继续推进工作流。",
+          "createdAt": "2026-06-10T11:58:31.102Z",
+          "missingFields": [
+            "品牌语气",
+            "主色调",
+            "必须保留的元素"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "品牌语气：高科技\n主色调：黑金\n必须保留:Dreame Logo",
+          "createdAt": "2026-06-10T12:03:14.094Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已记录品牌指南信息：品牌语气为高科技，主色调为黑金，必须保留 Dreame Logo。下一步需要您确认营销简报内容，包括产品名称、产品类别、目标受众、核心卖点和行动号召（CTA），以便我们继续推进工作流。",
+          "createdAt": "2026-06-10T12:03:45.157Z",
+          "missingFields": [
+            "确认营销简报内容"
+          ]
+        },
+        {
+          "role": "user",
+          "content": "产品名称：追觅3P天花机\n产品类别：天花机\n目标受众：消费者\n- 卖点1，【劲】澎湃大风量，强劲级全域覆盖\n- 卖点2，【强】大制冷制热量，快速冷暖，大空间匀温\n- 卖点3，【省】APF3.87/3.69，全直流变频，宽工况稳定运行（没有优势），智能节能算法\n- 卖点4，【适】360°环绕送风，送风无死角，大空间匀温\n\nCTA:立即购买",
+          "createdAt": "2026-06-10T12:05:37.500Z"
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已更新产品名称为「追觅3P天花机」，产品类别为「天花机」，目标受众为「消费者」，并确认了核心卖点和行动号召（CTA）。下一步需要您确认品牌指南信息，包括品牌名称、品牌语气、主色调和必须保留的元素，以便我们继续推进工作流。",
+          "createdAt": "2026-06-10T12:06:14.317Z",
+          "missingFields": [
+            "品牌名称",
+            "品牌语气",
+            "主色调",
+            "必须保留的元素"
+          ]
+        }
+      ],
+      "artifacts": {
+        "script": [
+          {
+            "id": "scene-01",
+            "text": "",
+            "title": "",
+            "durationEstimate": 0
+          }
+        ],
+        "shotList": [
+          {
+            "id": "shot-01",
+            "camera": "",
+            "sceneId": "scene-01",
+            "summary": "",
+            "visualIntent": ""
+          }
+        ],
+        "modelOutputs": [
+          {
+            "text": "{\n  \"mode\": \"product_demo\",\n  \"stage\": \"marketing_brief\",\n  \"assistant\": \"已更新产品名称为「追觅3P天花机」，产品类别为「天花机」，目标受众为「消费者」，并确认了核心卖点和行动号召（CTA）。下一步需要您确认品牌指南信息，包括品牌名称、品牌语气、主色调和必须保留的元素，以便我们继续推进工作流。\",\n  \"missingFields\": [\n    \"品牌名称\",\n    \"品牌语气\",\n    \"主色调\",\n    \"必须保留的元素\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"\",\n      \"tone\": \"\",\n      \"colors\": {\n        \"primary\": []\n      },\n      \"mustKeep\": []\n    },\n    \"marketingBrief\": {\n      \"productName\": \"追觅3P天花机\",\n      \"productCategory\": \"天花机\",\n      \"targetAudience\": \"消费者\",\n      \"coreBenefit\": \"【劲】澎湃大风量，强劲级全域覆盖；【强】大制冷制热量，快速冷暖，大空间匀温；【省】APF3.87/3.69，全直流变频，宽工况稳定运行（没有优势），智能节能算法；【适】360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"\",\n        \"text\": \"\",\n        \"durationEstimate\": 0\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"\",\n        \"camera\": \"\",\n        \"visualIntent\": \"\"\n      }\n    ],\n    \"storyboardPrompts\": [\n      {\n        \"id\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"timing\": \"start\",\n        \"prompt\": \"\"\n      }\n    ],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"t2v\",\n        \"reason\": \"基于产品演示视频的常见需求，建议使用文本到视频生成模式。\",\n        \"requiresUserConfirmation\": true\n      }\n    ],\n    \"reviewChecklist\": [\n      \"确认品牌指南信息\",\n      \"确认营销简报内容\",\n      \"确认脚本和镜头清单\",\n      \"确认分镜提示词\",\n      \"确认生成模式\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-10T12:06:14.317Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"product_demo\",\n  \"stage\": \"brand_guidelines\",\n  \"assistant\": \"已记录品牌指南信息：品牌语气为高科技，主色调为黑金，必须保留 Dreame Logo。下一步需要您确认营销简报内容，包括产品名称、产品类别、目标受众、核心卖点和行动号召（CTA），以便我们继续推进工作流。\",\n  \"missingFields\": [\n    \"确认营销简报内容\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"高科技\",\n      \"colors\": {\n        \"primary\": [\n          \"黑金\"\n        ]\n      },\n      \"mustKeep\": [\n        \"Dreame Logo\"\n      ]\n    },\n    \"marketingBrief\": {\n      \"productName\": \"天花机\",\n      \"productCategory\": \"空调天花机\",\n      \"targetAudience\": \"大众消费者\",\n      \"coreBenefit\": \"劲：澎湃大风量，强劲级全域覆盖；强：大制冷制热量，快速冷暖，大空间匀温；省：APF3.87/3.69，全直流变频，宽工况稳定运行（没有优势），智能节能算法；适：360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"\",\n        \"text\": \"\",\n        \"durationEstimate\": 0\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"\",\n        \"camera\": \"\",\n        \"visualIntent\": \"\"\n      }\n    ],\n    \"storyboardPrompts\": [\n      {\n        \"id\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"timing\": \"start\",\n        \"prompt\": \"\"\n      }\n    ],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"t2v\",\n        \"reason\": \"基于产品演示视频的常见需求，建议使用文本到视频生成模式。\",\n        \"requiresUserConfirmation\": true\n      }\n    ],\n    \"reviewChecklist\": [\n      \"确认品牌指南\",\n      \"确认营销简报\",\n      \"确认脚本和镜头清单\",\n      \"确认分镜提示词\",\n      \"确认生成模式\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-10T12:03:45.157Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"product_demo\",\n  \"stage\": \"marketing_brief\",\n  \"assistant\": \"已记录核心卖点和行动号召（CTA）。下一步需要您提供品牌指南（如品牌语气、主色调、必须保留的元素等），以便我们继续推进工作流。\",\n  \"missingFields\": [\n    \"品牌语气\",\n    \"主色调\",\n    \"必须保留的元素\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"\",\n      \"colors\": {\n        \"primary\": []\n      },\n      \"mustKeep\": []\n    },\n    \"marketingBrief\": {\n      \"productName\": \"天花机\",\n      \"productCategory\": \"空调天花机\",\n      \"targetAudience\": \"大众消费者\",\n      \"coreBenefit\": \"劲：澎湃大风量，强劲级全域覆盖；强：大制冷制热量，快速冷暖，大空间匀温；省：APF3.87/3.69，全直流变频，宽工况稳定运行（没有优势），智能节能算法；适：360°环绕送风，送风无死角，大空间匀温\",\n      \"ctaCopy\": \"立即购买\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"\",\n        \"text\": \"\",\n        \"durationEstimate\": 0\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"\",\n        \"camera\": \"\",\n        \"visualIntent\": \"\"\n      }\n    ],\n    \"storyboardPrompts\": [\n      {\n        \"id\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"timing\": \"start\",\n        \"prompt\": \"\"\n      }\n    ],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"t2v\",\n        \"reason\": \"基于产品演示视频的常见需求，建议使用文本到视频生成模式。\",\n        \"requiresUserConfirmation\": true\n      }\n    ],\n    \"reviewChecklist\": [\n      \"确认品牌指南\",\n      \"确认营销简报\",\n      \"确认脚本和镜头清单\",\n      \"确认分镜提示词\",\n      \"确认生成模式\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-10T11:58:31.102Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"product_demo\",\n  \"stage\": \"marketing_brief\",\n  \"assistant\": \"已记录品牌名称为 Dreame，产品类别为 空调天花机，目标受众为 大众消费者。下一步需要您提供核心卖点和行动号召（CTA），以便我们继续推进工作流。\",\n  \"missingFields\": [\n    \"核心卖点\",\n    \"行动号召（CTA）\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"Dreame\",\n      \"tone\": \"\",\n      \"colors\": {\n        \"primary\": []\n      },\n      \"mustKeep\": []\n    },\n    \"marketingBrief\": {\n      \"productName\": \"天花机\",\n      \"productCategory\": \"空调天花机\",\n      \"targetAudience\": \"大众消费者\",\n      \"coreBenefit\": \"\",\n      \"ctaCopy\": \"\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"\",\n        \"text\": \"\",\n        \"durationEstimate\": 0\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"\",\n        \"camera\": \"\",\n        \"visualIntent\": \"\"\n      }\n    ],\n    \"storyboardPrompts\": [\n      {\n        \"id\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"timing\": \"start\",\n        \"prompt\": \"\"\n      }\n    ],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"t2v\",\n        \"reason\": \"基于产品演示视频的常见需求，建议使用文本到视频生成模式。\",\n        \"requiresUserConfirmation\": true\n      }\n    ],\n    \"reviewChecklist\": [\n      \"确认品牌指南\",\n      \"确认营销简报\",\n      \"确认脚本和镜头清单\",\n      \"确认分镜提示词\",\n      \"确认生成模式\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-10T11:56:53.247Z"
+          },
+          {
+            "text": "{\n  \"mode\": \"product_demo\",\n  \"stage\": \"marketing_brief\",\n  \"assistant\": \"好的，您需要生成天花机的商业宣传视频。为了更好地推进工作流，我需要您提供以下信息：品牌名称、产品类别、目标受众、核心卖点和行动号召（CTA）。这些信息将帮助我们构建完整的营销简报。\",\n  \"missingFields\": [\n    \"品牌名称\",\n    \"产品类别\",\n    \"目标受众\",\n    \"核心卖点\",\n    \"行动号召（CTA）\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"\",\n      \"tone\": \"\",\n      \"colors\": {\n        \"primary\": []\n      },\n      \"mustKeep\": []\n    },\n    \"marketingBrief\": {\n      \"productName\": \"天花机\",\n      \"productCategory\": \"\",\n      \"targetAudience\": \"\",\n      \"coreBenefit\": \"\",\n      \"ctaCopy\": \"\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"\",\n        \"text\": \"\",\n        \"durationEstimate\": 0\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"\",\n        \"camera\": \"\",\n        \"visualIntent\": \"\"\n      }\n    ],\n    \"storyboardPrompts\": [\n      {\n        \"id\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"timing\": \"start\",\n        \"prompt\": \"\"\n      }\n    ],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"recommended\": \"t2v\",\n        \"reason\": \"基于产品演示视频的常见需求，建议使用文本到视频生成模式。\",\n        \"requiresUserConfirmation\": true\n      }\n    ],\n    \"reviewChecklist\": [\n      \"确认品牌指南\",\n      \"确认营销简报\",\n      \"确认脚本和镜头清单\",\n      \"确认分镜提示词\",\n      \"确认生成模式\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-10T11:02:20.172Z"
+          }
+        ],
+        "marketingBrief": {
+          "ctaCopy": "立即购买",
+          "coreBenefit": "【劲】澎湃大风量，强劲级全域覆盖；【强】大制冷制热量，快速冷暖，大空间匀温；【省】APF3.87/3.69，全直流变频，宽工况稳定运行（没有优势），智能节能算法；【适】360°环绕送风，送风无死角，大空间匀温",
+          "productName": "追觅3P天花机",
+          "targetAudience": "消费者",
+          "productCategory": "天花机"
+        },
+        "brandGuidelines": {
+          "tone": "",
+          "colors": {
+            "primary": []
+          },
+          "mustKeep": [],
+          "brandName": ""
+        },
+        "generationModes": [
+          {
+            "reason": "基于产品演示视频的常见需求，建议使用文本到视频生成模式。",
+            "recommended": "t2v",
+            "storyboardId": "storyboard-01",
+            "requiresUserConfirmation": true
+          }
+        ],
+        "reviewChecklist": [
+          "确认品牌指南信息",
+          "确认营销简报内容",
+          "确认脚本和镜头清单",
+          "确认分镜提示词",
+          "确认生成模式"
+        ],
+        "storyboardPrompts": [
+          {
+            "id": "storyboard-01",
+            "prompt": "",
+            "shotId": "shot-01",
+            "timing": "start"
+          }
+        ]
+      },
+      "createdAt": "2026-06-09T11:40:49.185Z",
+      "updatedAt": "2026-06-10T12:06:14.317Z"
+    },
+    {
+      "id": "767dcff2-1f33-4696-bde2-2ac1103f5c64",
+      "mode": "commercial_campaign",
+      "stage": "marketing_brief",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "messages": [
+        {
+          "role": "assistant",
+          "content": "请告诉我工作流模式、品牌、产品、目标受众、核心卖点和行动号召。可以自然描述，也可以使用标签：品牌：、产品：、受众：、卖点：、CTA：。",
+          "createdAt": "2026-06-16T03:34:27.265Z"
+        }
+      ],
+      "artifacts": {
+        "script": [],
+        "shotList": [],
+        "qualityGate": {
+          "issues": [],
+          "status": "pending"
+        },
+        "modelOutputs": [],
+        "marketingBrief": {
+          "ctaCopy": "",
+          "coreBenefit": "",
+          "productName": "",
+          "targetAudience": "",
+          "productCategory": ""
+        },
+        "referenceRoles": [],
+        "brandGuidelines": {
+          "tone": "",
+          "colors": {
+            "primary": []
+          },
+          "mustKeep": [],
+          "brandName": ""
+        },
+        "generationModes": [],
+        "reviewChecklist": [],
+        "storyboardPrompts": []
+      },
+      "createdAt": "2026-06-16T03:34:27.265Z",
+      "updatedAt": "2026-06-16T03:34:27.265Z"
+    },
+    {
+      "id": "f4776570-848d-42c6-b197-ff1d3541d60d",
+      "mode": "product_demo",
+      "stage": "brand_guidelines",
+      "userId": "ba3386b6-eb92-40ae-a939-934664297c51",
+      "messages": [
+        {
+          "role": "assistant",
+          "content": "请告诉我工作流模式、品牌、产品、目标受众、核心卖点和行动号召。可以自然描述，也可以使用标签：品牌：、产品：、受众：、卖点：、CTA：。",
+          "createdAt": "2026-06-16T03:57:56.544Z"
+        },
+        {
+          "role": "user",
+          "content": "用户补充要求：\n生成空调营销视频",
+          "createdAt": "2026-06-17T08:02:00.388Z",
+          "attachments": []
+        },
+        {
+          "role": "assistant",
+          "agent": true,
+          "engine": "local:qwen3:14b",
+          "content": "已收到您的需求：生成空调营销视频。为了更好地推进工作流，我需要您补充以下信息：品牌名称、产品类别、目标受众、核心卖点和行动号召（CTA）。这些信息将用于构建营销简报和后续视频内容。",
+          "createdAt": "2026-06-17T08:02:25.067Z",
+          "missingFields": [
+            "品牌名称",
+            "产品类别",
+            "目标受众",
+            "核心卖点",
+            "行动号召（CTA）"
+          ]
+        }
+      ],
+      "artifacts": {
+        "script": [
+          {
+            "id": "scene-01",
+            "text": "",
+            "title": "",
+            "durationEstimate": 0
+          }
+        ],
+        "shotList": [
+          {
+            "id": "shot-01",
+            "scene": "现代室内安装场景，产品居中清晰可见",
+            "style": "真实产品广告，干净背景，克制科技感，不生成文字",
+            "action": "镜头从稳定全景缓慢推近，展示完整外观、安装方式和产品比例",
+            "camera": "缓慢推近",
+            "motion": "0-1s：产品镜头。产品居中，画面稳定，先让观众看清完整外观、安装位置和主体比例。\n1-4s：稳定商业广告镜头，镜头缓慢推进或轻微环绕，突出 产品镜头。产品结构保持完全不变。\n4-5s：镜头短暂停留，预留后期品牌 logo 或产品名 overlay 安全区域，视频模型不要生成文字。",
+            "sceneId": "scene-01",
+            "subject": "空调",
+            "summary": "",
+            "duration": 5,
+            "lighting": "柔和商业广告布光，产品边缘清晰，黑金高级质感",
+            "aspectRatio": "16:9",
+            "movingParts": [],
+            "staticParts": [],
+            "visualIntent": "",
+            "negativePrompt": "负面提示词：no product deformation, no changed silhouette, no extra openings, no wrong vent position, no changed display panel, no warped body, no tilted top surface, no floating parts, no duplicated product, no incorrect mechanical structure, no unwanted camera angle change, no additional buttons, no extra screens, no added handles, no redesigned body, no melted or stretched edges, no fake logo, no unreadable text, no competitor logos, no unapproved colors as brand color, no cluttered background, no random side airflow, no airflow from wrong outlet, no exposed internal air-conditioner parts, no extra vents",
+            "referenceUsage": "参考素材：当前未上传可用参考图；若产品结构要求严格，优先补充产品正面/侧面/安装场景参考图。",
+            "validationIssues": [],
+            "productPreservation": "产品保护约束：\n空调 的主体外形、面板、边缘、比例、材质、安装方式和可见结构必须与参考图一致。\n只有明确指定的出风/气流/功能表现可以变化；产品本体不得变形、拉伸、融化、倾斜、重设计或改变轮廓。\n不得新增孔洞、按钮、屏幕、灯带、把手、机械臂、额外出风口、额外缝隙或不存在的内部结构。\n空调/天花机专项约束：气流只能从产品参考图中可见的出风口区域产生，不得从侧面、顶部、墙面或不存在的开口出风；不得打开其他结构；不得暴露参考图中不可见的内部零件。",
+            "finalMechanicalState": "产品保持参考图一致的稳定最终画面"
+          }
+        ],
+        "qualityGate": {
+          "issues": [
+            "shot-01: generation_mode_unconfirmed"
+          ],
+          "status": "needs_review",
+          "checkedAt": "2026-06-17T08:02:25.070Z"
+        },
+        "modelOutputs": [
+          {
+            "text": "{\n  \"mode\": \"commercial_campaign\",\n  \"stage\": \"marketing_brief\",\n  \"assistant\": \"已收到您的需求：生成空调营销视频。为了更好地推进工作流，我需要您补充以下信息：品牌名称、产品类别、目标受众、核心卖点和行动号召（CTA）。这些信息将用于构建营销简报和后续视频内容。\",\n  \"missingFields\": [\n    \"品牌名称\",\n    \"产品类别\",\n    \"目标受众\",\n    \"核心卖点\",\n    \"行动号召（CTA）\"\n  ],\n  \"artifacts\": {\n    \"brandGuidelines\": {\n      \"brandName\": \"\",\n      \"tone\": \"\",\n      \"colors\": {\n        \"primary\": []\n      },\n      \"mustKeep\": []\n    },\n    \"marketingBrief\": {\n      \"productName\": \"空调\",\n      \"productCategory\": \"\",\n      \"targetAudience\": \"\",\n      \"coreBenefit\": \"\",\n      \"ctaCopy\": \"\"\n    },\n    \"script\": [\n      {\n        \"id\": \"scene-01\",\n        \"title\": \"\",\n        \"text\": \"\",\n        \"durationEstimate\": 0\n      }\n    ],\n    \"shotList\": [\n      {\n        \"id\": \"shot-01\",\n        \"sceneId\": \"scene-01\",\n        \"summary\": \"\",\n        \"duration\": 5,\n        \"aspectRatio\": \"16:9\",\n        \"subject\": \"\",\n        \"scene\": \"\",\n        \"action\": \"\",\n        \"camera\": \"\",\n        \"visualIntent\": \"\",\n        \"lighting\": \"\",\n        \"style\": \"\",\n        \"motion\": \"\",\n        \"staticParts\": [],\n        \"movingParts\": [],\n        \"finalMechanicalState\": \"\",\n        \"referenceUsage\": \"\",\n        \"productPreservation\": \"\",\n        \"negativePrompt\": \"\",\n        \"validationIssues\": []\n      }\n    ],\n    \"storyboardPrompts\": [\n      {\n        \"id\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"timing\": \"start\",\n        \"prompt\": \"\",\n        \"negativePrompt\": \"\",\n        \"qualityLocked\": true\n      }\n    ],\n    \"generationModes\": [\n      {\n        \"storyboardId\": \"storyboard-01\",\n        \"shotId\": \"shot-01\",\n        \"recommended\": \"t2v\",\n        \"reason\": \"需要基于文本生成视频内容，以构建营销场景。\",\n        \"providerCapabilityChecked\": true,\n        \"providerSupported\": true,\n        \"requiredFrames\": [\n          \"start\"\n        ],\n        \"approvedFramesAvailable\": false,\n        \"confirmed\": false,\n        \"status\": \"needs_user_confirmation\",\n        \"requiresUserConfirmation\": true\n      }\n    ],\n    \"referenceRoles\": [\n      {\n        \"id\": \"reference-1\",\n        \"assetId\": \"\",\n        \"name\": \"\",\n        \"source\": \"\",\n        \"role\": \"product_shape\",\n        \"strength\": \"medium\",\n        \"notes\": \"\"\n      }\n    ],\n    \"qualityGate\": {\n      \"status\": \"pending\",\n      \"issues\": []\n    },\n    \"reviewChecklist\": [\n      \"确认品牌名称、产品类别、目标受众、核心卖点和行动号召（CTA）\"\n    ]\n  }\n}",
+            "title": "Agent local:qwen3:14b",
+            "createdAt": "2026-06-17T08:02:25.067Z"
+          }
+        ],
+        "marketingBrief": {
+          "ctaCopy": "",
+          "updatedAt": "2026-06-17T08:02:25.068Z",
+          "coreBenefit": "",
+          "productName": "空调",
+          "targetAudience": "",
+          "productCategory": ""
+        },
+        "referenceRoles": [],
+        "brandGuidelines": {
+          "tone": "",
+          "colors": {
+            "primary": []
+          },
+          "mustKeep": [],
+          "brandName": "",
+          "updatedAt": "2026-06-17T08:02:25.068Z"
+        },
+        "generationModes": [
+          {
+            "reason": "需要基于文本生成视频内容，以构建营销场景。",
+            "shotId": "shot-01",
+            "status": "needs_user_confirmation",
+            "confirmed": false,
+            "recommended": "t2v",
+            "storyboardId": "storyboard-01",
+            "requiredFrames": [],
+            "providerSupported": true,
+            "approvedFramesAvailable": false,
+            "requiresUserConfirmation": true,
+            "providerCapabilityChecked": true
+          }
+        ],
+        "reviewChecklist": [
+          "最终视频提示词必须包含分秒时间轴。",
+          "每个产品镜头必须包含产品保护约束和空调/天花机专项约束。",
+          "每张参考图必须声明用途，不能作为全量风格迁移。",
+          "logo、CTA、价格和大段文字使用后期 overlay，不要求视频模型直接生成。",
+          "每个镜头必须包含负面提示词，防止产品变形、错误出风口、假 logo 和乱码文字。",
+          "确认品牌名称、产品类别、目标受众、核心卖点和行动号召（CTA）"
+        ],
+        "storyboardPrompts": [
+          {
+            "id": "storyboard-01",
+            "prompt": "shot-01 最终视频生成提示词（5秒，中文，商业产品广告，建议 i2v/first_last 时使用已审核参考帧）：\n产品：空调\n目标受众：目标消费者\n核心卖点：突出产品核心优势\n营销信息：\n参考素材：当前未上传可用参考图；若产品结构要求严格，优先补充产品正面/侧面/安装场景参考图。\n品牌约束：\n整体视觉使用 品牌已确认色彩 的高级商业广告质感。\n不要让视频模型直接生成品牌 logo、价格、CTA 或大段文字；logo、卖点文案和购买按钮应预留安全区域，后期用 overlay 添加。\n不得出现竞品标识、错误品牌字样、乱码文字、扭曲 logo 或不符合品牌调性的杂乱背景。\n产品保护约束：\n空调 的主体外形、面板、边缘、比例、材质、安装方式和可见结构必须与参考图一致。\n只有明确指定的出风/气流/功能表现可以变化；产品本体不得变形、拉伸、融化、倾斜、重设计或改变轮廓。\n不得新增孔洞、按钮、屏幕、灯带、把手、机械臂、额外出风口、额外缝隙或不存在的内部结构。\n空调/天花机专项约束：气流只能从产品参考图中可见的出风口区域产生，不得从侧面、顶部、墙面或不存在的开口出风；不得打开其他结构；不得暴露参考图中不可见的内部零件。\n镜头时间轴：\n0-1s：产品镜头。产品居中，画面稳定，先让观众看清完整外观、安装位置和主体比例。\n1-4s：缓慢推近，镜头缓慢推进或轻微环绕，突出 产品镜头。产品结构保持完全不变。\n4-5s：镜头短暂停留，预留后期品牌 logo 或产品名 overlay 安全区域，视频模型不要生成文字。\n负面提示词：no product deformation, no changed silhouette, no extra openings, no wrong vent position, no changed display panel, no warped body, no tilted top surface, no floating parts, no duplicated product, no incorrect mechanical structure, no unwanted camera angle change, no additional buttons, no extra screens, no added handles, no redesigned body, no melted or stretched edges, no fake logo, no unreadable text, no competitor logos, no unapproved colors as brand color, no cluttered background, no random side airflow, no airflow from wrong outlet, no exposed internal air-conditioner parts, no extra vents",
+            "shotId": "shot-01",
+            "timing": "start",
+            "qualityLocked": true,
+            "negativePrompt": "负面提示词：no product deformation, no changed silhouette, no extra openings, no wrong vent position, no changed display panel, no warped body, no tilted top surface, no floating parts, no duplicated product, no incorrect mechanical structure, no unwanted camera angle change, no additional buttons, no extra screens, no added handles, no redesigned body, no melted or stretched edges, no fake logo, no unreadable text, no competitor logos, no unapproved colors as brand color, no cluttered background, no random side airflow, no airflow from wrong outlet, no exposed internal air-conditioner parts, no extra vents"
+          }
+        ]
+      },
+      "createdAt": "2026-06-16T03:57:56.544Z",
+      "updatedAt": "2026-06-17T08:02:25.067Z"
+    }
+  ]
+}

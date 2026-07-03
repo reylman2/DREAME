@@ -1,0 +1,14 @@
+{
+  "1": {
+    "class_type": "DreameHubVideoFaceSwap",
+    "inputs": {
+      "video": "{{VIDEO_NAME}}",
+      "face_image": "{{FACE_IMAGE_NAME}}",
+      "prompt": "{{PROMPT}}",
+      "strength": "{{STRENGTH}}",
+      "feather": "{{FEATHER}}",
+      "color_match": "{{COLOR_MATCH}}",
+      "quality": "{{QUALITY}}"
+    }
+  }
+}

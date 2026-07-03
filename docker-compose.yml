@@ -1,0 +1,67 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: dreamehub
+      POSTGRES_USER: dreamehub
+      POSTGRES_PASSWORD: dreamehub_password
+    ports:
+      - "15432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dreamehub -d dreamehub"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  comfyui:
+    build:
+      context: ../ComfyUI
+      dockerfile: ../DREAME/Dockerfile.comfyui
+    restart: unless-stopped
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+      DREAMEHUB_GFPGAN_MODEL: ${DREAMEHUB_GFPGAN_MODEL:-/workspace/ComfyUI/models/facerestore/GFPGANv1.4.pth}
+      DREAMEHUB_INSWAPPER_MODEL: ${DREAMEHUB_INSWAPPER_MODEL:-/workspace/ComfyUI/models/faceswap/inswapper_128.onnx}
+      DREAMEHUB_INSIGHTFACE_ROOT: ${DREAMEHUB_INSIGHTFACE_ROOT:-/workspace/ComfyUI/models/insightface}
+      DREAMEHUB_INSIGHTFACE_MODEL: ${DREAMEHUB_INSIGHTFACE_MODEL:-buffalo_l}
+      DREAMEHUB_FACE_SWAP_PROVIDER: ${DREAMEHUB_FACE_SWAP_PROVIDER:-CPUExecutionProvider}
+      DREAMEHUB_FACE_SWAP_DET_SIZE: ${DREAMEHUB_FACE_SWAP_DET_SIZE:-320}
+    ports:
+      - "18188:8188"
+    volumes:
+      - ../ComfyUI:/workspace/ComfyUI
+    gpus: all
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python - <<'PY'\nimport urllib.request\nurllib.request.urlopen('http://127.0.0.1:8188/system_stats', timeout=5).read()\nPY",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      comfyui:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://dreamehub:dreamehub_password@postgres:5432/dreamehub
+      NODE_ENV: production
+      ENABLE_TEST_PAYMENT: "false"
+      PORT: 3000
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:

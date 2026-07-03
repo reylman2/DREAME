@@ -1,0 +1,9 @@
+DreameHub full-stack app running at http://localhost:3000
+{"type":"http_request","requestId":"13d25d77-bc3b-4990-bb8d-53764589f3da","method":"GET","path":"/api/api-relay","status":200,"durationMs":8,"ip":"::ffff:127.0.0.1"}
+{"type":"http_request","requestId":"8493b793-3826-4331-bae1-4c32e17cd023","method":"GET","path":"/api/bootstrap","status":200,"durationMs":1,"ip":"103.127.219.14"}
+{"type":"http_request","requestId":"7374de47-eb7b-4377-b10c-05b6bf04710f","method":"GET","path":"/api/orders","status":200,"durationMs":1,"ip":"103.127.219.14"}
+{"type":"http_request","requestId":"4aa938bb-1eac-43a6-a027-6eea0a881bc6","method":"GET","path":"/api/generations","status":200,"durationMs":1,"ip":"103.127.219.14"}
+{"type":"http_request","requestId":"3615ad1a-36dd-4316-96d8-5df27fe3cd2e","method":"GET","path":"/api/workspaces","status":200,"durationMs":73,"ip":"103.127.219.14"}
+{"type":"http_request","requestId":"9654a9fb-0455-4e17-8031-6b05b7e60e55","method":"GET","path":"/api/wallet","status":200,"durationMs":60,"ip":"103.127.219.14"}
+{"type":"http_request","requestId":"366af737-9614-4aa3-8e49-04d766a05fb9","method":"GET","path":"/api/api-keys","status":200,"durationMs":54,"ip":"103.127.219.14"}
+{"type":"http_request","requestId":"6fe20e6d-0579-446a-ac34-7a397c4669eb","method":"GET","path":"/api/api-relay","status":200,"durationMs":1,"ip":"103.127.219.14"}

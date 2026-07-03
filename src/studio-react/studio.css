@@ -1,0 +1,1404 @@
+:root {
+  color-scheme: dark;
+}
+
+.dreame-studio {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 25% 18%, rgba(62, 139, 255, 0.16), transparent 30%),
+    radial-gradient(circle at 78% 78%, rgba(106, 93, 255, 0.14), transparent 28%),
+    #0d0f12;
+  color: rgba(255, 255, 255, 0.9);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+.dreame-studio *,
+.dreame-studio *::before,
+.dreame-studio *::after {
+  box-sizing: border-box;
+}
+
+.studio-topbar {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  right: 18px;
+  z-index: 80;
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) auto minmax(160px, 1fr);
+  align-items: center;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.studio-topbar > * {
+  pointer-events: auto;
+}
+
+.studio-brand {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+}
+
+.studio-brand span {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.studio-workflow-switcher {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 440px;
+  justify-self: center;
+}
+
+.studio-title-input,
+.studio-menu-toggle,
+.studio-icon-btn,
+.studio-credit-pill,
+.studio-add-panel,
+.studio-quick-add-menu,
+.studio-sidebar,
+.studio-history,
+.studio-drawer,
+.studio-composer,
+.studio-param-menu,
+.studio-workflow-menu {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(28, 29, 31, 0.86);
+  box-shadow:
+    0 18px 54px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
+}
+
+.studio-title-input {
+  height: 38px;
+  width: 240px;
+  border-radius: 13px;
+  padding: 0 13px;
+  color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+  outline: none;
+}
+
+.studio-title-input:focus {
+  border-color: rgba(115, 207, 255, 0.72);
+}
+
+.studio-menu-toggle,
+.studio-icon-btn,
+.studio-topbar button,
+.studio-sidebar button,
+.studio-quick-add-menu button,
+.studio-add-panel button,
+.studio-composer button,
+.studio-history button,
+.studio-drawer button {
+  color: rgba(255, 255, 255, 0.86);
+  font: inherit;
+}
+
+.studio-menu-toggle {
+  height: 38px;
+  min-width: 170px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 13px;
+  cursor: pointer;
+}
+
+.studio-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 13px;
+  cursor: pointer;
+}
+
+.studio-workflow-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  width: min(420px, 92vw);
+  transform: translateX(-50%);
+  border-radius: 18px;
+  padding: 8px;
+}
+
+.studio-workflow-row {
+  display: grid;
+  grid-template-columns: 1fr 34px;
+  gap: 6px;
+  align-items: center;
+}
+
+.studio-workflow-row > button:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.studio-workflow-row.active > button:first-child,
+.studio-workflow-row > button:first-child:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.studio-workflow-row span {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 12px;
+}
+
+.studio-workflow-row .danger {
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.studio-workflow-row .danger:hover {
+  background: rgba(255, 78, 78, 0.18);
+  color: #ff9c9c;
+}
+
+.studio-top-actions {
+  justify-self: end;
+}
+
+.studio-credit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  border-radius: 999px;
+  padding: 0 14px;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: none;
+}
+
+.studio-credit-pill span {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.studio-canvas-shell,
+.studio-flow-frame {
+  position: absolute;
+  inset: 0;
+}
+
+.studio-flow-frame {
+  z-index: 1;
+}
+
+.studio-flow-frame .react-flow {
+  background: transparent;
+}
+
+.studio-flow-frame .react-flow__viewport {
+  will-change: transform;
+}
+
+.studio-flow-frame .react-flow__edges {
+  pointer-events: auto;
+}
+
+.studio-flow-frame .react-flow__edge {
+  pointer-events: visibleStroke;
+}
+
+.studio-flow-frame .react-flow__edge-path {
+  pointer-events: stroke;
+}
+
+.studio-flow-frame .react-flow__node {
+  overflow: visible;
+}
+
+.studio-flow-frame .react-flow__node.selected {
+  z-index: 10 !important;
+}
+
+.studio-flow-frame .react-flow__pane {
+  cursor: grab;
+}
+
+.studio-flow-frame .react-flow__pane.dragging {
+  cursor: grabbing;
+}
+
+.studio-flow-edge path.react-flow__edge-path {
+  filter: none;
+}
+
+.studio-edge-hit {
+  cursor: pointer;
+  pointer-events: stroke;
+}
+
+.studio-edge-path {
+  stroke: var(--canvas-edge, rgba(124, 210, 255, 0.86));
+  stroke-width: 2;
+  pointer-events: none;
+  transition:
+    stroke 0.2s ease,
+    stroke-width 0.2s ease;
+}
+
+.studio-flow-edge.selected .studio-edge-path,
+.studio-flow-edge:hover .studio-edge-path {
+  stroke: var(--canvas-edge-hover, rgba(169, 232, 255, 0.98));
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 6px rgba(73, 201, 255, 0.42));
+}
+
+.studio-edge-flow {
+  stroke: rgba(100, 180, 255, 0.62);
+  stroke-dasharray: 26 34;
+  stroke-linecap: round;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 10px rgba(100, 180, 255, 0.45));
+  opacity: 0;
+}
+
+.studio-flow-edge.selected .studio-edge-flow,
+.studio-flow-edge.animated .studio-edge-flow {
+  opacity: 0.9;
+  animation: studio-edge-flow 1.6s linear infinite;
+}
+
+.studio-flow-frame.canvas-interacting .edge-flow-segments,
+.studio-flow-frame.canvas-interacting .studio-edge-flow {
+  opacity: 0 !important;
+  animation-play-state: paused !important;
+}
+
+.studio-flow-frame.canvas-interacting .studio-flow-edge path.react-flow__edge-path {
+  filter: none !important;
+}
+
+.studio-flow-frame.canvas-interacting .studio-node-card,
+.studio-flow-frame.canvas-interacting .studio-node-title,
+.studio-flow-frame.canvas-interacting .studio-composer {
+  transition: none !important;
+}
+
+.studio-edge-delete {
+  position: absolute;
+  z-index: 120;
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(25, 27, 31, 0.94);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  pointer-events: all;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+
+.studio-edge-delete:hover {
+  border-color: rgba(255, 120, 120, 0.72);
+  background: rgba(126, 35, 35, 0.96);
+  color: white;
+}
+
+@keyframes scissors-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scissors-fade-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+.scissors-enter {
+  animation: 0.2s forwards scissors-fade-in;
+}
+
+.scissors-exit {
+  animation: 0.15s forwards scissors-fade-out;
+}
+
+@keyframes studio-edge-flow {
+  from {
+    stroke-dashoffset: 60;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.studio-flow-edge.selected path.react-flow__edge-path,
+.studio-flow-edge.animated path.react-flow__edge-path {
+  stroke: rgba(169, 232, 255, 0.98);
+  stroke-width: 2.5;
+}
+
+.studio-flow-frame .react-flow__edges {
+  z-index: 0 !important;
+}
+
+.studio-flow-frame .react-flow.reference-pick-mode [data-ref-pickable="0"] {
+  pointer-events: none !important;
+}
+
+.studio-flow-frame .react-flow.reference-pick-mode [data-ref-pickable="0"]::after,
+.studio-flow-frame .react-flow.reference-pick-mode [data-ref-pickable="connected"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  border-radius: 0.75rem;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+.studio-flow-frame .react-flow.reference-pick-mode .node-shell[data-ref-pickable="1"] {
+  cursor: pointer;
+}
+
+.studio-flow-frame .react-flow.reference-pick-mode .node-shell[data-ref-pickable="1"]:hover {
+  filter: brightness(1.05);
+}
+
+.studio-flow-frame .react-flow.reference-pick-mode .react-flow__edge {
+  opacity: 0.15;
+  pointer-events: none !important;
+}
+
+.studio-node {
+  position: relative;
+  overflow: visible;
+  touch-action: none;
+  user-select: none;
+}
+
+[data-longpress-contextmenu] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+[data-longpress-contextmenu] input,
+[data-longpress-contextmenu] textarea,
+[data-longpress-contextmenu] [contenteditable="true"],
+[data-longpress-contextmenu] [contenteditable=""] {
+  -webkit-touch-callout: default;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.studio-node-title {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  gap: 7px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  transform-origin: left bottom;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.studio-node-title-edit {
+  min-width: 24px;
+  max-width: 240px;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 16px;
+  font-weight: 650;
+  outline: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-node.selected .studio-node-title-edit {
+  color: white;
+}
+
+.studio-node-title-edit:focus {
+  min-width: 120px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  white-space: normal;
+}
+
+.studio-node-type {
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 11px;
+}
+
+.studio-node-title em {
+  min-width: 0;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.44);
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-node-card {
+  position: relative;
+  min-height: 145px;
+  overflow: visible;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  background: rgba(37, 38, 39, 0.86);
+  box-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.studio-node.selected .studio-node-card {
+  border-color: rgba(182, 223, 255, 0.95);
+  box-shadow:
+    0 0 0 1px rgba(182, 223, 255, 0.25),
+    0 24px 64px rgba(0, 0, 0, 0.44),
+    0 0 32px rgba(73, 201, 255, 0.16);
+}
+
+.studio-node.linking-source .studio-node-card {
+  border-color: rgba(112, 225, 255, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(112, 225, 255, 0.22),
+    0 16px 46px rgba(0, 0, 0, 0.4),
+    0 0 26px rgba(73, 201, 255, 0.18);
+}
+
+.studio-node.linking-target .studio-link-button-left {
+  border-color: rgba(142, 220, 255, 0.95) !important;
+  background: rgba(17, 37, 55, 0.98) !important;
+  opacity: 1 !important;
+  animation: studio-link-target-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes studio-link-target-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 4px rgba(0, 0, 0, 0.24),
+      0 0 0 0 rgba(115, 218, 255, 0);
+  }
+  50% {
+    box-shadow:
+      0 0 0 4px rgba(0, 0, 0, 0.24),
+      0 0 0 7px rgba(115, 218, 255, 0.18);
+  }
+}
+
+.studio-media {
+  display: block;
+  width: 100%;
+  max-height: 620px;
+  object-fit: cover;
+  background: #1b1c1f;
+}
+
+.studio-node-video .studio-media {
+  aspect-ratio: 16 / 9;
+}
+
+.studio-node-image .studio-media {
+  min-height: 160px;
+}
+
+.studio-text-node {
+  min-height: 145px;
+  padding: 18px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.studio-text-node p {
+  margin: 0;
+}
+
+.studio-text-node audio {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.studio-node-placeholder {
+  display: grid;
+  min-height: 180px;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.studio-node-placeholder.large {
+  min-height: 270px;
+}
+
+.studio-node-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 6;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.studio-node:hover .studio-node-actions,
+.studio-node.selected .studio-node-actions {
+  opacity: 1;
+}
+
+.studio-node-actions button {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.44);
+  cursor: pointer;
+}
+
+.studio-node-actions button:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.studio-handle {
+  z-index: 3 !important;
+  width: 2px !important;
+  height: 2px !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.studio-handle::after {
+  content: "";
+}
+
+.studio-link-button {
+  position: absolute;
+  top: 50%;
+  z-index: 24;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.52);
+  border-radius: 999px;
+  padding: 0;
+  background: rgba(33, 36, 41, 0.96);
+  box-shadow:
+    0 0 0 4px rgba(0, 0, 0, 0.24),
+    0 8px 22px rgba(0, 0, 0, 0.36);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: crosshair;
+  opacity: 0.92;
+  pointer-events: all;
+  transition:
+    opacity 0.12s ease,
+    transform 0.12s ease,
+    border-color 0.12s ease,
+    background 0.12s ease;
+}
+
+.studio-node:not(:hover):not(.selected) .studio-link-button {
+  opacity: 0.58;
+}
+
+.studio-link-button:hover {
+  border-color: rgba(142, 220, 255, 0.95);
+  background: rgba(17, 37, 55, 0.98);
+  opacity: 1;
+}
+
+.studio-link-button-left {
+  left: -12px;
+  transform: translate(-50%, -50%);
+}
+
+.studio-link-button-left:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.studio-link-button-right {
+  right: -12px;
+  transform: translate(50%, -50%);
+}
+
+.studio-link-button-right:hover {
+  transform: translate(50%, -50%) scale(1.08);
+}
+
+.studio-node-flowmeta {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 12px;
+}
+
+.studio-progress-card {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 5;
+  border-radius: 12px;
+  padding: 9px 10px;
+  background: rgba(0, 0, 0, 0.56);
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 12px;
+}
+
+.studio-progress-card i {
+  display: block;
+  height: 4px;
+  margin-top: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.studio-progress-card b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #72e0ff, #8f7cff);
+}
+
+.studio-composer {
+  position: absolute;
+  top: calc(100% + 26px);
+  left: 50%;
+  z-index: 90;
+  width: 660px;
+  max-width: min(660px, 92vw);
+  min-height: 238px;
+  transform: translateX(-50%) scale(var(--composer-scale, 1));
+  transform-origin: top center;
+  border-radius: 22px;
+  padding: 14px 16px 14px;
+  contain: layout paint;
+  pointer-events: auto;
+}
+
+.studio-composer-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.studio-composer-tabs button,
+.studio-reference-picker > button,
+.studio-reference-row > button,
+.studio-param-trigger,
+.studio-text-tool,
+.studio-send-btn,
+.studio-native-select {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.studio-composer-tabs button {
+  min-height: 34px;
+  padding: 0 13px;
+  cursor: pointer;
+}
+
+.studio-composer-tabs button.active,
+.studio-composer-tabs button:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.16);
+  color: white;
+}
+
+.studio-reference-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  margin-bottom: 6px;
+  overflow-x: auto;
+  padding-bottom: 3px;
+}
+
+.studio-reference-picker {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.studio-reference-picker > button,
+.studio-reference-row > button {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 7px;
+  min-height: 42px;
+  padding: 0 11px;
+  cursor: pointer;
+}
+
+.studio-reference-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  z-index: 130;
+  display: grid;
+  width: min(340px, 82vw);
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  background: rgba(25, 26, 29, 0.96);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  padding: 10px;
+  backdrop-filter: blur(18px);
+}
+
+.studio-prompt-box .studio-reference-menu {
+  left: 12px;
+  top: calc(100% - 4px);
+}
+
+.studio-reference-menu header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 12px;
+}
+
+.studio-reference-menu header button,
+.studio-reference-empty button {
+  border: 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.86);
+  cursor: pointer;
+  padding: 6px 9px;
+}
+
+.studio-reference-menu-list {
+  display: grid;
+  max-height: 260px;
+  overflow-y: auto;
+  gap: 6px;
+}
+
+.studio-reference-menu-list > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 0;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  padding: 6px;
+  text-align: left;
+}
+
+.studio-reference-menu-list > button:hover {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.studio-reference-menu-list small {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.studio-reference-empty {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.54);
+  padding: 12px;
+}
+
+.studio-reference-token {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 7px;
+  max-width: 168px;
+  min-height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 4px 9px 4px 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.studio-reference-token.compact {
+  min-height: 32px;
+  max-width: 150px;
+}
+
+.studio-reference-token img,
+.studio-reference-token i {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 9px;
+  object-fit: cover;
+  background: rgba(0, 0, 0, 0.36);
+  color: rgba(255, 255, 255, 0.6);
+  font-style: normal;
+}
+
+.studio-reference-token.compact img,
+.studio-reference-token.compact i {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+}
+
+.studio-reference-token b {
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-prompt-box {
+  position: relative;
+  min-height: 104px;
+  border-radius: 16px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.studio-inline-reference-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.studio-prompt-editor {
+  min-height: 72px;
+  max-height: 140px;
+  overflow-y: auto;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
+  line-height: 1.8;
+  outline: none;
+  white-space: pre-wrap;
+}
+
+.studio-prompt-editor .studio-mention-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 190px;
+  height: 28px;
+  gap: 6px;
+  margin: 0 3px;
+  vertical-align: middle;
+  border: 0.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: grab;
+  user-select: none;
+  white-space: nowrap;
+  padding: 2px 7px 2px 3px;
+}
+
+.studio-prompt-editor .studio-mention-chip:active {
+  cursor: grabbing;
+}
+
+.studio-mention-preview {
+  display: inline-grid;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.38);
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 11px;
+}
+
+.studio-mention-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.studio-prompt-editor .studio-mention-chip b {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.studio-prompt-editor:empty::before {
+  color: rgba(255, 255, 255, 0.36);
+  content: attr(data-placeholder);
+}
+
+.studio-composer-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.studio-native-select {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.studio-native-select span,
+.studio-param-field span,
+.studio-switch-field span {
+  color: rgba(255, 255, 255, 0.54);
+  font-size: 12px;
+}
+
+.studio-native-select select,
+.studio-param-field select,
+.studio-param-field input {
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  outline: none;
+}
+
+.studio-native-select option,
+.studio-param-field option {
+  color: #111;
+}
+
+.studio-param-menu-wrap {
+  position: relative;
+  flex: 0 0 auto;
+  pointer-events: auto;
+}
+
+.studio-param-trigger {
+  min-height: 34px;
+  padding: 0 11px;
+  cursor: pointer;
+}
+
+.studio-param-menu {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 120;
+  display: grid;
+  width: 350px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  transform: translateX(-50%);
+  border-radius: 18px;
+  padding: 12px;
+}
+
+.studio-param-field {
+  display: grid;
+  min-height: 58px;
+  align-content: center;
+  gap: 6px;
+  border-radius: 13px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.studio-param-field.full {
+  grid-column: 1 / -1;
+}
+
+.studio-param-field input[type="range"] {
+  width: 100%;
+}
+
+.studio-param-field select,
+.studio-param-field input,
+.studio-switch-field input,
+.studio-native-select select {
+  cursor: pointer;
+}
+
+.studio-switch-field {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 13px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.studio-composer-spacer {
+  flex: 1;
+}
+
+.studio-text-tool,
+.studio-send-btn {
+  display: grid;
+  min-width: 34px;
+  height: 34px;
+  place-items: center;
+  cursor: pointer;
+}
+
+.studio-cost-pill {
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 13px;
+}
+
+.studio-send-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: white;
+  color: #111827 !important;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.studio-send-btn:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+
+.studio-sidebar {
+  position: fixed;
+  bottom: 52px;
+  left: 50%;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 54px;
+  transform: translateX(-50%);
+  border-radius: 18px;
+  padding: 8px;
+}
+
+.studio-sidebar button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.studio-sidebar button:hover,
+.studio-sidebar button.primary {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.studio-sidebar span {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.studio-quick-add-menu {
+  position: fixed;
+  bottom: 116px;
+  left: 50%;
+  z-index: 82;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(60px, 1fr));
+  gap: 8px;
+  transform: translateX(-50%);
+  border-radius: 18px;
+  padding: 8px;
+}
+
+.studio-quick-add-menu button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.studio-quick-add-menu button:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.studio-add-panel {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 118px;
+  border-radius: 17px;
+  padding: 8px;
+}
+
+.studio-add-panel button {
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 9px 13px;
+  cursor: pointer;
+}
+
+.studio-add-panel button:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.studio-history,
+.studio-drawer {
+  position: fixed;
+  z-index: 75;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.studio-history {
+  top: 84px;
+  right: 18px;
+  bottom: 96px;
+  width: 310px;
+}
+
+.studio-drawer {
+  top: 84px;
+  left: 18px;
+  bottom: 96px;
+  width: 320px;
+}
+
+.studio-history header,
+.studio-drawer header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.studio-history header button,
+.studio-drawer header button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.studio-history-list,
+.studio-drawer-list {
+  display: grid;
+  gap: 8px;
+  max-height: calc(100% - 48px);
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.studio-history-item,
+.studio-drawer-list > button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.studio-history-item:hover,
+.studio-drawer-list > button:hover,
+.studio-drawer-list > button.active {
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.studio-history-item img,
+.studio-history-item video {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  object-fit: cover;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.studio-history-item i {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.55);
+  font-style: normal;
+}
+
+.studio-drawer-list .wide {
+  justify-content: center;
+  min-height: 42px;
+}
+
+.studio-drawer-list > button {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.studio-drawer-list > button span {
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 12px;
+}
+
+.studio-empty-canvas,
+.studio-empty-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: grid;
+  gap: 8px;
+  width: min(480px, 90vw);
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  padding: 24px;
+  background: rgba(20, 22, 25, 0.78);
+  color: rgba(255, 255, 255, 0.62);
+  text-align: center;
+  pointer-events: none;
+}
+
+.studio-empty-canvas strong,
+.studio-empty-panel strong {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.studio-empty-panel button {
+  justify-self: center;
+  pointer-events: auto;
+}
+
+@media (max-width: 760px) {
+  .studio-topbar {
+    grid-template-columns: 1fr;
+  }
+
+  .studio-brand,
+  .studio-top-actions {
+    display: none;
+  }
+
+  .studio-workflow-switcher {
+    min-width: 0;
+    width: calc(100vw - 28px);
+  }
+
+  .studio-title-input {
+    width: 50%;
+  }
+
+  .studio-menu-toggle {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .studio-composer {
+    width: min(94vw, 660px);
+  }
+
+  .studio-param-menu {
+    left: auto;
+    right: -90px;
+    width: 310px;
+    transform: none;
+  }
+
+  .studio-history,
+  .studio-drawer {
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+}
